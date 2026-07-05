@@ -1,0 +1,190 @@
+/* ============================================================
+   NETMED — Admin dashboard
+   Modulo MODAL: overlay e dialog modali, form input,
+   anteprima YouTube e selettore tag.
+   ============================================================ */
+
+
+/* ---------- Overlay e contenitore modale ---------- */
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, .6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fi .2s ease forwards;
+  opacity: 0;
+}
+
+.modal {
+  background: var(--card);
+  border-radius: 20px;
+  width: 95%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, .25);
+  animation: mi .3s cubic-bezier(.4, 0, .2, 1) forwards;
+  transform: translateY(20px) scale(.96);
+}
+
+.modal.sm { max-width: 440px; }
+.modal.lg { max-width: 900px; }
+
+
+/* ---------- Header modale ---------- */
+.mh {
+  padding: 24px 28px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mh h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.mx {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--text3);
+  transition: all .25s;
+}
+
+.mx:hover {
+  background: var(--hover);
+  color: var(--rose);
+  transform: rotate(90deg);
+}
+
+
+/* ---------- Body e footer modale ---------- */
+.mb {
+  padding: 24px 28px;
+}
+
+.mf {
+  padding: 16px 28px 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  border-top: 1px solid var(--border);
+}
+
+
+/* ---------- Form group e campi input ---------- */
+.fg {
+  margin-bottom: 20px;
+}
+
+.fl {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text2);
+  margin-bottom: 6px;
+}
+
+.fi {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--card);
+  outline: none;
+  transition: all .25s;
+}
+
+.fi:focus {
+  border-color: var(--t5);
+  box-shadow: 0 0 0 4px rgba(13, 122, 77, .1);
+}
+
+textarea.fi {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.fh {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+.fr {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+
+/* ---------- Anteprima YouTube ---------- */
+.ytp {
+  margin-top: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+  background: var(--s0);
+}
+
+.ytp img {
+  width: 100%;
+  display: block;
+}
+
+.ytp-empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--text3);
+  font-size: 13px;
+}
+
+
+/* ---------- Selettore tag (chip cliccabili) ---------- */
+.tag-sel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag-opt {
+  padding: 8px 18px;
+  border-radius: 24px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .25s;
+  font-family: inherit;
+}
+
+.tag-opt:hover {
+  border-color: var(--t4);
+  color: var(--t6);
+  background: var(--t0);
+}
+
+.tag-opt.sel {
+  background: linear-gradient(135deg, var(--t6), var(--t5));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(0, 138, 62, .2);
+}

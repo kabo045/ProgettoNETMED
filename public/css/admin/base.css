@@ -1,0 +1,243 @@
+/* ============================================================
+   NETMED — Admin dashboard
+   Modulo BASE: reset, font, variabili tema, body e animazioni.
+   ============================================================ */
+
+
+/* ---------- Font Google ---------- */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Outfit:wght@600;700;800&display=swap');
+
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* ---------- Variabili tema chiaro ---------- */
+:root {
+  --t9: #08562f;
+  --t7: #0a6940;
+  --t6: #0d7a4d;
+  --t5: #1e9659;
+  --t4: #34d27e;
+  --t2: #a7f3c8;
+  --t1: #d6f5e3;
+  --t0: #eafaf0;
+
+  --blue:   #2563eb;
+  --violet: #7c3aed;
+  --rose:   #e11d48;
+  --green:  #16a34a;
+  --amber:  #d97706;
+
+  --s9: #0f172a;
+  --s8: #1e293b;
+  --s7: #334155;
+  --s6: #475569;
+  --s5: #64748b;
+  --s4: #94a3b8;
+  --s3: #cbd5e1;
+  --s2: #e2e8f0;
+  --s1: #f1f5f9;
+  --s0: #f8fafc;
+
+  /* Light "Healing Mint" — sfumature verde-salvia molto chiare invece
+     del bianco/grigio. Allineata a base utente (clinico, no asettico). */
+  --bg:      #e6efe9;
+  --card:    #f1f6f3;
+  --surface: #f1f6f3;
+  --border:  #c7d4cd;
+  --text:    #15241d;
+  --text2:   #324039;
+  --text3:   #56655e;
+  --hover:   #dde7e1;
+  --thead:   #d5e1d9;
+  --accent:        #0d7a4d;
+  --accent-strong: #0a6940;
+}
+
+
+/* ---------- Tema scuro: nero neutro ----------
+   Background scuro neutro, verde solo come accent (bottoni, focus).
+   Coerente con palette utente. */
+[data-theme="dark"] {
+  --bg:      #0a0a0b;
+  --card:    #161618;
+  --surface: #1a1a1c;
+  --border:  #2a2a2d;
+  --text:    #ebebed;
+  --text2:   #c4c4c8;
+  --text3:   #8e8e94;
+  --hover:   #232326;
+  --thead:   #131315;
+  --accent:        #0d7a4d;
+  --accent-strong: #0a6940;
+
+  --s0: #131315;
+  --s1: #1a1a1c;
+  --s2: #2a2a2d;
+  --s9: #ebebed;
+  --s7: #c4c4c8;
+  --s6: #8e8e94;
+  --s5: #65656a;
+  --s4: #4d4d51;
+  --t0: #161618;
+}
+
+
+/* ---------- Body e tipografia ---------- */
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  /* Limiti min/max per garantire layout stabile della dashboard admin
+     (320px = sogli mobile minore; 2560px = monitor ultra-wide). */
+  min-width: 320px;
+  max-width: 2560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  transition: background .3s, color .3s;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.outfit {
+  font-family: 'Outfit', sans-serif;
+}
+
+::selection {
+  background: var(--t4);
+  color: var(--t9);
+}
+
+
+/* ---------- Animazioni globali ---------- */
+@keyframes fu  { to { opacity: 1; transform: translateY(0); } }
+@keyframes fi  { to { opacity: 1; } }
+@keyframes mi  { to { transform: translateY(0) scale(1); } }
+@keyframes sh  { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@keyframes sir { from { transform: translateX(120px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes ddIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+
+
+/* ============================================================
+   ADMIN POLISH — rifinitura estetica giugno 2026
+   Card più morbide, hover lift, transizioni curate
+   ============================================================ */
+
+/* Card più ariose */
+.main {
+  padding: 28px clamp(16px, 3vw, 32px);
+}
+
+/* Heading principali */
+.main h1 {
+  font-family: 'Outfit','Inter',sans-serif;
+  font-size: clamp(24px, 2.5vw, 32px);
+  font-weight: 800;
+  letter-spacing: -.5px;
+  margin: 0 0 18px;
+  color: var(--text);
+}
+
+/* Tutte le card admin hover lift */
+.card, .sc, .stat-card, .vrow, .urow {
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.card:hover, .sc:hover, .stat-card:hover {
+  transform: translateY(-1px);
+}
+
+/* Tabs/pulsanti più definiti */
+.btn, button.btn {
+  font-family: inherit;
+  border-radius: 999px;
+  transition: filter .15s ease, transform .12s ease, background .15s ease;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* Tabelle: alternanza righe + hover row */
+tbody tr {
+  transition: background .15s ease;
+}
+tbody tr:hover {
+  background: var(--hover);
+}
+tbody td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+thead th {
+  padding: 12px 18px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  color: var(--text2);
+  background: var(--thead);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Sidebar polish: voci più riconoscibili */
+.side-item {
+  border-radius: 10px;
+  transition: background .15s ease, color .15s ease, padding-left .15s ease;
+}
+.side-item:hover {
+  background: var(--hover);
+  padding-left: 18px;
+}
+.side-item.active {
+  background: var(--accent-soft, rgba(13, 122, 77, .12));
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Theme toggle e bottoni icona header */
+.theme-toggle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-2, var(--surface));
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: background .15s ease, border-color .15s ease;
+}
+.theme-toggle:hover {
+  background: var(--hover);
+  border-color: var(--accent);
+}
+
+/* Empty state più curato */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text3);
+}
+.empty-state-t {
+  font-family: 'Outfit','Inter',sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 12px 0 6px;
+}

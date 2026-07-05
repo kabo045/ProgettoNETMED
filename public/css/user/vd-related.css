@@ -1,0 +1,186 @@
+/* ============================================================
+   NETMED — Video detail
+   Modulo VD-RELATED: sidebar correlati con thumbnail
+   piccola e info, ottimizzata per layout verticale.
+   ============================================================ */
+
+
+.vd-rel-h {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.vd-rel-h::before {
+  content: "";
+  width: 4px;
+  height: 16px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+.vd-rel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Card video correlato: layout orizzontale stile YouTube
+   (thumb 168px a sinistra, info a destra in colonna).
+   Vale sia per .vd-rel-card che per .vd-rel-item (markup attuale). */
+.vd-rel-card,
+.vd-rel-item {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  cursor: pointer;
+  padding: 6px;
+  margin: -6px;
+  border-radius: 12px;
+  transition: background .2s;
+  text-decoration: none;
+  color: inherit;
+  align-items: flex-start;
+}
+.vd-rel-card:hover,
+.vd-rel-item:hover {
+  background: var(--surface);
+}
+.vd-rel-item .vd-rel-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.vd-rel-thumb {
+  flex-shrink: 0;
+  width: 168px;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  background: var(--surface-2);
+  overflow: hidden;
+  position: relative;
+}
+.vd-rel-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .3s;
+}
+.vd-rel-card:hover .vd-rel-thumb img {
+  transform: scale(1.06);
+}
+.vd-rel-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,.45) 100%);
+  pointer-events: none;
+}
+.vd-rel-body {
+  flex: 1;
+  min-width: 0;
+}
+.vd-rel-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+.vd-rel-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  font-size: 11.5px;
+  color: var(--text3);
+}
+.vd-rel-cat {
+  color: var(--accent);
+  font-weight: 600;
+}
+.vd-rel-meta .dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text4);
+  flex-shrink: 0;
+}
+
+
+/* ---------- Empty correlati ---------- */
+.vd-rel-empty {
+  text-align: center;
+  padding: 40px 14px;
+  color: var(--text3);
+  font-size: 13px;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+}
+
+
+/* ---------- Skeleton correlati ---------- */
+.vd-rel-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.vd-rel-sk-item {
+  display: flex;
+  gap: 12px;
+}
+.vd-rel-sk-thumb {
+  width: 168px;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  background: var(--surface);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.vd-rel-sk-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    var(--surface) 0%,
+    var(--surface-2, var(--border)) 50%,
+    var(--surface) 100%);
+  background-size: 200% 100%;
+  animation: vdRelSk 1.4s ease infinite;
+}
+.vd-rel-sk-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.vd-rel-sk-line {
+  height: 12px;
+  border-radius: 4px;
+  background: var(--surface);
+  background: linear-gradient(90deg,
+    var(--surface) 0%,
+    var(--surface-2, var(--border)) 50%,
+    var(--surface) 100%);
+  background-size: 200% 100%;
+  animation: vdRelSk 1.4s ease infinite;
+}
+.vd-rel-sk-line.w90 { width: 90%; }
+.vd-rel-sk-line.w70 { width: 70%; }
+.vd-rel-sk-line.w50 { width: 50%; }
+
+@keyframes vdRelSk {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

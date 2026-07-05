@@ -1,0 +1,167 @@
+/* NETMED — footer.css */
+
+.site-footer{
+  width:100%;
+  background:linear-gradient(180deg,#0b1220 0%, #070b14 100%);
+  color:#cbd5e1;
+  font-family:'Inter','DM Sans',system-ui,sans-serif;
+  border-top:1px solid rgba(255,255,255,.06);
+  flex-shrink:0;
+  position:relative;
+}
+
+.site-footer::before{
+  content:"";
+  position:absolute;
+  top:0;left:50%;
+  transform:translateX(-50%);
+  width:min(90%,720px);
+  height:1px;
+  background:linear-gradient(90deg,transparent 0%, rgba(13,122,77,.5) 50%, transparent 100%);
+}
+
+.footer-inner{
+  max-width:1200px;
+  margin:0 auto;
+  padding:28px 40px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  flex-wrap:wrap;
+}
+
+/* LEFT: logo + links */
+.footer-left{
+  display:flex;
+  align-items:center;
+  gap:28px;
+  flex-wrap:wrap;
+}
+.footer-logo{
+  font-family:'Inter','Outfit',sans-serif;
+  font-size:18px;
+  font-weight:900;
+  color:#fff;
+  letter-spacing:-.5px;
+  white-space:nowrap;
+  line-height:1;
+}
+.footer-logo span{color:#1e9659}
+
+.footer-divider{
+  width:1px;
+  height:18px;
+  background:rgba(255,255,255,.1);
+}
+
+.footer-links{
+  display:flex;
+  gap:22px;
+  align-items:center;
+}
+.footer-links a{
+  font-size:13px;
+  font-weight:500;
+  color:#94a3b8;
+  text-decoration:none;
+  transition:color .2s;
+  white-space:nowrap;
+  position:relative;
+}
+.footer-links a:hover{color:#34d27e}
+.footer-links a:hover::after{
+  content:"";
+  position:absolute;
+  left:0;right:0;bottom:-4px;
+  height:1px;
+  background:#34d27e;
+}
+
+/* RIGHT: social + copy */
+.footer-right{
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+.footer-social{
+  display:flex;
+  gap:8px;
+}
+.footer-social a{
+  width:34px;
+  height:34px;
+  border-radius:9px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.06);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#94a3b8;
+  text-decoration:none;
+  transition:all .25s ease;
+}
+.footer-social a svg{width:15px;height:15px;display:block}
+.footer-social a:hover{
+  background:rgba(13,122,77,.15);
+  border-color:rgba(13,122,77,.45);
+  color:#34d27e;
+  transform:translateY(-2px);
+}
+
+.footer-copy{
+  font-size:12px;
+  color:#64748b;
+  white-space:nowrap;
+  font-weight:500;
+}
+
+/* TABLET */
+@media(max-width:900px){
+  .footer-inner{padding:24px 28px;gap:18px}
+  .footer-left{gap:20px}
+  .footer-links{gap:18px}
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  .footer-inner{
+    padding:24px 20px;
+    flex-direction:column;
+    text-align:center;
+    gap:20px;
+  }
+  .footer-left{
+    flex-direction:column;
+    gap:14px;
+  }
+  .footer-divider{display:none}
+  .footer-links{justify-content:center;flex-wrap:wrap;gap:16px}
+  .footer-right{
+    flex-direction:column-reverse;
+    gap:14px;
+    width:100%;
+  }
+  .footer-social{justify-content:center}
+}
+
+/* SMALL MOBILE */
+@media(max-width:480px){
+  .footer-inner{padding:20px 16px;gap:16px}
+  .footer-logo{font-size:16px}
+  .footer-links{gap:12px}
+  .footer-links a{font-size:12px}
+  .footer-copy{font-size:11px}
+  .footer-social a{width:32px;height:32px;border-radius:8px}
+  .footer-social a svg{width:14px;height:14px}
+}
+
+/* EXTRA SMALL */
+@media(max-width:360px){
+  .footer-inner{padding:18px 12px}
+  .footer-logo{font-size:15px}
+  .footer-links{gap:10px}
+  .footer-links a{font-size:11px}
+  .footer-copy{font-size:10px}
+  .footer-social a{width:30px;height:30px}
+}

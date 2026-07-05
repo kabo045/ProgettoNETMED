@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Accedi al tuo account NETMED per guardare video divulgativi medico-scientifici.">
+  <meta name="theme-color" content="#08562f">
+  <title>NETMED</title>
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg"/>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/auth-common.css?v=20260615yl">
+  <link rel="stylesheet" href="css/login.css?v=20260615yl">
+  <link rel="stylesheet" href="css/footer.css?v=20260615yl">
+  <link rel="stylesheet" href="css/i18n.css">
+</head>
+<body>
+
+<div class="hero">
+  <div class="logo-netmed">
+    <a href="index.html"><span class="logo-mark-inline">N</span></a>
+  </div>
+
+  <h1 data-i18n-html="login.h1_full">Accedi al tuo <span>account</span></h1>
+  <p data-i18n="login.p">Inserisci le tue credenziali per accedere alla piattaforma.</p>
+
+  <form id="loginForm" class="cta-pill" novalidate>
+    <!-- Contenitore per messaggi di errore (email sbagliata, password non valida, ecc.) -->
+    <div id="formMessage"></div>
+
+    <input type="email" id="email" data-i18n-placeholder="common.email"
+           placeholder="Email" required autocomplete="email">
+
+    <!-- Password + toggle mostra/nascondi -->
+    <div class="pw-wrap">
+      <input type="password" id="password" data-i18n-placeholder="common.password"
+             placeholder="Password" required autocomplete="current-password">
+      <button type="button" class="pw-toggle" onclick="togglePw('password',this)"
+              aria-label="Mostra/nascondi password">•</button>
+    </div>
+
+    <button type="submit" class="btn-pill" id="submitBtn">
+      <span id="btnText" data-i18n="login.btn">Accedi</span>
+    </button>
+  </form>
+
+  <!--
+    Link "Password dimenticata?"
+  -->
+  <div style="margin-top:8px;text-align:center">
+    <a href="password-reset-request.html"
+       style="color:rgba(255,255,255,.7);font-size:.88rem;text-decoration:none;font-weight:600">Password dimenticata?</a>
+  </div>
+
+  <div class="auth-buttons">
+    <a href="registrazione.html" class="btn-register" data-i18n="login.no_account">Non hai un account? Registrati</a>
+  </div>
+</div>
+
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-logo"><span class="logo-mark-inline">N</span></div>
+      <div class="footer-divider"></div>
+      <div class="footer-links">
+        <a href="privacy.html" data-i18n="footer.privacy">Privacy</a>
+        <a href="termini.html" data-i18n="footer.terms">Termini</a>
+        <a href="contatti.html" data-i18n="footer.contacts">Contatti</a>
+        <a href="#" data-i18n="footer.faq">FAQ</a>
+      </div>
+    </div>
+    <div class="footer-right">
+      <div class="footer-social">
+        <a href="#" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.91 1.65-1.85 3.4-1.85 3.64 0 4.31 2.4 4.31 5.52v6.22zM5.34 7.43a2.07 2.07 0 110-4.13 2.07 2.07 0 010 4.13zm1.78 13.02H3.56V9h3.56v11.45z"/></svg></a>
+        <a href="#" aria-label="Twitter" title="Twitter"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="#" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.22.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.22-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.22-.41a3.72 3.72 0 01-1.38-.9 3.72 3.72 0 01-.9-1.38c-.16-.42-.36-1.05-.41-2.22-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.22.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.05-.36 2.22-.41C8.42 2.17 8.8 2.16 12 2.16zM12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63a5.88 5.88 0 00-2.13 1.38A5.88 5.88 0 00.63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91a5.88 5.88 0 001.38 2.13 5.88 5.88 0 002.13 1.38c.76.3 1.64.5 2.91.56 1.28.06 1.69.07 4.95.07s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.88 5.88 0 002.13-1.38 5.88 5.88 0 001.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.88 5.88 0 00-1.38-2.13A5.88 5.88 0 0019.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zm0 10.16a4 4 0 110-8 4 4 0 010 8zm7.85-10.4a1.44 1.44 0 11-2.88 0 1.44 1.44 0 012.88 0z"/></svg></a>
+      </div>
+      <span class="footer-copy" data-i18n="footer.copy">© NETMED</span>
+    </div>
+  </div>
+</footer>
+
+
+<!-- Contenitore toast (feedback breve dopo il submit) -->
+<div id="toastContainer"></div>
+<script src="js/i18n.js?v=20260615yl"></script>
+<script src="js/login.js?v=20260615yl"></script>
+<script src="js/cookie-banner.js?v=20260615yl"></script>
+</body>
+</html>

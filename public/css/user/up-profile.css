@@ -1,0 +1,668 @@
+/* ============================================================
+   NETMED — User catalog
+   Modulo UP-PROFILE: pagina profilo utente.
+   Card hero con avatar, statistiche, sezioni form
+   (info, password, elimina account).
+   ============================================================ */
+
+
+.up-wrap {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 32px 80px;
+}
+
+
+/* ---------- Hero card (riprogettato) ---------- */
+.up-hero {
+  position: relative;
+  background: linear-gradient(135deg, var(--surface) 0%, var(--bg-2) 100%);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 32px;
+  box-shadow: var(--shadow-1);
+  animation: fadeUp .4s ease both;
+}
+.up-hero-banner {
+  height: 140px;
+  background:
+    radial-gradient(ellipse at top right, rgba(13, 122, 77, .45), transparent 60%),
+    radial-gradient(ellipse at bottom left, rgba(0, 138, 62, .22), transparent 70%),
+    linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+  position: relative;
+}
+/* Pattern medical sottile sul banner per personalita' */
+.up-hero-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='none' stroke='%23ffffff' stroke-width='1' opacity='0.12'><circle cx='10' cy='10' r='1.5'/><circle cx='40' cy='20' r='1'/><circle cx='70' cy='15' r='1.5'/><circle cx='20' cy='50' r='1'/><circle cx='55' cy='55' r='1.5'/><path d='M10,10 L40,20 L70,15'/><path d='M40,20 L20,50 L55,55'/></g></svg>");
+  opacity: .6;
+  pointer-events: none;
+}
+/* Soft shadow di transizione sotto il banner per uniformare */
+.up-hero-banner::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 30px;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, .18) 100%);
+  pointer-events: none;
+}
+.up-hero-body {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  padding: 0 32px 32px;          /* +10px bottom */
+  margin-top: -64px;             /* avatar sale di piu' sul banner */
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+.up-avatar {
+  width: 124px;                  /* +14px */
+  height: 124px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  border: 5px solid var(--bg-2); /* +1px */
+  color: #fff;
+  font-size: 50px;               /* +6px */
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  box-shadow: var(--shadow-2);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+.up-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+.up-avatar.up-avatar-edit {
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+.up-avatar.up-avatar-edit:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .35);
+}
+.up-avatar.up-avatar-edit:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.up-avatar-badge {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--bg-2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .35);
+  pointer-events: none;
+  /* Centratura precisa: l'emoji  ha bisogno di un nudge minimo */
+  padding: 0;
+  text-align: center;
+  text-indent: 0;
+}
+.up-id-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.up-id-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: .2px;
+  transition: background .2s, color .2s, transform .15s, border-color .2s, box-shadow .2s;
+}
+.up-id-link:hover {
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
+.up-id-link::before {
+  content: "";
+  font-size: 14px;
+}
+.up-id-link.danger::before { content: "X"; }
+.up-id-link.danger {
+  background: transparent;
+  color: var(--text3);
+  border-color: var(--border);
+}
+.up-id-link.danger:hover {
+  background: var(--surface-2);
+  color: var(--text);
+  border-color: var(--text3);
+}
+.up-id {
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.up-id-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 32px;               /* +4px */
+  font-weight: 800;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+  line-height: 1.15;
+  letter-spacing: -.5px;
+}
+.up-id-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  font-family: 'DM Sans', sans-serif;
+}
+.up-id-email {
+  font-size: 14.5px;
+  color: var(--text2);              /* + contrasto: prima text3 */
+  font-weight: 500;
+  word-break: break-all;            /* email lunghe non straripano */
+}
+.up-id-meta {
+  font-size: 13px;
+  color: var(--text2);              /* + contrasto: prima text4 */
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+
+/* ---------- Statistiche ---------- */
+.up-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-bottom: 32px;
+  animation: fadeUp .4s ease .05s both;
+}
+.up-stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 16px;
+  text-align: center;
+  transition: transform .2s, border-color .2s;
+  cursor: default;
+}
+.up-stat.clickable { cursor: pointer; }
+.up-stat.clickable:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+}
+.up-stat-ico {
+  font-size: 22px;
+  margin-bottom: 6px;
+  opacity: .85;
+}
+.up-stat-n {
+  font-family: 'Outfit', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
+}
+.up-stat-l {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  font-weight: 600;
+}
+
+
+/* ---------- Sezioni form ---------- */
+.up-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px 26px;
+  margin-bottom: 18px;
+  animation: fadeUp .4s ease both;
+}
+.up-section.danger {
+  border-color: rgba(244, 63, 94, .35);
+}
+.up-section-h {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.up-section-h h2 {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+}
+.up-section-h-ico {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+}
+.up-section.danger .up-section-h-ico {
+  background: rgba(244, 63, 94, .15);
+  color: var(--rose);
+}
+.up-section-d {
+  font-size: 13.5px;
+  color: var(--text3);
+  margin: -10px 0 18px;
+  line-height: 1.55;
+}
+
+
+/* ---------- Form fields ---------- */
+.up-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 18px;
+}
+.up-fg {
+  display: flex;
+  flex-direction: column;
+}
+.up-fg.span2 { grid-column: 1 / -1; }
+.up-fl {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text2);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.up-fi {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .2s, background .2s;
+  font-family: inherit;
+}
+.up-fi:focus {
+  border-color: var(--accent);
+  background: var(--bg-2);
+}
+.up-fi:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+}
+.up-fhint {
+  font-size: 12.5px;
+  color: var(--text2);              /* + contrasto: prima text4 */
+  margin-top: 6px;
+  line-height: 1.4;
+}
+.up-fhint.err { color: var(--rose); }
+
+.up-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.up-btn {
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: inherit;
+}
+.up-btn:hover { background: var(--surface); }
+.up-btn:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+.up-btn.primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: transparent;
+}
+.up-btn.primary:hover { background: var(--accent-strong); }
+.up-btn.danger {
+  background: var(--rose);
+  color: #fff;
+  border-color: transparent;
+}
+.up-btn.danger:hover { background: #e11d48; }
+.up-btn.ghost {
+  background: transparent;
+}
+
+
+/* ---------- Elimina account ---------- */
+.up-danger-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.up-danger-info strong {
+  display: block;
+  color: var(--text);
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+.up-danger-info span {
+  font-size: 13px;
+  color: var(--text3);
+}
+
+
+/* ---------- Confirm modale (riusa stile vd-modal) ---------- */
+/* Niente di nuovo qui: usiamo le classi vd-modal-bg / vd-modal */
+
+
+/* ---------- Skeleton ---------- */
+.up-loading .up-id-name,
+.up-loading .up-id-email {
+  background: var(--surface-2);
+  height: 18px;
+  border-radius: 6px;
+  width: 220px;
+  color: transparent;
+}
+.up-loading .up-id-email { width: 160px; height: 13px; margin-top: 6px; }
+
+
+/* ---------- Card "Account verificato" ---------- */
+/* Bordo blu tenue + sfondo gradient leggero. Si annida nell'hero
+   sotto le info utente, quindi voluto che resti compatto. */
+.up-verified-card {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(13, 122, 77, .10), rgba(13, 122, 77, .03));
+  border: 1px solid rgba(13, 122, 77, .35);
+}
+.up-verified-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: #0d7a4d;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.up-verified-row {
+  font-size: 13px;
+  color: var(--text2);
+  margin: 3px 0;
+}
+.up-verified-row b {
+  color: var(--text);
+  margin-right: 4px;
+}
+.up-verified-meta {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(13, 122, 77, .15);
+  font-size: 11px;
+  color: var(--text3);
+}
+
+/* Bottone "Modifica" allineato a destra nell'header della card */
+.up-verified-head { justify-content: flex-start; }
+.up-verified-edit {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid rgba(13, 122, 77, .45);
+  color: #0d7a4d;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.up-verified-edit:hover {
+  background: rgba(13, 122, 77, .10);
+}
+
+.up-verified-bio {
+  margin-top: 6px;
+  font-style: italic;
+  line-height: 1.4;
+}
+.up-verified-empty {
+  color: var(--text3);
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* Form di modifica inline */
+.up-verified-edit-form .up-vf-row {
+  margin: 8px 0;
+}
+.up-verified-edit-form .up-vf-row label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text2);
+  margin-bottom: 4px;
+}
+.up-verified-edit-form .up-vf-row input,
+.up-verified-edit-form .up-vf-row textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+}
+.up-verified-edit-form .up-vf-row textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+.up-verified-edit-form .up-vf-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+.up-verified-edit-form .up-vf-save {
+  background: #0a6940;
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.up-verified-edit-form .up-vf-save:hover {
+  filter: brightness(1.05);
+}
+
+
+/* ============================================================
+   Password con toggle "occhio" (mostra/nascondi)
+   ============================================================ */
+.up-pw-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+.up-pw-input {
+  width: 100%;
+  padding-right: 48px !important;   /* spazio per il bottone occhio */
+  box-sizing: border-box;
+}
+.up-pw-toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-size: 16px;
+  opacity: .5;
+  transition: opacity .15s, background .15s;
+  border-radius: 8px;
+  color: var(--text2);
+}
+.up-pw-toggle:hover {
+  opacity: 1;
+  background: var(--surface);
+}
+.up-pw-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  opacity: 1;
+}
+
+/* Etichetta lucchetto accanto a "Email" non modificabile */
+.up-fl-lock {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 10px;
+  opacity: .65;
+  vertical-align: 1px;
+}
+
+/* Email disabilitata: leggibile ma "spenta" */
+.up-fi[disabled],
+.up-fi[readonly] {
+  cursor: not-allowed;
+  opacity: .75;
+  background: var(--surface);
+}
+
+
+/* Badge "+" centrato sull'avatar (era una fotocamera in basso a destra) */
+.up-avatar-badge { /*  */
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(0, 0, 0, .55);
+  color: #fff;
+  font-family: inherit;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .18s, background .18s, transform .18s;
+}
+.up-id-avatar:hover .up-avatar-badge,
+.up-avatar-badge:focus-visible {
+  opacity: 1;
+}
+.up-avatar-badge:hover {
+  background: var(--accent-strong);
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+
+/* ---- Sezione "Diventa creator" / stato richiesta in attesa ---- */
+.up-creator-pending {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(13, 122, 77, .35);
+  background: rgba(13, 122, 77, .10);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.up-creator-pending strong { color: var(--accent); }
+
+/* ============================================================
+   Indicatore robustezza password (sezione Sicurezza profilo)
+   ============================================================ */
+.up-pw-meter {
+  margin-top: 6px;
+  height: 6px;
+  width: 100%;
+  background: var(--surface-2, #2a322e);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.up-pw-meter-bar {
+  height: 100%;
+  width: 0%;
+  background: #3a3f3d;
+  transition: width .18s ease, background .18s ease;
+  border-radius: 4px;
+}

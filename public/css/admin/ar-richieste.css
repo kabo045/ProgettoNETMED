@@ -1,0 +1,161 @@
+/* ============================================================
+   NETMED Admin — Pagina Richieste creator (estratto da inline)
+   ============================================================ */
+
+/* Fix sfondo nero: il body ha overflow:hidden+100vh, se la main interna
+   scrolla, sotto si vedrebbe il default del browser (nero). Forzo
+   html + body + layout sul --bg del tema corrente. */
+html, body {
+  background: var(--bg) !important;
+}
+.layout {
+  background: var(--bg);
+  min-height: calc(100vh - 64px);
+}
+.main {
+  background: var(--bg);
+  min-height: calc(100vh - 64px);
+}
+
+.ar-head {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 18px; flex-wrap: wrap;
+}
+.ar-count {
+  background: var(--surface);
+  color: var(--text2);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  border: 1px solid var(--border);
+}
+.ar-count.has {
+  background: rgba(13,122,77,.12);
+  color: var(--accent);
+  border-color: rgba(13,122,77,.30);
+}
+
+.ar-desc {
+  color: var(--text2);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 22px;
+  max-width: 740px;
+}
+
+.ar-list {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--card);
+}
+.ar-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.6fr) minmax(180px, 1.2fr) minmax(140px, .9fr) minmax(190px, auto);
+  align-items: center;
+  gap: 18px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  transition: background .14s;
+}
+.ar-row:last-child { border-bottom: 0; }
+.ar-row:hover { background: var(--hover, var(--surface)); }
+
+.ar-user-wrap { display: flex; align-items: center; gap: 12px; }
+.ar-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  /* Solid color: niente gradient verde-acceso (anti-IA look). */
+  background: var(--accent);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800;
+  font-size: 15px;
+  flex-shrink: 0;
+  border: 1px solid rgba(0,0,0,.05);
+}
+.ar-user b { display: block; font-size: 14.5px; color: var(--text); margin-bottom: 3px; }
+.ar-user span { color: var(--text3); font-size: 12.5px; }
+
+.ar-prof { font-size: 13px; color: var(--text2); line-height: 1.45; }
+.ar-prof .lbl, .ar-time .lbl {
+  color: var(--text3);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  margin-bottom: 4px;
+}
+.ar-prof b { color: var(--text); font-weight: 600; }
+.ar-time { color: var(--text3); font-size: 12.5px; }
+
+.ar-act { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+.ar-btn {
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .14s, border-color .14s, transform .12s;
+}
+.ar-btn:hover { background: var(--hover, var(--surface)); border-color: var(--accent); }
+.ar-btn:active { transform: translateY(1px); }
+.ar-btn.approve {
+  background: var(--accent-strong, var(--accent));
+  border-color: transparent;
+  color: #fff;
+}
+.ar-btn.approve:hover { background: var(--accent); filter: brightness(1.05); }
+.ar-btn.deny {
+  background: transparent;
+  color: #be123c;
+  border-color: rgba(225, 29, 72, .25);
+}
+.ar-btn.deny:hover {
+  background: rgba(225, 29, 72, .10);
+  border-color: #e11d48;
+}
+
+.ar-empty {
+  padding: 70px 24px;
+  text-align: center;
+  color: var(--text3);
+}
+.ar-empty-icon {
+  width: 56px; height: 56px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  color: var(--text3);
+}
+.ar-empty-t {
+  font-family: 'Outfit','Inter',sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.ar-empty-d { font-size: 13.5px; }
+
+.ar-toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--accent-strong, var(--accent));
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  box-shadow: 0 8px 28px rgba(0,0,0,.28);
+  z-index: 1000;
+  animation: arToastSlide .35s ease;
+}
+@keyframes arToastSlide {
+  from { transform: translateX(120%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}

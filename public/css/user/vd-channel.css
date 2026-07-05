@@ -1,0 +1,345 @@
+/* ============================================================
+ * NETMED — pagina video stile YouTube
+ *
+ * Una sola toolbar che combina:
+ *   - sinistra: canale (avatar + nome + iscritti) + bottone Iscriviti
+ *   - destra:  pillole azione (Utile/Non utile combinato, Condividi,
+ *              Salva, Segnala)
+ *
+ * Le pillole sono nello stile YouTube: bg grigio scuro morbido,
+ * border-radius 999px, hover leggero.
+ * ============================================================ */
+
+.vd-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 12px 0 18px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.vd-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.vd-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ---------- Sezione canale ---------- */
+.vd-channel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.vd-channel-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  min-width: 0;
+  border-radius: 10px;
+  padding: 4px 6px;
+  margin: -4px -6px;
+  transition: background .15s ease;
+}
+.vd-channel-info:hover,
+.vd-channel-info:focus-visible {
+  background: var(--bg-2);
+  outline: none;
+}
+
+.vd-channel-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2, var(--accent)) 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 17px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+.vd-channel-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.vd-channel-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+}
+
+.vd-channel-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.vd-channel-name .verified-tick { flex-shrink: 0; }
+
+.vd-channel-subs {
+  font-size: 12px;
+  color: var(--text3);
+  line-height: 1.2;
+}
+
+/* ---------- Bottone Iscriviti (pillola scura YouTube) ---------- */
+.vd-sub-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: var(--text);
+  color: var(--bg);
+  transition: background .15s ease, color .15s ease, transform .1s ease;
+  white-space: nowrap;
+  letter-spacing: .01em;
+  font-family: inherit;
+}
+.vd-sub-btn:hover { background: var(--text2); }
+.vd-sub-btn:active { transform: translateY(1px); }
+.vd-sub-btn:disabled { opacity: .65; cursor: wait; }
+
+/* Iscritto: pillola grigia con check, stile YouTube */
+.vd-sub-btn.is-on {
+  background: var(--bg-2);
+  color: var(--text);
+  border-color: var(--border);
+}
+.vd-sub-btn.is-on:hover {
+  background: var(--surface-2);
+  border-color: var(--border-2, var(--border));
+}
+.vd-sub-btn .vd-sub-ico { font-size: 12px; line-height: 1; }
+
+/* ============================================================
+ * Pillole azione (utile/condividi/salva/segnala)
+ * Stile YouTube: grigio scuro morbido, border-radius 999px
+ * ============================================================ */
+.vd-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Vote combinato: due bottoni dentro la stessa pillola con divider */
+.va-vote {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-2);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  overflow: hidden;
+  transition: background .15s ease;
+}
+.va-vote:hover { background: var(--surface-2); }
+
+.va-vote-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color .15s ease;
+}
+.va-vote-btn:hover { color: var(--accent); }
+.va-vote-btn.active { color: var(--accent); }
+.va-vote-btn.vote-down { padding-right: 18px; }
+.va-vote-btn.vote-up { padding-left: 18px; }
+.va-vote-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.va-vote-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--border);
+}
+
+.va-vote .va-ico { font-size: 14px; line-height: 1; }
+.va-vote .va-lbl { font-weight: 500; font-size: 13px; }
+.va-vote .va-cnt { font-weight: 600; }
+
+/* Pillole singole (Condividi/Salva/Segnala) */
+.va-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: var(--bg-2);
+  border: 1px solid transparent;
+  color: var(--text);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .15s ease, color .15s ease, transform .1s ease;
+  white-space: nowrap;
+}
+.va-btn:hover { background: var(--surface-2); }
+.va-btn:active { transform: translateY(1px); }
+.va-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.va-btn.fav.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.va-btn .va-ico { font-size: 14px; line-height: 1; }
+
+.va-spacer { display: none; }
+
+/* ============================================================
+ * Box descrizione stile YouTube (grigio scuro morbido)
+ * ============================================================ */
+.vd-desc {
+  background: var(--bg-2);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 22px;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+.vd-desc:hover { background: var(--surface-2); }
+
+.vd-desc-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.vd-desc-meta-soft {
+  color: var(--text);
+  font-weight: 700;
+}
+.vd-desc-meta .dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text3);
+}
+
+.vd-desc-text {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text2);
+  white-space: pre-wrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.vd-desc.expanded .vd-desc-text {
+  -webkit-line-clamp: unset;
+  display: block;
+}
+
+.vd-desc-toggle {
+  display: inline-block;
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 6px 0 0;
+  font-family: inherit;
+}
+
+.vd-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+.vd-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  transition: background .15s, color .15s;
+}
+.vd-tag:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* ---------- Responsivita' mobile ---------- */
+@media (max-width: 760px) {
+  .vd-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .vd-toolbar-left,
+  .vd-toolbar-right {
+    width: 100%;
+  }
+  .vd-toolbar-right {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .vd-toolbar-right::-webkit-scrollbar { display: none; }
+}
+
+@media (max-width: 640px) {
+  .vd-channel-avatar { width: 38px; height: 38px; font-size: 16px; }
+  .vd-channel-name { font-size: 14.5px; }
+  .vd-sub-btn { padding: 8px 14px; font-size: 13px; }
+  .va-vote-btn, .va-btn { padding: 8px 12px; font-size: 12.5px; }
+  .va-vote-btn.vote-down { padding-right: 14px; }
+  .va-vote-btn.vote-up { padding-left: 14px; }
+}

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="theme-color" content="#08562f"/>
+  <meta name="robots" content="noindex"/>
+
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg"/>
+  <title>NETMED</title>
+
+  <link rel="stylesheet" href="css/admin/base.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/admin/header.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/admin/sidebar.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/admin/buttons.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/admin/tables.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/admin/cards.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/admin/modal.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/responsive.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/admin/ar-richieste.css?v=20260615yl"/>
+</head>
+<body>
+
+<!--
+  Script "anti-flash": setto data-theme prima che il body renderizzi.
+  Se lo facessi solo con JS al load, l'utente vedrebbe un lampo del tema
+  sbagliato prima che si aggiorni.
+-->
+<script>
+  document.documentElement.setAttribute(
+    "data-theme",
+    localStorage.getItem("theme") || localStorage.getItem("nm_theme") || "light"
+  );
+  document.addEventListener("DOMContentLoaded", function () {
+    var btn = document.getElementById("themeBtn");
+    if (btn) btn.textContent = (document.documentElement.getAttribute("data-theme") === "dark") ? "🌙" : "☀️";
+  });
+</script>
+
+
+<header class="hdr">
+  <div class="hdr-l">
+    <button class="hdr-burger" onclick="toggleSidebar()">☰</button>
+    <a class="hdr-logo outfit" href="admin_dashboard.html" style="text-decoration:none">N</a>
+    <a class="hdr-name outfit" href="admin_dashboard.html" style="text-decoration:none">NETMED</a>
+  </div>
+
+  <div class="hdr-r">
+    <!-- Pannello notifiche-->
+    <div class="hdr-notif" onclick="toggleNotif(event)" id="notifBtn">
+      <span class="notif-count" id="notifCount" style="display:none">0</span>
+      <div class="notif-panel" id="notifPanel" onclick="event.stopPropagation()">
+        <div class="notif-header"><span class="notif-title">Notifiche</span></div>
+        <div id="notifList"><div class="notif-empty">Nessuna notifica</div></div>
+      </div>
+    </div>
+
+    <div class="hdr-user" onclick="toggleDD(event)" role="button" tabindex="0">
+      <div class="hdr-avatar outfit" id="hdrAvatar">A</div>
+      <div><div class="hdr-uname" id="hdrName">Admin</div><div class="hdr-urole">Amministratore</div></div>
+      <span class="hdr-arrow">▼</span>
+      <div class="dd" id="userDD" onclick="event.stopPropagation()">
+        <div class="dd-item" onclick="location.href='admin_dashboard.html'">Dashboard</div>
+        <div class="dd-item" onclick="location.href='admin_dashboard.html'">Il mio profilo</div>
+        <div class="dd-item" onclick="location.href='admin_dashboard.html'">Analytics</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item" onclick="toggleTheme()"><span id="themeBtnLbl">Cambia tema</span> <span id="themeBtn" style="float:right">🌙</span></div>
+        <div class="dd-sep"></div>
+        <div class="dd-item danger" onclick="doLogout()">Esci</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<!-- Overlay sidebar mobile -->
+<div class="side-overlay" id="sideOverlay" onclick="toggleSidebar()"></div>
+
+
+<div class="layout">
+  <nav class="side" id="sidebar"></nav>
+
+  <main class="main">
+    <div class="bc">
+      <a href="admin_dashboard.html">Home</a>
+      <span class="bc-sep">›</span>
+      Richieste creator
+    </div>
+
+    <div class="ph">
+      <div>
+        <h1 class="pt outfit">Richieste creator</h1>
+        <p class="ps">Utenti in attesa di approvazione per diventare creator verificati</p>
+      </div>
+    </div>
+
+    <div class="ar-head">
+      <span class="ar-count" id="arCount">—</span>
+    </div>
+    <p class="ar-desc">
+      Qui trovi tutti gli utenti che hanno dichiarato di essere medici o
+      professionisti sanitari durante la registrazione. Approvando,
+      l'utente diventa un creator verificato e puo' caricare contenuti.
+      Rifiutando, la richiesta viene archiviata e l'utente viene notificato.
+    </p>
+
+    <!-- Lista richieste:popolata da load() -->
+    <div class="ar-list" id="arList">
+      <div class="ar-empty">
+        <span class="sk-circle"></span>
+        <div class="ar-empty-t" style="margin-top:14px">Carico le richieste</div>
+        <div class="ar-empty-d">Un momento.</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+
+<!-- Toast di feedback dopo approva/rifiuta -->
+<div class="ar-toast" id="arToast" role="status" aria-live="polite"></div>
+<script>
+//  Pagina admin_richieste.html pannello dedicato alle richiestecreator in attesa di verifica.
+
+
+window.toggleSidebar = function () {
+  const sb = document.getElementById("sidebar");
+  const ov = document.getElementById("sideOverlay");
+  if (sb) sb.classList.toggle("open");
+  if (ov) ov.classList.toggle("open");
+};
+
+window.toggleDD = function (e) {
+  if (e) e.stopPropagation();
+  const dd = document.getElementById("userDD");
+  if (dd) dd.classList.toggle("open");
+};
+
+window.toggleTheme = function () {
+  const cur  = document.documentElement.getAttribute("data-theme") || "light";
+  const next = (cur === "dark") ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  try { localStorage.setItem("theme", next); } catch (_) {}
+  try { localStorage.setItem("nm_theme", next); } catch (_) {}
+  const btn = document.getElementById("themeBtn");
+  if (btn) btn.textContent = (next === "dark") ? "🌙" : "☀️";
+};
+
+window.doLogout = function () {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  location.replace("login.html");
+};
+
+// Click sul body chiude il dropdown utente.
+document.addEventListener("click", () => {
+  const dd = document.getElementById("userDD");
+  if (dd) dd.classList.remove("open");
+});
+(function syncThemeIcon() {
+  const btn = document.getElementById("themeBtn");
+  if (!btn) return;
+  const cur = document.documentElement.getAttribute("data-theme") || "dark";
+  btn.textContent = (cur === "dark") ? "🌙" : "☀️";
+})();
+-
+(function () {
+  const token = localStorage.getItem("token");
+  let user = null;
+  try { user = JSON.parse(localStorage.getItem("user") || "null"); } catch (_) {}
+
+  // Guard: solo admin. Chiunque altro vede la schermata "accesso riservato".
+  if (!token || !user || user.role !== "admin") {
+    document.body.innerHTML =
+      '<div style="padding:60px 24px;text-align:center;color:var(--text2);font-family:Inter,sans-serif">' +
+      '<h2 style="color:var(--text)">Accesso riservato</h2>' +
+      '<p>Questa pagina e disponibile solo per gli amministratori.</p>' +
+      '<p><a href="login.html" style="color:var(--accent);font-weight:700">Vai al login</a></p></div>';
+    return;
+  }
+
+  // Header: avatar + nome dal localStorage.
+  const hdrAvatar = document.getElementById("hdrAvatar");
+  const hdrName   = document.getElementById("hdrName");
+  if (hdrName)   hdrName.textContent   = user.username || "Admin";
+  if (hdrAvatar) hdrAvatar.textContent = (user.username || "A").charAt(0).toUpperCase();
+
+  // Sidebar
+  function renderSidebar() {
+    const items = [
+      { href: "admin_dashboard.html",                label: "Dashboard",         icon: "⬡" },
+      { href: "admin_dashboard.html#videos",         label: "Gestione video",    icon: "▶" },
+      { href: "admin_dashboard.html#categories",     label: "Categorie",         icon: "☰" },
+      { href: "admin_dashboard.html#tags",           label: "Tag",               icon: "#" },
+      { div: true },
+      { href: "admin_dashboard.html#users",          label: "Utenti",            icon: "◉" },
+      { href: "admin_dashboard.html#comments",       label: "Commenti",          icon: "◫" },
+      { href: "admin_dashboard.html#reports",        label: "Segnalazioni",      icon: "⚑" },
+      { href: "admin_richieste.html",                label: "Richieste creator", icon: "★", active: true },
+      { href: "admin_dashboard.html#analytics",      label: "Analytics",         icon: "▤" },
+      { href: "admin_dashboard.html#audit",          label: "Audit log",         icon: "≡" },
+      { div: true },
+      { href: "admin_dashboard.html#profile",        label: "Il mio profilo",    icon: "☺" }
+    ];
+    document.getElementById("sidebar").innerHTML =
+      `<div class="side-label">Menu</div>` +
+      items.map((m) => {
+        if (m.div) return '<div class="side-sep"></div>';
+        return `<a class="side-link${m.active ? ' act' : ''}" href="${m.href}">
+                  <span class="ico">${m.icon}</span>${m.label}
+                </a>`;
+      }).join("") +
+      `<div style="flex:1"></div>
+       <button class="side-logout" onclick="doLogout()"><span class="ico">↗</span>Esci dall'account</button>`;
+  }
+  renderSidebar();
+
+  // Riferimenti DOM.
+  const listEl  = document.getElementById("arList");
+  const countEl = document.getElementById("arCount");
+  const toastEl = document.getElementById("arToast");
+
+
+  // Escape HTML 
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  // Mini toast in basso a schermo
+  function toast(msg, err) {
+    toastEl.textContent = msg;
+    toastEl.className = "ar-toast" + (err ? " err" : "") + " show";
+    setTimeout(() => toastEl.classList.remove("show"), 2600);
+  }
+  function timeAgo(iso) {
+    if (!iso) return "—";
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return "—";
+    const diff = (Date.now() - d.getTime()) / 1000;
+    if (diff < 60) return "ora";
+    if (diff < 3600) return Math.floor(diff / 60) + " min fa";
+    if (diff < 86400) return Math.floor(diff / 3600) + " ore fa";
+    const giorni = Math.floor(diff / 86400);
+    if (giorni < 30) return giorni + (giorni === 1 ? " giorno fa" : " giorni fa");
+    // Oltre un mese: mostro data completa.
+    return d.toLocaleDateString("it-IT", { day: "2-digit", month: "short", year: "numeric" });
+  }
+
+  // Wrapper fetch autenticato per gli endpoint admin.
+  // Ritorna sempre { ok, status, data }
+  async function call(method, path, body) {
+    const r = await fetch(path, {
+      method,
+      headers: { "Authorization": "Bearer " + token, "Content-Type": "application/json" },
+      body: body ? JSON.stringify(body) : undefined
+    });
+    let data = null;
+    try { data = await r.json(); } catch (_) {}
+    return { ok: r.ok, status: r.status, data: data || {} };
+  }
+
+
+  // Carica la lista richieste + aggiorna il conteggio.
+  async function load() {
+    // Skeleton
+    listEl.innerHTML =
+      '<div class="ar-empty"><div class="ar-empty-icon">…</div>' +
+      '<div class="ar-empty-t">Carico le richieste</div></div>';
+
+    const r = await call("GET", "/api/admin/creator-requests");
+    if (!r.ok) {
+      listEl.innerHTML =
+        '<div class="ar-empty"><div class="ar-empty-icon">!</div>' +
+        '<div class="ar-empty-t">Errore di caricamento</div>' +
+        '<div class="ar-empty-d">' + esc((r.data && r.data.error) || "Riprova") + '</div></div>';
+      countEl.textContent = "errore";
+      return;
+    }
+
+    const reqs = (r.data && r.data.requests) || [];
+    countEl.textContent = reqs.length
+      ? (reqs.length + (reqs.length === 1 ? " richiesta in attesa" : " richieste in attesa"))
+      : "Nessuna richiesta";
+    countEl.classList.toggle("has", reqs.length > 0);
+
+    if (!reqs.length) {
+      listEl.innerHTML =
+        '<div class="ar-empty"><div class="ar-empty-icon">✓</div>' +
+        '<div class="ar-empty-t">Tutto in ordine</div>' +
+        '<div class="ar-empty-d">Non ci sono richieste di verifica in attesa.</div></div>';
+      return;
+    }
+
+    // Render righe: avatar, username/email, titolo+qualifica, quando ha chiesto,
+    // bottoni approva/rifiuta.
+    listEl.innerHTML = reqs.map((u) => {
+      const p = u.verified_profile || {};
+      const title = p.title || "";
+      const qual  = p.qualifica || "";
+      const org   = p.organization || "";
+      const initial = (u.username || "?").charAt(0).toUpperCase();
+      const profile = (title + (title && qual ? " " : "") + qual).trim() || "—";
+      return ''
+        + '<div class="ar-row" data-uid="' + u.id + '">'
+        + '  <div class="ar-user-wrap">'
+        + '    <div class="ar-avatar">' + esc(initial) + '</div>'
+        + '    <div class="ar-user">'
+        + '      <b>' + esc(u.username || "(senza nome)") + '</b>'
+        + '      <span>' + esc(u.email || "") + '</span>'
+        + '    </div>'
+        + '  </div>'
+        + '  <div class="ar-prof">'
+        + '    <div class="lbl">Profilo</div>'
+        + '    <b>' + esc(profile) + '</b>'
+        + (org ? ' presso ' + esc(org) : '')
+        + '  </div>'
+        + '  <div class="ar-time">'
+        + '    <div class="lbl">Richiesta</div>'
+        + timeAgo(u.verified_requested_at)
+        + '  </div>'
+        + '  <div class="ar-act">'
+        + '    <button class="ar-btn deny" type="button" onclick="rejectReq(' + u.id + ')">Rifiuta</button>'
+        + '    <button class="ar-btn approve" type="button" onclick="approveReq(' + u.id + ')">Approva</button>'
+        + '  </div>'
+        + '</div>';
+    }).join("");
+  }
+
+
+  //  Azioni approva / rifiuta 
+  window.approveReq = async function (uid) {
+    const r = await call("POST", "/api/admin/verified-requests/" + uid + "/approve");
+    if (r.ok) {
+      toast("Richiesta approvata. L'utente e' ora un creator verificato.");
+      load();
+    } else {
+      toast((r.data && r.data.error) || "Errore", "err");
+    }
+  };
+
+  window.rejectReq = async function (uid) {
+    if (!confirm("Rifiutare questa richiesta? L'utente sara' notificato.")) return;
+    const r = await call("POST", "/api/admin/verified-requests/" + uid + "/reject");
+    if (r.ok) {
+      toast("Richiesta rifiutata.");
+      load();
+    } else {
+      toast((r.data && r.data.error) || "Errore", "err");
+    }
+  };
+  load();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+:root {
+  --primary: #0d7a4d;
+  --primary-strong: #0a6940;
+  --bg-dark: #080808;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #080808;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero {
+  position: relative;
+  background: linear-gradient(rgba(7,10,9,.78), rgba(7,10,9,.94)),
+    url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1920');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 48px 20px;
+  flex: 1;
+}
+
+.logo-netmed {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  margin-bottom: 34px;
+  text-align: center;
+}
+
+.logo-netmed a {
+  text-decoration: none;
+  color: #fff;
+  display: inline-block;
+}
+
+.logo-netmed a span {
+  color: var(--primary);
+}
+
+.hero h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -.5px;
+  margin: 0 0 12px;
+}
+
+.hero h1 span {
+  color: var(--primary);
+}
+
+.hero p {
+  color: #c2c8cf;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  text-align: center;
+  margin: 0 0 32px;
+  max-width: 500px;
+}
+
+.cta-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 380px;
+  width: 100%;
+}
+
+.cta-pill input {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: .98rem;
+  color: #fff;
+  outline: none;
+  font-family: inherit;
+  transition: border-color .18s, background .18s, box-shadow .18s;
+}
+
+.cta-pill input::placeholder { color: rgba(255,255,255,.4); }
+
+.cta-pill input:focus {
+  border-color: var(--primary);
+  background: rgba(255,255,255,.09);
+  box-shadow: 0 0 0 3px rgba(13,122,77,.22);
+}
+
+.btn-pill {
+  background: var(--primary-strong);
+  color: #fff;
+  border: none;
+  padding: 14px 0;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background .16s, transform .12s;
+}
+.btn-pill:hover { background: #0d7a4d; }
+.btn-pill:active { transform: translateY(1px); }
+
+.auth-buttons {
+  margin-top: 22px;
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-register,
+.btn-access {
+  padding: 11px 24px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: .92rem;
+  transition: background .16s, border-color .16s;
+}
+.btn-register { background: var(--primary-strong); color: #fff; }
+.btn-register:hover { background: #0d7a4d; }
+.btn-access { background: transparent; border-color: rgba(255,255,255,.28); color: #fff; }
+.btn-access:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.45); }
+
+#formMessage {
+  color: #ff6b6b;
+  font-weight: 600;
+  font-size: .9rem;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .logo-netmed { font-size: 2.4rem; margin-bottom: 26px; }
+  .hero h1 { font-size: 1.6rem; }
+  .hero p { font-size: .95rem; margin-bottom: 26px; }
+  .cta-pill input { padding: 12px 16px; font-size: .95rem; }
+  .btn-pill { padding: 12px 0; font-size: .95rem; }
+}

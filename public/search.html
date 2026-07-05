@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="description" content="Cerca video, categorie e tag su NETMED."/>
+  <meta name="theme-color" content="#08562f"/>
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg"/>
+  <title>NETMED</title>
+
+  <link rel="stylesheet" href="css/user/base.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/header.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/footer.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/feedback.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/feedback-ui.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/vlist.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/preview-modal.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/responsive.css?v=20260615yl"/>
+</head>
+<body>
+<a class="skip-link" href="#mainContent" data-i18n="home.skip">Salta al contenuto principale</a>
+
+
+<!-- Riusato da tutte le pagine utente: logo, ricerca, dropdown utente. -->
+<header class="user-hdr" role="banner">
+  <div class="uh-l">
+    <!-- Logo cliccabile (mouse + tastiera Enter/Spazio per accessibilita') -->
+    <div class="uh-logo" onclick="goTo('home.html')" role="button" tabindex="0" aria-label="NETMED — vai alla home"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goTo('home.html')}">
+      <div class="uh-logo-mark" aria-hidden="true">N</div>
+      <span class="uh-logo-name">NETMED</span>
+    </div>
+    <nav class="uh-nav" id="uhNav" aria-label="Navigazione categorie">
+      <button class="uh-nav-link" onclick="goTo('home.html')" data-i18n="home.nav_home">Home</button>
+    </nav>
+  </div>
+
+  <div class="uh-r">
+    <!-- Barra ricerca con dropdown risultati -->
+    <div class="uh-search" role="search">
+      <span class="uh-search-ico" aria-hidden="true">
+        <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" style="vertical-align:-3px">
+          <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M13 13l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <input id="uhSearchInput" type="text" placeholder="Cerca video, categorie, tag…" autocomplete="off"
+             maxlength="100" aria-label="Cerca video, categorie o tag"
+             data-i18n-placeholder="home.search_ph" data-i18n-aria-label="home.search_aria">
+      <div class="uh-search-results" id="uhSearchResults" role="listbox" aria-label="Risultati ricerca"></div>
+    </div>
+
+    <!-- Guest: bottone Accedi. Loggato: dropdown utente. -->
+    <button class="uh-login-btn" id="uhGuest" onclick="goLogin()" data-i18n="common.login">Accedi</button>
+
+    <div class="uh-user" id="uhUser" style="display:none" onclick="toggleUserDD(event)">
+      <div class="uh-avatar" id="uhAvatar">U</div>
+      <span class="uh-uname" id="uhUname">Utente</span>
+      <span class="uh-arrow">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </span>
+
+      <div class="uh-dd" id="uhDd" onclick="event.stopPropagation()">
+        <div class="uh-dd-head">
+          <div class="uh-avatar" id="uhDdAvatar">U</div>
+          <div>
+            <div class="uh-dd-name" id="uhDdName">Utente</div>
+            <div class="uh-dd-email" id="uhDdEmail">—</div>
+          </div>
+        </div>
+        <div class="uh-dd-item" onclick="goProfile()"><span data-i18n="home.dd_profile">Il mio profilo</span></div>
+        <div class="uh-dd-item" onclick="goFavorites()"><span data-i18n="home.dd_saved">Salvati</span></div>
+        <div class="uh-dd-item" onclick="goTo('miei-commenti.html')"><span data-i18n="home.dd_comments">I miei commenti</span></div>
+        <div class="uh-dd-item" onclick="goTo('cronologia.html')"><span data-i18n="home.dd_history">Cronologia</span></div>
+        <!-- Voci mostrate solo se creator / admin -->
+        <div class="uh-dd-item" id="uhDdCreator" style="display:none" onclick="goCreator()"><span data-i18n="home.dd_creator">I miei video</span></div>
+        <div class="uh-dd-item" id="uhDdAdmin" style="display:none" onclick="goAdmin()"><span data-i18n="home.dd_admin">Dashboard admin</span></div>
+        <div class="uh-dd-sep"></div>
+        <div class="uh-dd-item danger" onclick="doLogout()">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;vertical-align:-3px">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          <span data-i18n="home.dd_logout">Esci</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<!--
+  Contenitori vuoti, riempiti da ricerca.js dopo aver letto ?q= dalla URL e chiamato /api/search:
+  - vlHero: hero con la query cercata + N risultati
+  - vlToolbar: filtri (ordinamento, tipo)
+  - vlGrid: griglia dei video trovati
+-->
+<main class="vl-wrap" id="mainContent" role="main">
+  <section class="vl-hero" id="vlHero"></section>
+  <div class="vl-toolbar" id="vlToolbar"></div>
+  <div class="vl-grid" id="vlGrid"></div>
+</main>
+<footer class="user-footer" role="contentinfo">
+  <div class="uf-grid">
+    <div class="uf-brand">
+      <div class="uf-brand-logo">
+        <span class="uf-mark">N</span>
+        NETMED
+      </div>
+      <p class="uf-brand-desc" data-i18n="footer.brand_desc">Piattaforma video a tema medico-scientifico.</p>
+    </div>
+    <div>
+      <div class="uf-col-title" data-i18n="footer.col_catalog">Catalogo</div>
+      <a class="uf-col-link" onclick="goTo('home.html')">Home</a>
+      <a class="uf-col-link" onclick="goCategory(1)">Fisioterapia</a>
+      <a class="uf-col-link" onclick="goCategory(2)">Neurologia</a>
+      <a class="uf-col-link" onclick="goCategory(3)">Ortopedia</a>
+    </div>
+    <div>
+      <div class="uf-col-title" data-i18n="footer.col_account">Account</div>
+      <a class="uf-col-link" onclick="goLogin()">Accedi</a>
+      <a class="uf-col-link" onclick="goTo('registrazione.html')">Registrati</a>
+      <a class="uf-col-link" onclick="goFavorites()">I miei salvati</a>
+    </div>
+    <div>
+      <div class="uf-col-title" data-i18n="footer.col_info">Info</div>
+      <a class="uf-col-link" onclick="goTo('index.html')">Chi siamo</a>
+      <a class="uf-col-link" onclick="goTo('privacy.html')">Privacy</a>
+      <a class="uf-col-link" onclick="goTo('termini.html')">Termini</a>
+    </div>
+  </div>
+
+  <div class="uf-bottom">
+    <span>© NETMED</span>
+    <div class="uf-bottom-links">
+      <a onclick="goTo('cookie.html')">Cookie</a>
+      <a onclick="goTo('accessibilita.html')">Accessibilità</a>
+      <a onclick="goTo('contatti.html')">Contatti</a>
+    </div>
+  </div>
+</footer>
+
+
+<!-- Contenitore toast (feedback-ui.js appende qui le notifiche a schermo) -->
+<div class="user-toast-box" id="userToastBox"></div>
+<script src="js/user/core.js?v=20260615yl"></script>
+<script src="js/i18n.js?v=20260615yl"></script>
+<script src="js/user/nm-icons.js?v=20260615yl"></script>
+<script src="js/user/preview-modal.js?v=20260615yl"></script>
+<script src="js/user/hover-preview.js?v=20260615yl"></script>
+<script src="js/user/feedback-ui.js?v=20260615yl"></script>
+<script src="js/user/search-v2.js?v=20260615yl"></script>
+<script src="js/user/ricerca.js?v=20260615yl"></script>
+<script src="js/cookie-banner.js?v=20260615yl"></script>
+</body>
+</html>

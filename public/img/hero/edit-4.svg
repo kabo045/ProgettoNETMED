@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3a1a4e"/>
+      <stop offset="55%" stop-color="#1a0a2a"/>
+      <stop offset="100%" stop-color="#08020f"/>
+    </linearGradient>
+    <radialGradient id="g4brain" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(232,121,249,.4)"/>
+      <stop offset="100%" stop-color="rgba(232,121,249,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#g4)"/>
+  <!-- Glow halo behind brain -->
+  <circle cx="1320" cy="540" r="500" fill="url(#g4brain)"/>
+  <!-- Brain outline + circuits -->
+  <g transform="translate(1320 540) scale(2.2)" fill="none" stroke="rgba(232,121,249,.85)" stroke-width="3" stroke-linecap="round">
+    <!-- Outline -->
+    <path d="M -180 -40 Q -200 -120, -130 -150 Q -100 -200, -40 -180 Q 0 -210, 60 -180 Q 120 -200, 160 -150 Q 220 -120, 200 -40 Q 220 30, 180 70 Q 150 130, 80 120 Q 40 160, -40 130 Q -100 150, -140 110 Q -200 70, -180 -40 Z"/>
+    <!-- Internal gyri -->
+    <path d="M -120 -80 Q -80 -60, -60 -100" opacity=".7"/>
+    <path d="M -40 -130 Q 0 -110, 40 -130" opacity=".7"/>
+    <path d="M 80 -100 Q 110 -60, 140 -90" opacity=".7"/>
+    <path d="M -150 0 Q -100 30, -80 -10" opacity=".6"/>
+    <path d="M -20 20 Q 30 50, 70 10" opacity=".6"/>
+    <path d="M 110 40 Q 150 70, 170 30" opacity=".6"/>
+    <path d="M -70 80 Q -20 110, 30 70" opacity=".6"/>
+  </g>
+  <!-- Neural particles -->
+  <g fill="rgba(232,121,249,.9)">
+    <circle cx="280" cy="250" r="6"/>
+    <circle cx="350" cy="380" r="4"/>
+    <circle cx="200" cy="500" r="5"/>
+    <circle cx="430" cy="650" r="7"/>
+    <circle cx="280" cy="820" r="4"/>
+    <circle cx="180" cy="900" r="6"/>
+    <circle cx="500" cy="200" r="3"/>
+    <circle cx="600" cy="380" r="5"/>
+  </g>
+  <!-- Connecting lines -->
+  <g stroke="rgba(232,121,249,.3)" stroke-width="1" fill="none">
+    <line x1="280" y1="250" x2="350" y2="380"/>
+    <line x1="350" y1="380" x2="200" y2="500"/>
+    <line x1="200" y1="500" x2="430" y2="650"/>
+    <line x1="430" y1="650" x2="280" y2="820"/>
+    <line x1="280" y1="820" x2="180" y2="900"/>
+    <line x1="500" y1="200" x2="600" y2="380"/>
+  </g>
+</svg>

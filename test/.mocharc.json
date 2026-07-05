@@ -1,0 +1,7 @@
+{
+  "spec": "test/**/*.js",
+  "ignore": ["test/helpers.js"],
+  "reporter": "spec",
+  "timeout": 20000,
+  "exit": true
+}

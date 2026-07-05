@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#11161f"/>
+      <stop offset="50%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#0a0e14"/>
+    </linearGradient>
+    <radialGradient id="glow3" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#2dd4bf" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#g3)"/>
+  <rect width="1920" height="1080" fill="url(#glow3)"/>
+  <!-- Brain neural pattern -->
+  <g stroke="#5eead4" stroke-width="2" fill="none" opacity="0.5">
+    <circle cx="960" cy="540" r="220"/>
+    <circle cx="960" cy="540" r="160" stroke-dasharray="6 8"/>
+    <circle cx="960" cy="540" r="100"/>
+  </g>
+  <g fill="#14b8a6" opacity="0.65">
+    <circle cx="780" cy="430" r="6"/>
+    <circle cx="1140" cy="430" r="6"/>
+    <circle cx="840" cy="660" r="6"/>
+    <circle cx="1080" cy="660" r="6"/>
+    <circle cx="960" cy="320" r="6"/>
+    <circle cx="960" cy="760" r="6"/>
+    <circle cx="660" cy="540" r="6"/>
+    <circle cx="1260" cy="540" r="6"/>
+  </g>
+  <g stroke="#14b8a6" stroke-width="1.5" fill="none" opacity="0.45">
+    <line x1="780" y1="430" x2="1140" y2="430"/>
+    <line x1="840" y1="660" x2="1080" y2="660"/>
+    <line x1="780" y1="430" x2="840" y2="660"/>
+    <line x1="1140" y1="430" x2="1080" y2="660"/>
+    <line x1="960" y1="320" x2="780" y2="430"/>
+    <line x1="960" y1="320" x2="1140" y2="430"/>
+    <line x1="960" y1="760" x2="840" y2="660"/>
+    <line x1="960" y1="760" x2="1080" y2="660"/>
+    <line x1="660" y1="540" x2="780" y2="430"/>
+    <line x1="660" y1="540" x2="840" y2="660"/>
+    <line x1="1260" y1="540" x2="1140" y2="430"/>
+    <line x1="1260" y1="540" x2="1080" y2="660"/>
+  </g>
+</svg>

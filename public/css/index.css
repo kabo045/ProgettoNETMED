@@ -1,0 +1,174 @@
+:root {
+  --primary: #0d7a4d;
+  --primary-strong: #0a6940;
+  --bg-dark: #080808;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: 'Inter', sans-serif;
+  background: #080808;
+  color: #fff;
+}
+
+body { display: flex; flex-direction: column; }
+
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 40px;
+  background: linear-gradient(to bottom, rgba(8,8,8,.95), transparent);
+}
+
+.logo-netmed {
+  font-size: 1.9rem;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.logo-netmed span { color: var(--primary); }
+
+.nav-buttons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn-register,
+.btn-access {
+  padding: 10px 22px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: .92rem;
+  transition: background .16s, border-color .16s;
+}
+.btn-register { background: var(--primary-strong); color: #fff; }
+.btn-register:hover { background: #0d7a4d; }
+.btn-access { background: transparent; border-color: rgba(255,255,255,.28); color: #fff; }
+.btn-access:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.45); }
+
+.hero {
+  position: relative;
+  background: linear-gradient(rgba(7,10,9,.7), rgba(7,10,9,.93)),
+    url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1920');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 820px;
+  padding: 0 20px;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  line-height: 1.12;
+  margin: 0 0 18px;
+}
+
+.hero h1 span { color: var(--primary); }
+
+.hero p {
+  color: #c2c8cf;
+  font-size: 1.18rem;
+  line-height: 1.6;
+  margin: 0 0 34px;
+}
+
+.cta-pill {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 14px;
+  padding: 5px;
+  margin: 0 auto 14px;
+  width: 100%;
+  max-width: 460px;
+  transition: border-color .18s, background .18s, box-shadow .18s;
+}
+.cta-pill:focus-within {
+  border-color: var(--primary);
+  background: rgba(255,255,255,.09);
+  box-shadow: 0 0 0 3px rgba(13,122,77,.20);
+}
+
+.cta-pill input {
+  background: transparent;
+  border: none;
+  padding: 11px 16px;
+  color: #fff;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: .95rem;
+  outline: none;
+  font-family: inherit;
+}
+.cta-pill input::placeholder { color: rgba(255,255,255,.42); }
+
+.btn-pill {
+  background: var(--primary-strong);
+  color: #fff;
+  border: none;
+  padding: 11px 22px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: .92rem;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .16s, transform .12s;
+}
+.btn-pill:hover { background: #0d7a4d; }
+.btn-pill:active { transform: translateY(1px); }
+
+.hero-note {
+  margin-top: 14px;
+  font-size: .88rem;
+  color: #8b8f96;
+}
+
+@media (max-width: 600px) {
+  .navbar { padding: 14px 20px; }
+  .logo-netmed { font-size: 1.5rem; }
+  .hero h1 { font-size: 2rem; }
+  .hero p { font-size: 1rem; }
+  .cta-pill { flex-direction: column; border-radius: 12px; padding: 8px; gap: 6px; }
+  .cta-pill input { width: 100%; }
+  .btn-pill { width: 100%; border-radius: 8px; }
+}
+
+
+/* Marchio "N" per la home/landing */
+.logo-mark-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  background: var(--primary-strong, #0a6940);
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -1px;
+}

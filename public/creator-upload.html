@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="description" content="Carica un nuovo video su NETMED. Riservato agli utenti verificati."/>
+  <meta name="theme-color" content="#08562f"/>
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg"/>
+  <title>NETMED</title>
+
+  <link rel="stylesheet" href="css/user/base.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/header.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/footer.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/feedback.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/feedback-ui.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/creator-upload.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/responsive.css?v=20260615yl"/>
+</head>
+<body>
+<a class="skip-link" href="#mainContent" data-i18n="home.skip">Salta al contenuto principale</a>
+
+<header class="user-hdr" role="banner">
+  <div class="uh-l">
+    <div class="uh-logo" onclick="goTo('home.html')" role="button" tabindex="0" aria-label="NETMED — vai alla home"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goTo('home.html')}">
+      <div class="uh-logo-mark" aria-hidden="true">N</div>
+      <span class="uh-logo-name">NETMED</span>
+    </div>
+    <nav class="uh-nav" id="uhNav" aria-label="Navigazione categorie">
+      <button class="uh-nav-link" onclick="goTo('home.html')" data-i18n="home.nav_home">Home</button>
+    </nav>
+  </div>
+
+  <div class="uh-r">
+    <div class="uh-search" role="search">
+      <span class="uh-search-ico" aria-hidden="true">
+        <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" style="vertical-align:-3px">
+          <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M13 13l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <input id="uhSearchInput" type="text" placeholder="Cerca video, categorie, tag…" autocomplete="off"
+             maxlength="100" aria-label="Cerca video, categorie o tag"
+             data-i18n-placeholder="home.search_ph" data-i18n-aria-label="home.search_aria">
+      <div class="uh-search-results" id="uhSearchResults" role="listbox" aria-label="Risultati ricerca"></div>
+    </div>
+
+    <!-- Non loggato: bottone Accedi. Loggato: dropdown utente. -->
+    <button class="uh-login-btn" id="uhGuest" onclick="goLogin()" data-i18n="common.login">Accedi</button>
+
+    <div class="uh-user" id="uhUser" style="display:none" onclick="toggleUserDD(event)">
+      <div class="uh-avatar" id="uhAvatar">U</div>
+      <span class="uh-uname" id="uhUname">Utente</span>
+      <span class="uh-arrow">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </span>
+
+      <div class="uh-dd" id="uhDd" onclick="event.stopPropagation()">
+        <div class="uh-dd-head">
+          <div class="uh-avatar" id="uhDdAvatar">U</div>
+          <div>
+            <div class="uh-dd-name" id="uhDdName">Utente</div>
+            <div class="uh-dd-email" id="uhDdEmail">—</div>
+          </div>
+        </div>
+        <div class="uh-dd-item" onclick="goProfile()"><span data-i18n="home.dd_profile">Il mio profilo</span></div>
+        <div class="uh-dd-item" onclick="goFavorites()"><span data-i18n="home.dd_saved">Salvati</span></div>
+        <div class="uh-dd-item" onclick="goTo('miei-commenti.html')"><span data-i18n="home.dd_comments">I miei commenti</span></div>
+        <div class="uh-dd-item" onclick="goTo('cronologia.html')"><span data-i18n="home.dd_history">Cronologia</span></div>
+        <!-- Voci mostrate solo se creator / admin -->
+        <div class="uh-dd-item" id="uhDdCreator" style="display:none" onclick="goCreator()"><span data-i18n="home.dd_creator">I miei video</span></div>
+        <div class="uh-dd-item" id="uhDdAdmin" style="display:none" onclick="goAdmin()"><span data-i18n="home.dd_admin">Dashboard admin</span></div>
+        <div class="uh-dd-sep"></div>
+        <div class="uh-dd-item danger" onclick="doLogout()">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;vertical-align:-3px">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          <span data-i18n="home.dd_logout">Esci</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="cu-wrap" id="mainContent" role="main">
+  <div class="cu-bcrumb">
+    <a class="cu-bcrumb-link" onclick="goTo('creator.html')">I miei video</a>
+  </div>
+
+  <header class="cu-page-head">
+    <h1 id="cuTitle">Carica un nuovo video</h1>
+    <p id="cuSubtitle">Pubblica un nuovo contenuto sulla piattaforma. I campi con <span class="req">*</span> sono obbligatori.</p>
+  </header>
+
+  <div class="cu-layout" id="cuLayout">
+
+    <!--form -->
+    <section class="cu-form" aria-label="Form video">
+
+      <!-- Step 1. URL YouTube -->
+      <div class="cu-card">
+        <div class="cu-card-head">
+          <span class="cu-card-num">1</span>
+          <div>
+            <div class="cu-card-title">Link YouTube <span class="req">*</span></div>
+            <div class="cu-card-sub">Incolla l'URL del video o solo l'ID.</div>
+          </div>
+        </div>
+        <input type="text" id="cuYid" class="cu-input" maxlength="120" autocomplete="off"
+               placeholder="https://youtu.be/dQw4w9WgXcQ"
+               oninput="cuOnYidChange()"/>
+        <div class="cu-yid-state" id="cuYidState"></div>
+      </div>
+
+      <!-- Step 2. Titolo + descrizione con contatori caratteri -->
+      <div class="cu-card">
+        <div class="cu-card-head">
+          <span class="cu-card-num">2</span>
+          <div>
+            <div class="cu-card-title">Titolo e descrizione</div>
+          </div>
+        </div>
+        <label class="cu-label" for="cuTitleI">Titolo <span class="req">*</span></label>
+        <input type="text" id="cuTitleI" class="cu-input" maxlength="255"
+               placeholder="es. Anatomia del ginocchio: nozioni base"/>
+        <div class="cu-row-meta">
+          <span id="cuTitleCnt">0 / 255</span>
+        </div>
+
+        <label class="cu-label" for="cuDesc">Descrizione</label>
+        <textarea id="cuDesc" class="cu-textarea" rows="5" maxlength="4000"
+                  placeholder="Contesto clinico, fonti, eventuali avvertenze. Max 4000 caratteri."></textarea>
+        <div class="cu-row-meta">
+          <span id="cuDescCnt">0 / 4000</span>
+        </div>
+      </div>
+
+      <!-- Step 3. Categoria + tag -->
+      <div class="cu-card">
+        <div class="cu-card-head">
+          <span class="cu-card-num">3</span>
+          <div>
+            <div class="cu-card-title">Categoria e tag</div>
+            <div class="cu-card-sub">Aiutano gli utenti a trovare il contenuto giusto.</div>
+          </div>
+        </div>
+
+        <label class="cu-label" for="cuCat">Categoria</label>
+        <select id="cuCat" class="cu-input" onchange="cuOnCatChange()"></select>
+
+        <!--
+          Nuova categoria al volo: visibile quando l'utente sceglie "+ Crea
+          nuova categoria" dal dropdown.
+        -->
+        <div id="cuNewCatWrap" style="display:none;margin-top:10px">
+          <input type="text" id="cuNewCat" class="cu-input" maxlength="80" autocomplete="off"
+                 placeholder="Nome nuova categoria (es. Pediatria)"/>
+          <div class="cu-help">Verra' aggiunta al catalogo e diventera' selezionabile da tutti.</div>
+        </div>
+
+        <label class="cu-label" style="margin-top:14px">Tag</label>
+        <input type="text" id="cuTagInput" class="cu-input cu-tag-input" maxlength="40" autocomplete="off"
+               placeholder="Scrivi un tag e premi Invio per aggiungerlo o crearlo"
+               oninput="cuTagFilter(this.value)"
+               onkeydown="if(event.key==='Enter'){event.preventDefault();cuTagAdd();}"/>
+        <div class="cu-tags" id="cuTagsBox" role="group" aria-label="Tag disponibili"></div>
+        <div class="cu-help" id="cuTagsHelp">Carico i tag disponibili…</div>
+      </div>
+
+      <!-- Step 4. Visibilita' (toggle pubblico/privato) -->
+      <div class="cu-card">
+        <div class="cu-card-head">
+          <span class="cu-card-num">4</span>
+          <div>
+            <div class="cu-card-title">Visibilità</div>
+            <div class="cu-card-sub">I video privati restano visibili solo a te e agli amministratori.</div>
+          </div>
+        </div>
+        <label class="cu-switch">
+          <input type="checkbox" id="cuPrivate"/>
+          <span class="cu-switch-track" aria-hidden="true"><span class="cu-switch-thumb"></span></span>
+          <span class="cu-switch-text">Pubblica come privato</span>
+        </label>
+      </div>
+      <div class="cu-actions">
+        <button class="cu-btn cu-btn-ghost" onclick="cuCancel()">Annulla</button>
+        <button class="cu-btn cu-btn-primary" id="cuSubmitBtn" onclick="cuSubmit()">
+          <span id="cuSubmitLabel">Pubblica video</span>
+        </button>
+      </div>
+
+    </section>
+
+    <!-- Colonna anteprima-->
+    <aside class="cu-side" aria-label="Anteprima">
+      <div class="cu-side-card">
+        <div class="cu-side-title">Anteprima</div>
+        <div class="cu-preview" id="cuPreview">
+          <div class="cu-preview-empty">
+            <div class="cu-preview-empty-ico">▶</div>
+            <div>Inserisci un link YouTube per vedere l'anteprima.</div>
+          </div>
+        </div>
+        <div class="cu-preview-meta" id="cuPreviewMeta">
+          <div class="cu-preview-title" id="cuPreviewTitle">— Titolo del video —</div>
+          <div class="cu-preview-author">
+            <span class="cu-avatar-sm" id="cuPreviewAvatar">U</span>
+            <span id="cuPreviewAuthor">Tu</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cu-tips">
+        <div class="cu-tips-title">Suggerimenti</div>
+        <ul>
+          <li>Carica solo video di cui possiedi i diritti o che sono di pubblico dominio.</li>
+        </ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Stati alternativi (loading / accesso negato / admin bloccato) -->
+  <!-- creator-upload.js nasconde #cuLayout e mostra qui il messaggio giusto -->
+  <div class="cu-state" id="cuState" style="display:none"></div>
+
+</main>
+<footer class="user-footer" role="contentinfo">
+  <div class="uf-grid">
+    <div class="uf-brand">
+      <div class="uf-brand-logo">
+        <span class="uf-mark">N</span>
+        NETMED
+      </div>
+      <p class="uf-brand-desc" data-i18n="footer.brand_desc">Piattaforma video a tema medico-scientifico.</p>
+    </div>
+    <div>
+      <div class="uf-col-title" data-i18n="footer.col_catalog">Catalogo</div>
+      <a class="uf-col-link" onclick="goTo('home.html')">Home</a>
+    </div>
+    <div>
+      <div class="uf-col-title" data-i18n="footer.col_account">Account</div>
+      <a class="uf-col-link" onclick="goProfile()">Il mio profilo</a>
+      <a class="uf-col-link" onclick="goFavorites()">I miei salvati</a>
+    </div>
+    <div>
+      <div class="uf-col-title" data-i18n="footer.col_info">Info</div>
+      <a class="uf-col-link" onclick="goTo('index.html')">Chi siamo</a>
+    </div>
+  </div>
+
+  <div class="uf-bottom">
+    <span>© NETMED</span>
+  </div>
+</footer>
+<div class="user-toast-box" id="userToastBox"></div>
+<script src="js/user/core.js?v=20260615yl"></script>
+<script src="js/i18n.js?v=20260615yl"></script>
+<script src="js/user/nm-icons.js?v=20260615yl"></script>
+<script src="js/user/feedback-ui.js?v=20260615yl"></script>
+<script src="js/user/search-v2.js?v=20260615yl"></script>
+<script src="js/user/creator-upload.js?v=20260615yl"></script>
+<script src="js/cookie-banner.js?v=20260615yl"></script>
+</body>
+</html>

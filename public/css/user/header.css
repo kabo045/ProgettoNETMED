@@ -1,0 +1,2899 @@
+/* ============================================================
+   NETMED — User catalog
+   Modulo HEADER: barra superiore (logo + nav categorie + ricerca
+   + theme toggle + utente), dropdown utente, dropdown ricerca.
+   ============================================================ */
+
+
+/* ---------- Barra header ---------- */
+.user-hdr {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 48px;
+  background: rgba(10, 10, 11, .85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  transition: background .3s, border-color .3s;
+}
+
+[data-theme="light"] .user-hdr {
+  background: rgba(255, 255, 255, .85);
+}
+
+
+/* ---------- Sezioni left / center / right ----------
+   uh-l si espande per ospitare la nav scorrevole;
+   uh-r resta compatta a destra. */
+.uh-l {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 1 auto;
+  min-width: 0;        /* permette al figlio scorrevole di restringersi */
+}
+
+.uh-r {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1 1 auto;       /* prende tutto lo spazio rimanente: search ampia */
+  justify-content: flex-end;
+  min-width: 0;
+  padding-left: 14px;   /* respiro tra nav a sinistra e search ampia */
+}
+
+/* Tutti i controlli interattivi a destra hanno la stessa altezza visiva
+   (40px) — coerenza visiva tra search, theme, EN e avatar. */
+:root { --uh-ctrl-h: 40px; }
+
+
+/* ---------- Logo ---------- */
+.uh-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.uh-logo-mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--t9), var(--t5));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 15px;
+  box-shadow: 0 4px 14px rgba(0, 138, 62, .35);
+}
+
+.uh-logo-name {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+  letter-spacing: -.5px;
+  color: var(--text);
+}
+
+
+/* ---------- Nav header: Home + Categorie ▾ + Esplora ▾ + CTA ----------
+   Stile professionale: pochi pulsanti pill come trigger, dropdown
+   floating con lista verticale. Quando lo spazio si riduce la nav
+   collassa graziosamente (vedi @media più sotto). */
+.uh-nav {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 4px;
+  flex: 0 1 auto;
+  min-width: 0;
+  padding: 4px 0;
+}
+
+.uh-nav-link {
+  flex: 0 0 auto;
+  height: 34px;
+  padding: 0 11px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  transition: background .18s, color .18s, border-color .18s, transform .12s;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  background: transparent;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.uh-nav-link:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.uh-nav-link:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.uh-nav-link.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+
+
+/* ---------- Dropdown nav (Categorie / Esplora) ---------- */
+.uh-mnu {
+  position: relative;
+}
+.uh-mnu-trigger {
+  /* Eredita .uh-nav-link, aggiunge solo la freccetta */
+}
+.uh-mnu-caret {
+  font-size: 9px;
+  margin-left: 2px;
+  opacity: .65;
+  transition: transform .18s ease, opacity .18s ease;
+}
+.uh-mnu.open .uh-mnu-trigger {
+  background: var(--surface);
+  color: var(--text);
+}
+.uh-mnu.open .uh-mnu-caret {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+.uh-mnu-pop {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 240px;
+  max-height: 70vh;
+  overflow-y: auto;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, .06),
+    0 12px 28px rgba(15, 23, 42, .14),
+    0 24px 60px rgba(15, 23, 42, .12);
+  padding: 8px;
+  z-index: 250;
+  display: none;
+  transform-origin: top left;
+}
+[data-theme="dark"] .uh-mnu-pop,
+:root:not([data-theme="light"]) .uh-mnu-pop {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, .35),
+    0 16px 40px rgba(0, 0, 0, .55),
+    0 30px 70px rgba(0, 0, 0, .35);
+}
+.uh-mnu.open .uh-mnu-pop {
+  display: block;
+  animation: uhMnuIn .2s cubic-bezier(.2, .9, .3, 1.2);
+}
+@keyframes uhMnuIn {
+  from { opacity: 0; transform: translateY(-6px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* Voce di un dropdown nav */
+.uh-mnu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  margin: 1px 0;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text2);
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  transition: background .15s, color .15s, transform .15s;
+}
+.uh-mnu-item:hover {
+  background: var(--surface);
+  color: var(--text);
+  transform: translateX(2px);
+}
+.uh-mnu-item.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 700;
+}
+.uh-mnu-ico {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+.uh-mnu-item:hover .uh-mnu-ico {
+  background: var(--bg);
+}
+.uh-mnu-item.active .uh-mnu-ico {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Conteggio video accanto al nome del tag (a destra, allineato) */
+.uh-mnu-count {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  background: var(--surface);
+  padding: 2px 7px;
+  border-radius: 999px;
+  min-width: 22px;
+  text-align: center;
+}
+.uh-mnu-item:hover .uh-mnu-count { color: var(--text2); background: var(--bg); }
+.uh-mnu-item.active .uh-mnu-count {
+  background: rgba(255,255,255,.22);
+  color: #fff;
+}
+
+/* Separatore orizzontale nei dropdown nav */
+.uh-mnu-sep {
+  height: 1px;
+  background: var(--border);
+  margin: 6px 4px;
+}
+
+/* Voce "Tutti i tag →" in fondo al dropdown Tag */
+.uh-mnu-item.uh-mnu-all {
+  color: var(--accent);
+  font-weight: 700;
+}
+.uh-mnu-item.uh-mnu-all .uh-mnu-ico {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* Pallino piccolo accanto alle voci categorie (alternativa all'icona) */
+.uh-mnu-dot {
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text3);
+  opacity: .65;
+}
+.uh-mnu-item:hover .uh-mnu-dot {
+  background: var(--accent);
+  opacity: 1;
+}
+.uh-mnu-item.active .uh-mnu-dot {
+  background: var(--accent);
+  opacity: 1;
+}
+
+.uh-mnu-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.uh-mnu-empty {
+  padding: 14px 12px;
+  font-size: 12.5px;
+  color: var(--text3);
+  text-align: center;
+}
+
+
+/* ---------- CTA Carica video (creator) ---------- */
+.uh-nav-cta {
+  flex: 0 0 auto;
+  height: 38px;
+  padding: 0 14px 0 12px;
+  border-radius: 12px;
+  border: 0;
+  background: #0a6940;
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;          /* spinge a destra dentro la nav */
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  transition: transform .12s, filter .12s, box-shadow .15s;
+}
+.uh-nav-cta:hover {
+  filter: brightness(1.05);
+  box-shadow: 0 2px 6px rgba(0,0,0,.18);
+}
+.uh-nav-cta:active { transform: translateY(1px); }
+.uh-nav-cta-ico {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* Su schermi stretti il CTA mostra solo l'icona */
+@media (max-width: 720px) {
+  .uh-nav-cta-lbl { display: none; }
+  .uh-nav-cta {
+    padding: 0;
+    width: 38px;
+    justify-content: center;
+  }
+}
+
+
+/* ---------- Search pill ----------
+   Comportamento (opzione 1):
+   - Desktop (> 768px): barra ESTESA di default (320px), input
+     sempre visibile e cliccabile. Si vede subito che NETMED ha
+     un motore di ricerca.
+   - Mobile (<= 768px): barra COLLASSATA a icona-lente, espandibile
+     al click. Risparmia spazio sull'header stretto.
+*/
+.uh-search {
+  position: relative;
+  flex: 0 0 auto;
+  width: 460px;              /* desktop: barra ben visibile */
+  max-width: 44vw;
+  height: var(--uh-ctrl-h);
+  display: flex;
+  align-items: center;
+  margin: 0;
+  transition: width .26s cubic-bezier(.2, .75, .3, 1);
+}
+.uh-search.open {
+  width: 520px;              /* focus: si espande ancora un po' */
+  max-width: 50vw;
+}
+
+/* Mobile: collassata a icona, comportamento legacy mantenuto */
+@media (max-width: 768px) {
+  .uh-search {
+    width: var(--uh-ctrl-h);
+    max-width: var(--uh-ctrl-h);
+  }
+  .uh-search.open {
+    width: 380px;
+    max-width: 92vw;
+  }
+}
+
+.uh-search input {
+  width: 100%;
+  height: var(--uh-ctrl-h);
+  padding: 0 16px 0 44px;
+  border-radius: 999px;          /* pillola completa come la landing */
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text);
+  font-size: 13.5px;
+  font-weight: 500;
+  font-family: inherit;
+  outline: none;
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity .16s, border-color .2s, background .2s, box-shadow .2s;
+}
+.uh-search input:focus {
+  border-color: var(--accent);
+  background: var(--bg-2);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+/* Mobile: input nascosto finche' non si apre la barra */
+@media (max-width: 768px) {
+  .uh-search input { opacity: 0; pointer-events: none; }
+  .uh-search.open input { opacity: 1; pointer-events: auto; }
+}
+.uh-search input::placeholder { color: rgba(255, 255, 255, .55); }
+[data-theme="light"] .uh-search input {
+  background: rgba(15, 23, 42, .06);
+  border-color: rgba(15, 23, 42, .15);
+  color: var(--text);
+}
+[data-theme="light"] .uh-search input::placeholder { color: rgba(15, 23, 42, .5); }
+.uh-search.open input {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.uh-search input::placeholder {
+  color: var(--text3);
+}
+
+.uh-search input:focus {
+  background: rgba(255, 255, 255, .20);
+  border-color: rgba(255, 255, 255, .35);
+}
+[data-theme="light"] .uh-search input:focus {
+  background: rgba(15, 23, 42, .10);
+  border-color: rgba(15, 23, 42, .25);
+}
+
+.uh-search-ico {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--uh-ctrl-h);
+  height: var(--uh-ctrl-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--text2);
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 2;
+  transition: background .15s, color .15s;
+}
+.uh-search-ico:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+.uh-search.open .uh-search-ico {
+  cursor: default;
+  color: var(--text3);
+}
+
+
+/* ---------- Risultati ricerca dropdown ---------- */
+.uh-search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-2);
+  max-height: 440px;
+  overflow-y: auto;
+  display: none;
+  z-index: 210;
+}
+
+.uh-search-results.open {
+  display: block;
+  animation: ddIn .18s ease;
+}
+
+/* ============================================================
+   Tendina ricca della barra di ricerca header (search.js)
+   Gruppi: Video (con miniatura), Utenti (avatar), Categorie
+   (icona colorata), Tag (badge conteggio).
+   ============================================================ */
+
+.usr-group {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.usr-group:last-child {
+  border-bottom: none;
+}
+
+.usr-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px 6px;
+  font-size: 10.5px;
+  font-weight: 800;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+}
+.usr-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text2);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Riga generica del dropdown */
+.usr-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  margin: 2px 6px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .15s, transform .12s;
+  font-size: 13px;
+  color: var(--text);
+  min-width: 0;
+}
+.usr-item:hover {
+  background: var(--surface);
+  transform: translateX(2px);
+}
+.usr-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* Linea testuale (titolo + sottotitolo) */
+.usr-line {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.usr-line-1 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.usr-line-2 {
+  font-size: 11.5px;
+  color: var(--text3);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.usr-line-3 {
+  font-size: 11px;
+  color: var(--text2);
+  margin-top: 3px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+.usr-line-3 .usr-author strong {
+  color: var(--text);
+  font-weight: 700;
+}
+.usr-line-3 .usr-author {
+  color: var(--text2);
+}
+.usr-line-3 .usr-date {
+  color: var(--text3);
+}
+.usr-line-3 .usr-dot {
+  color: var(--text4);
+  font-weight: 700;
+}
+
+/* ---------- VIDEO con miniatura YouTube ---------- */
+.usr-thumb {
+  position: relative;
+  flex: 0 0 auto;
+  width: 64px;
+  height: 36px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.usr-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .25s ease;
+}
+.usr-item-video:hover .usr-thumb img {
+  transform: scale(1.06);
+}
+.usr-thumb-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 14px;
+  text-indent: 1px;
+  background: rgba(0, 0, 0, .25);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.usr-item-video:hover .usr-thumb-play {
+  opacity: 1;
+}
+.usr-pill {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text2);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .2px;
+}
+
+/* ---------- UTENTE con avatar ---------- */
+.usr-avatar {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.usr-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---------- CATEGORIA con icona colorata ---------- */
+.usr-cat-ico {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #fff;
+  filter: saturate(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+}
+
+/* ---------- TAG con badge conteggio ---------- */
+.usr-tag-ico {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(13, 122, 77, .14), rgba(13, 122, 77, .06));
+  color: #0d7a4d;
+  font-size: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.usr-tag-badge {
+  flex: 0 0 auto;
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: rgba(13, 122, 77, .12);
+  color: #0d7a4d;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* ---------- Stato vuoto ---------- */
+.usr-empty {
+  padding: 28px 18px 30px;
+  text-align: center;
+  color: var(--text3);
+}
+.usr-empty-ico {
+  font-size: 32px;
+  margin-bottom: 8px;
+  opacity: .6;
+}
+.usr-empty-t {
+  font-size: 13px;
+  color: var(--text2);
+}
+.usr-empty-q {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-top: 2px;
+  word-break: break-word;
+}
+
+/* Vecchio fallback se qualche markup legacy usa <small> dentro a usr-item */
+.usr-item small {
+  color: var(--text3);
+  font-size: 11px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* ---------- Mobile: tendina più compatta ---------- */
+@media (max-width: 600px) {
+  .usr-thumb { width: 54px; height: 30px; }
+  .usr-avatar, .usr-cat-ico { width: 32px; height: 32px; font-size: 12px; }
+  .usr-tag-ico { width: 26px; height: 26px; font-size: 12px; }
+  .usr-line-1 { font-size: 12.5px; }
+  .usr-line-2 { font-size: 11px; }
+}
+
+
+/* ---------- Bottoni icona header (tema) ---------- */
+.uh-icon-btn {
+  width: var(--uh-ctrl-h);
+  height: var(--uh-ctrl-h);
+  border-radius: 999px;          /* coerente con search/login pill */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 17px;
+  transition: all .2s;
+  padding: 0;
+  flex: 0 0 auto;
+}
+
+.uh-icon-btn:hover {
+  background: var(--surface-2);
+  color: var(--text);
+  border-color: var(--border-2);
+}
+
+
+/* ---------- Pulsante "Accedi" (utente non loggato) ---------- */
+.uh-login-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: var(--uh-ctrl-h);
+  padding: 0 20px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--t6), var(--t5));
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  box-shadow: 0 4px 14px rgba(0, 138, 62, .35);
+  transition: transform .2s, box-shadow .2s;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.uh-login-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 138, 62, .45);
+}
+
+
+/* ---------- Avatar utente loggato ---------- */
+.uh-user {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: var(--uh-ctrl-h);
+  padding: 0 14px 0 4px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all .2s;
+  flex: 0 0 auto;
+}
+
+.uh-user:hover {
+  background: var(--surface-2);
+  border-color: var(--border-2);
+}
+
+.uh-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--t6), var(--t4));
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.uh-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.uh-uname {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.uh-arrow {
+  font-size: 9px;
+  color: var(--text3);
+}
+
+
+/* ---------- Dropdown utente ----------
+   Stile "soft / rounded": il contenitore ha angoli molto morbidi
+   (24px), gli item interni sono pillole arrotondate con margine
+   laterale (NON occupano tutta la larghezza), così l'effetto hover
+   è una capsula e non un rettangolo. Stesso pattern usato dal
+   dropdown admin .dd, in modo che user + admin abbiano lo
+   stesso look in TUTTE le pagine. */
+.uh-dd {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 268px;
+  background: var(--bg-2);
+  border-radius: 10px;
+  /* border-radius esplicito su tutti e 4 gli angoli per evitare
+     asimmetrie ereditate da regole successive */
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 1px solid var(--border);
+  /* Box-shadow uniforme, niente offset laterali che creano l'effetto
+     "angolo storto" che si vedeva prima */
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .35);
+  z-index: 200;
+  display: none;
+  overflow: hidden;
+  padding: 8px;
+  transform-origin: top right;
+}
+
+[data-theme="dark"] .uh-dd,
+:root:not([data-theme="light"]) .uh-dd {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .55);
+}
+
+.uh-dd.open {
+  display: block;
+  animation: uhDdIn .18s ease-out;
+  /* niente scale finale residuo: evita l'effetto "storto" che si
+     vedeva in home.html quando l'animazione finiva tra un valore
+     scalato e uno renderizzato dal subpixel del browser */
+  transform: none !important;
+}
+
+@keyframes uhDdIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+.uh-dd-head {
+  padding: 12px 14px 14px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.uh-dd-head .uh-avatar {
+  width: 36px;
+  height: 36px;
+  font-size: 14px;
+}
+
+.uh-dd-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.uh-dd-email {
+  font-size: 12.5px;                /* +1.5px: piu' leggibile */
+  color: var(--text2);              /* + contrasto: prima text3 */
+  margin-top: 3px;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.uh-dd-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  margin: 2px 0;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text2);
+  cursor: pointer;
+  transition: background .18s ease, color .18s ease, transform .18s ease;
+}
+
+.uh-dd-item:hover {
+  background: var(--surface);
+  color: var(--text);
+  transform: translateX(2px);
+}
+
+.uh-dd-sep {
+  height: 1px;
+  background: var(--border);
+  margin: 6px 8px;
+}
+
+.uh-dd-item.danger {
+  color: var(--rose);
+}
+
+.uh-dd-item.danger:hover {
+  background: rgba(244, 63, 94, .12);
+}
+
+
+/* ---------- Hamburger mobile ---------- */
+.uh-burger {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+
+/* ---------- Campanellina notifiche ---------- */
+.uh-notif-btn {
+  position: relative;
+}
+.uh-notif-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: #f43f5e;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  border: 2px solid var(--bg);
+  box-sizing: content-box;
+}
+
+/* ============================================================
+   Dropdown notifiche
+   - Card piu' ariose, hierarchy chiara
+   - Hover morbido, niente bordi netti tra item
+   - Stato "non letta" piu' sottile (pillola laterale invece di sfondo)
+   - Tipografia leggibile, label "Ora / 5m / Ieri" piccolo e secondario
+   ============================================================ */
+.uh-notif-dd {
+  position: absolute;
+  top: 56px;
+  right: 12px;
+  width: 440px;             /* +60px: testi prima troppo stretti */
+  max-width: calc(100vw - 24px);
+  max-height: 580px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .28);
+  z-index: 1000;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.uh-notif-dd[hidden] { display: none; }
+
+.uh-notif-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 12px;
+  background: transparent;
+  border-bottom: 1px solid var(--border);
+}
+.uh-notif-head strong {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -.2px;
+}
+.uh-notif-head-actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.uh-notif-readall,
+.uh-notif-clear {
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-family: inherit;
+  transition: background .15s, color .15s;
+  letter-spacing: -.1px;
+}
+.uh-notif-readall {
+  color: var(--accent, #0d7a4d);
+}
+.uh-notif-readall:hover { background: rgba(13, 122, 77, .12); }
+.uh-notif-clear {
+  color: var(--text3);
+}
+.uh-notif-clear:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.uh-notif-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 6px 8px;
+  scrollbar-width: thin;
+}
+
+.uh-notif-empty {
+  padding: 40px 24px;
+  text-align: center;
+  color: var(--text3);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+/* Struttura HTML:
+   <div class="uh-notif-item">
+     <label class="uh-notif-sel"><input class="uh-notif-cb"/></label>
+     <div class="uh-notif-body">
+       <div class="uh-notif-ico">...</div>
+       <div class="uh-notif-content">
+         <div class="uh-notif-title">...</div>
+         <div class="uh-notif-text">...</div>
+         <div class="uh-notif-time">...</div>
+         <button class="uh-notif-action">...</button>
+       </div>
+     </div>
+   </div>
+*/
+
+.uh-notif-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  column-gap: 12px;
+  padding: 12px 16px 12px 18px;
+  border-radius: 0;
+  cursor: pointer;
+  transition: background .14s;
+  align-items: start;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--border);
+}
+.uh-notif-item:last-child { border-bottom: none; }
+.uh-notif-item:hover { background: var(--surface); }
+
+/* Pillola verde "non letta" */
+.uh-notif-item.unread::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 18px;
+  bottom: 18px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--accent, #0d7a4d);
+}
+.uh-notif-item.unread { background: rgba(13, 122, 77, .03); }
+.uh-notif-item.unread:hover { background: rgba(13, 122, 77, .08); }
+
+/* Checkbox a sinistra: piccola e discreta */
+.uh-notif-sel {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 4px;
+  cursor: pointer;
+}
+.uh-notif-cb {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--accent, #0d7a4d);
+  opacity: .55;
+  transition: opacity .15s;
+}
+.uh-notif-item:hover .uh-notif-cb,
+.uh-notif-cb:checked { opacity: 1; }
+
+/* Body: contenitore di [icona + content], flex su una riga */
+.uh-notif-body {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+  width: 100%;
+}
+
+/* Avatar / icona piccola circolare */
+.uh-notif-ico {
+  font-size: 13px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--text2);
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-weight: 700;
+}
+
+/* Content: tutto il testo (titolo + body + time + azioni) */
+.uh-notif-content {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.uh-notif-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.35;
+  letter-spacing: -.1px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.uh-notif-text {
+  font-size: 13px;
+  color: var(--text3);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-style: normal;
+  margin: 0;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+.uh-notif-text i,
+.uh-notif-text em {
+  font-style: normal;
+  color: var(--text2);
+}
+
+.uh-notif-time {
+  font-size: 11px;
+  color: var(--text4);
+  font-weight: 500;
+  letter-spacing: .2px;
+  text-transform: lowercase;
+  margin-top: 4px;
+}
+
+.uh-notif-dot { display: none; }
+
+/* Action button dentro alla notifica - es. "Rimuovi video".
+   Pill-shape, allineata a sinistra, NON occupa tutta la riga. */
+.uh-notif-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 7px 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s;
+  font-family: inherit;
+  align-self: flex-start;
+  white-space: nowrap;
+  width: auto;
+  max-width: max-content;
+}
+.uh-notif-action:hover {
+  background: var(--surface);
+  border-color: var(--border-2);
+}
+.uh-notif-action.danger {
+  color: #d04848;
+  border-color: rgba(208, 72, 72, .28);
+  background: rgba(208, 72, 72, .08);
+}
+.uh-notif-action.danger:hover {
+  background: rgba(208, 72, 72, .18);
+  border-color: rgba(208, 72, 72, .50);
+  color: #fff;
+  background: #b53030;
+}
+.uh-notif-action:focus-visible {
+  outline: 2px solid var(--accent, #0d7a4d);
+  outline-offset: 2px;
+}
+[data-theme="light"] .uh-notif-action.danger {
+  color: #8a1f1f;
+  background: rgba(160, 40, 40, .10);
+}
+
+
+/* ---------- Voci toggle nel menu utente (tema, lingua) ---------- */
+.uh-dd-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+}
+.uh-dd-val {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 2px 9px;
+  border-radius: 999px;
+}
+
+
+/* ============================================================
+   Hamburger menu (mobile)
+   Visibile solo sotto un certo breakpoint. Apre un pannello
+   laterale che raccoglie Home, Categorie, Esplora, Profilo,
+   Salvati, ecc. e gli altri controlli (tema, lingua, esci).
+   ============================================================ */
+.uh-hamburger {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: var(--uh-ctrl-h);
+  height: var(--uh-ctrl-h);
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  transition: background .15s;
+}
+.uh-hamburger:hover { background: var(--surface); }
+.uh-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--text);
+}
+
+@media (max-width: 900px) {
+  .uh-hamburger { display: flex; }
+  .uh-nav,
+  .uh-user,
+  .uh-notif-btn { display: none !important; }
+}
+
+.uh-mpanel {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+.uh-mpanel.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.uh-mpanel-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .55);
+}
+.uh-mpanel-box {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(86vw, 340px);
+  background: var(--bg-2);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.4);
+}
+
+
+/* ============================================================
+ *  Restyle header utente "San Raffaele-style" (override finale)
+ *  - Padding piu' generoso 14px 36px
+ *  - Logo con sottotitolo "Piattaforma medico-scientifica"
+ *  - Nav link UPPERCASE letter-spacing 0.6px, font-size 13px
+ *  - Dropdown card-style con icone verdi
+ *  Tutto via override CSS: niente modifiche al markup HTML.
+ * ============================================================ */
+.user-hdr {
+  padding: 12px 36px !important;
+  height: auto !important;
+  min-height: 64px;
+  gap: 28px !important;
+}
+@media (max-width: 900px) {
+  .user-hdr { padding: 10px 16px !important; gap: 12px !important; }
+}
+
+/* Logo con sottotitolo ospedaliero (CSS-only, niente markup nuovo). */
+.uh-logo { gap: 12px !important; }
+.uh-logo-mark {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 9px !important;
+  background: var(--accent-strong) !important;
+  background-image: none !important;
+  font-size: 18px !important;
+  box-shadow: none !important;
+}
+.uh-logo-name {
+  display: flex !important;
+  flex-direction: column !important;
+  line-height: 1.05;
+  letter-spacing: -.3px !important;
+  font-size: 17px !important;
+}
+.uh-logo-name::after {
+  content: "Piattaforma medico-scientifica";
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text3);
+  letter-spacing: .4px;
+  text-transform: none;
+  margin-top: 1px;
+}
+@media (max-width: 900px) {
+  .uh-logo-name::after { display: none; }
+  .uh-logo-name { font-size: 15px !important; }
+}
+
+/* Nav uppercase + letter-spacing tipo San Raffaele */
+.uh-nav { gap: 2px; margin-left: 8px; }
+.uh-nav-link {
+  text-transform: uppercase;
+  letter-spacing: .6px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  height: 38px !important;
+  padding: 0 14px !important;
+  color: var(--text2);
+}
+.uh-nav-link:hover {
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+}
+[data-theme="light"] .uh-nav-link:hover {
+  background: rgba(15, 23, 42, .05);
+}
+.uh-nav-link.active,
+.uh-mnu.open .uh-mnu-trigger {
+  background: var(--accent-soft) !important;
+  color: var(--accent) !important;
+}
+
+/* Dropdown card-style (popover sotto la nav) */
+.uh-mnu-pop {
+  border-radius: 14px !important;
+  padding: 8px !important;
+  box-shadow: 0 18px 40px rgba(0,0,0,.55) !important;
+  min-width: 240px;
+}
+.uh-mnu-item {
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  padding: 10px 12px !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+.uh-mnu-item:hover { background: var(--accent-soft) !important; color: var(--accent) !important; }
+
+/* Caret rotation gia' presente; rinforzo solo */
+.uh-mnu.open .uh-mnu-caret { transform: rotate(180deg); opacity: 1; }
+
+
+/* ============ Bulk select notifiche (versione GRID — sovrascrive le vecchie regole) ============ */
+.uh-notif-sel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  margin-top: 1px;
+}
+.uh-notif-cb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border-radius: 4px;
+  border: 1.5px solid var(--text3);
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  opacity: .55;
+  transition: opacity .15s, border-color .15s, background .15s;
+}
+.uh-notif-item:hover .uh-notif-cb,
+.uh-notif-cb:checked { opacity: 1; }
+.uh-notif-cb:hover { border-color: var(--accent); }
+.uh-notif-cb:checked { background: var(--accent); border-color: var(--accent); }
+.uh-notif-cb:checked::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  width: 5px;
+  height: 9px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.uh-notif-bulkbar {
+  position: sticky;
+  bottom: 0;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+.uh-notif-bulkbar.show { display: flex; }
+.uh-notif-bulkbar-act { display: flex; gap: 6px; }
+.uh-notif-bulkbar button {
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.uh-notif-bulkbar button.danger {
+  background: var(--rose, #f43f5e);
+  border-color: transparent;
+  color: #fff;
+}
+.uh-notif-bulkbar button:hover { filter: brightness(1.05); }
+
+/* Info professionali del creator nel dropdown ricerca live */
+.usr-line-pro {
+  font-size: 11.5px;
+  color: var(--accent);
+  font-weight: 600;
+  margin: 1px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 280px;
+}
+
+/* ============================================================
+   Notifiche dropdown
+   Sovrascrive qualsiasi regola precedente con !important.
+   ============================================================ */
+.uh-notif-dd {
+  width: 460px !important;
+  max-width: calc(100vw - 24px) !important;
+}
+/* Checkbox: prima colonna, allineata col titolo (non in alto) */
+/* Body: seconda colonna, riempie il resto */
+.uh-notif-title {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  margin: 0 !important;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  hyphens: none !important;
+  color: var(--text) !important;
+}
+.uh-notif-text {
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  color: var(--text3) !important;
+  margin: 0 !important;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  font-style: normal !important;
+}
+.uh-notif-text i,
+.uh-notif-text em {
+  font-style: normal !important;
+  color: var(--text2) !important;
+}
+.uh-notif-time {
+  font-size: 11px !important;
+  color: var(--text4) !important;
+  margin-top: 2px !important;
+  text-transform: lowercase !important;
+  letter-spacing: .2px !important;
+}
+.uh-notif-action {
+  display: inline-flex !important;
+  align-self: flex-start !important;
+  width: auto !important;
+  max-width: max-content !important;
+  white-space: nowrap !important;
+  padding: 6px 14px !important;
+  border-radius: 999px !important;
+  font-size: 12.5px !important;
+  margin-top: 8px !important;
+}
+.uh-notif-dot { display: none !important; }
+
+/* ============================================================
+   Notifiche layout
+   - item come flex row con 3 children
+   - body diventa un wrapper trasparente che lascia il content
+     stretchare a tutta la larghezza disponibile
+   ============================================================ */
+.uh-notif-dd {
+  width: 460px !important;
+  max-width: calc(100vw - 24px) !important;
+}
+
+/* ============================================================
+   Pannello hamburger mobile — items + sezioni + account
+   Mancavano completamente: aggiunti per uniformare UX mobile.
+   ============================================================ */
+.uh-mpanel-h {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.uh-mpanel-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -.3px;
+  color: var(--text);
+}
+.uh-mpanel-x {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+}
+.uh-mpanel-x:hover { background: var(--surface-2); }
+
+.uh-mpanel-body {
+  padding: 8px 10px 28px;
+  overflow-y: auto;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Card "account" in alto: nome + email */
+.uh-mpanel-account {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  margin: 6px 6px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.uh-mpanel-account-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -.2px;
+}
+.uh-mpanel-account-email {
+  font-size: 12.5px;
+  color: var(--text3);
+  word-break: break-all;
+}
+
+/* Etichetta sezione (Naviga / Categorie / Account / Impostazioni) */
+.uh-mpanel-section {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text4);
+  text-transform: uppercase;
+  padding: 14px 16px 6px;
+}
+
+/* Voce cliccabile del menu */
+.uh-mpanel-item {
+  display: flex;
+  align-items: center;
+  width: calc(100% - 12px);
+  margin: 1px 6px;
+  padding: 12px 14px;
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 14.5px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .14s;
+}
+.uh-mpanel-item:hover,
+.uh-mpanel-item:active {
+  background: var(--surface);
+}
+.uh-mpanel-item.sub {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text2);
+  padding: 10px 14px 10px 24px;
+}
+.uh-mpanel-item.danger {
+  color: #b53030;
+}
+.uh-mpanel-item.danger:hover {
+  background: rgba(160, 40, 40, .10);
+}
+
+/* Mantengo visibile la campanella notifiche su mobile.
+   Sotto i 900px nascondevo .uh-notif-btn: la riabilito perche'
+   le notifiche restano importanti su qualsiasi viewport. */
+@media (max-width: 900px) {
+  .uh-notif-btn { display: inline-flex !important; }
+}
+
+/* ============================================================
+   Header responsive — STEP PROGRESSIVI (evita overlap)
+   La regola d'oro: prima si stringe la search, poi la nav, poi
+   tutto si sposta nell'hamburger.
+   ============================================================ */
+
+/* 1280px -> riduco padding e gap header, search ancora ok */
+@media (max-width: 1280px) {
+  .user-hdr { padding: 0 32px !important; gap: 18px !important; }
+  .uh-search { width: 380px; max-width: 38vw; }
+  .uh-search.open { width: 430px; max-width: 45vw; }
+}
+
+/* 1100px -> nav diventa scrollabile orizzontalmente, search piu' stretta */
+@media (max-width: 1100px) {
+  .user-hdr { padding: 0 22px !important; gap: 14px !important; }
+  .uh-search { width: 300px; max-width: 32vw; }
+  .uh-search.open { width: 340px; max-width: 40vw; }
+  .uh-nav {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+  }
+  .uh-nav::-webkit-scrollbar { display: none; }
+}
+
+/* 950px -> qui i conflitti diventano reali: comprimo ancora */
+@media (max-width: 950px) {
+  .user-hdr { padding: 0 16px !important; gap: 10px !important; }
+  .uh-search { width: 220px; max-width: 28vw; }
+  .uh-search.open { width: 260px; max-width: 35vw; }
+  /* Username dell'avatar si abbrevia / scompare lasciando solo iniziale */
+  .uh-uname { display: none !important; }
+  .uh-arrow { display: none !important; }
+  .uh-user { padding: 0 4px 0 4px !important; }
+  .uh-login-btn { font-size: 12.5px; padding: 0 12px; }
+}
+
+/* 900px -> entra l'hamburger. Nav e box utente desktop spariscono.
+   Tengo visibili: logo, search compressa, theme, notif, hamburger. */
+@media (max-width: 900px) {
+  .user-hdr { gap: 8px !important; padding: 0 12px !important; }
+  .uh-search { width: var(--uh-ctrl-h); max-width: var(--uh-ctrl-h); }
+  .uh-search.open { width: min(420px, 80vw); max-width: 80vw; }
+}
+
+/* 480px -> ultra compatto */
+@media (max-width: 480px) {
+  .user-hdr { padding: 0 10px !important; gap: 6px !important; }
+  .uh-logo-name { font-size: 17px; }
+  .uh-logo-mark { width: 28px; height: 28px; }
+  :root { --uh-ctrl-h: 38px; }
+}
+
+/* Anti-overlap totale: nessun elemento del header puo' esondare
+   verticalmente oltre il box header */
+.user-hdr,
+.uh-l,
+.uh-r {
+  flex-wrap: nowrap;
+  overflow: visible;
+}
+.user-hdr > * { min-width: 0; }
+
+/* ============================================================
+   Notifiche dropdown
+   - SVG nella campanella (no piu' emoji)
+   - Avatar circolare 40px pieno, colore in base al type
+   - SVG bianca dentro
+   ============================================================ */
+.uh-notif-svg {
+  display: block;
+  stroke: var(--text);
+}
+
+/* Avatar piu' grande (40px) e pieno per emergere stile YouTube */
+.uh-notif-ico svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+}
+
+/* Tipo COMMENT -> blu YouTube-style */
+.uh-notif--new_comment .uh-notif-ico,
+/* Tipo LIKE / utile -> giallo oro */
+.uh-notif--video_useful .uh-notif-ico,
+/* Tipo REPORT -> rosso/ambra */
+.uh-notif--video_reported .uh-notif-ico,
+.uh-notif--video_reported_admin .uh-notif-ico,
+.uh-notif--user_reports_admin .uh-notif-ico,
+/* Tipo BAN / FLAG -> rosso */
+.uh-notif--video_flagged_admin .uh-notif-ico,
+.uh-notif--video_deleted_admin .uh-notif-ico,
+.uh-notif--account_banned .uh-notif-ico,
+/* Tipo APPROVED / VERIFICATO -> verde */
+.uh-notif--video_unflagged_admin .uh-notif-ico,
+.uh-notif--verified_granted .uh-notif-ico,
+/* Tipo FOLLOW -> viola/lilla */
+
+/* ============================================================
+   HEADER OVERLAP-FREE — niente piu' elementi sovrapposti
+   La regola d'oro:
+     1) flex-wrap: nowrap sull'header e i suoi figli (mai a capo)
+     2) la nav scrolla orizzontalmente se non ci sta
+     3) la search si stringe progressivamente fino a icona-only
+     4) sotto 900px tutto va nell'hamburger
+   ============================================================ */
+.user-hdr {
+  flex-wrap: nowrap !important;
+  /* NIENTE overflow qui! overflow-x:hidden forza overflow-y:auto e clippa
+     i dropdown che escono verso il basso (categorie/tag/profilo/notifiche).
+     Lo scroll orizzontale anti-overflow va gestito solo sui figli che
+     possono espandersi (es. .uh-nav). */
+  overflow: visible !important;
+}
+.user-hdr > .uh-l,
+.user-hdr > .uh-r {
+  flex-wrap: nowrap !important;
+  overflow: visible;
+  min-width: 0;
+}
+/* uh-r ha gap fisso ma i suoi children non vanno mai a capo */
+.uh-r > * { flex-shrink: 0; }
+.uh-r > .uh-search { flex-shrink: 1; }   /* solo la search puo' rimpicciolirsi */
+
+/* Nav: scorre orizzontalmente, niente a capo */
+.uh-nav {
+  display: flex;
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+.uh-nav::-webkit-scrollbar { display: none; }
+.uh-nav > * { flex-shrink: 0; }
+
+/* Bottone logo non si stringe mai */
+.uh-logo { flex-shrink: 0; }
+
+/* Garanzia anti-stack verticale: se in qualche viewport esotico
+   il browser ignora nowrap, l'altezza dell'header e' fissa e
+   tutto cio' che esce viene clippato (non si scopre sotto) */
+.user-hdr { height: var(--header-h); min-height: var(--header-h); }
+
+/* ============================================================
+   SVG icons inline nei bottoni / dropdown
+   ============================================================ */
+.uh-icon-btn svg,
+.uh-arrow svg {
+  display: block;
+}
+.uh-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 4px;
+  opacity: .7;
+  transition: transform .2s ease, opacity .2s ease;
+}
+.uh-user .uh-arrow {
+  transform-origin: center;
+}
+/* Quando il dropdown e' aperto la freccia ruota di 180deg */
+.uh-user.open .uh-arrow,
+.uh-user[aria-expanded="true"] .uh-arrow {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* Lucchetto toggle password nel profilo */
+.up-pw-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: var(--text3);
+  padding: 6px;
+  border-radius: 6px;
+  transition: background .12s, color .12s;
+}
+.up-pw-toggle:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+.up-pw-toggle svg { display: block; }
+
+/* Dropdown item con SVG inline */
+.uh-dd-item svg {
+  vertical-align: -3px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+
+/* ============================================================
+   Z-index dropdown header + overflow visibile
+   display forzato su .open. Difesa contro regressioni causate
+   da overflow:hidden ereditato, stacking context isolati e
+   regole CSS che hanno la stessa specificita'.
+   ============================================================ */
+
+/* Z-index: header sopra hero, dropdown sopra header */
+.user-hdr        { z-index: 1000 !important; }
+.uh-mnu-pop      { z-index: 9500 !important; }
+.uh-dd           { z-index: 9500 !important; }
+.uh-notif-dd     { z-index: 9500 !important; }
+.uh-search-results { z-index: 9500 !important; }
+
+/* Overflow visibile su TUTTI i contenitori dei dropdown.
+   overflow-x:hidden forza overflow-y:auto e taglia i pop-out. */
+.user-hdr,
+.user-hdr > .uh-l,
+.user-hdr > .uh-r,
+.uh-user,
+.uh-mnu,
+.uh-notif,
+.uh-search {
+  overflow: visible !important;
+}
+
+/* DISPLAY forzato quando il menu e' aperto (lo JS aggiunge .open).
+   Senza questo, eventuali regole successive con stessa specificita'
+   possono vincere e tenere display:none. */
+.uh-mnu.open .uh-mnu-pop {
+  display: block !important;
+}
+.uh-dd.open {
+  display: block !important;
+}
+.uh-notif-dd:not([hidden]) {
+  display: flex !important;
+}
+
+/* Hamburger menu mobile sopra tutto */
+.uh-mobile-menu,
+.uh-m
+
+/* ============================================================
+   HAMBURGER PANEL: scroll forzato + display flex bulletproof
+   Anti-regressioni: forza display:flex con !important e
+   garantisce che il body interno sia scrollabile.
+   ============================================================ */
+.uh-mpanel-box {
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+.uh-mpanel-body {
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  min-height: 0 !important;        /* serve per flex children scrollabili */
+  max-height: 100% !important;
+  padding-bottom: 32px !important;
+}
+.uh-mpanel-h {
+  flex: 0 0 auto !important;
+}
+
+
+/* ============================================================
+   HAMBURGER PANEL
+   Voci con icone SVG, padding uniforme.
+   ============================================================ */
+.uh-mpanel-item {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: calc(100% - 16px) !important;
+  margin: 2px 8px !important;
+  padding: 11px 14px !important;
+  border-radius: 12px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.1px !important;
+  color: var(--text) !important;
+  background: transparent !important;
+  border: 0 !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  font-family: inherit !important;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.12s ease !important;
+}
+.uh-mpanel-item:hover {
+  background: var(--surface) !important;
+  transform: translateX(2px) !important;
+}
+.uh-mpanel-item.danger {
+  color: #d96363 !important;
+}
+.uh-mpanel-item.danger:hover {
+  background: rgba(217, 99, 99, 0.12) !important;
+  color: #e87878 !important;
+}
+.uh-mpanel-item .uh-mpanel-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--accent, #0a6940);
+  flex-shrink: 0;
+}
+.uh-mpanel-item.danger .uh-mpanel-ico {
+  background: rgba(217, 99, 99, 0.12);
+  color: #d96363;
+}
+.uh-mpanel-item .uh-mpanel-lbl {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.uh-mpanel-item.sub {
+  font-size: 13.5px !important;
+  font-weight: 500 !important;
+  color: var(--text2) !important;
+  padding-left: 16px !important;
+}
+.uh-mpanel-item.sub .uh-mpanel-ico.sub-ico {
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  color: var(--text3);
+}
+.uh-mpanel-item .uh-mpanel-bullet {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text3);
+  opacity: 0.55;
+  margin: 0 13px 0 6px;
+  flex-shrink: 0;
+}
+.uh-mpanel-section {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.4px !important;
+  color: var(--text3) !important;
+  text-transform: uppercase !important;
+  padding: 18px 22px 8px !important;
+  border-top: 1px solid var(--border);
+  margin-top: 6px;
+}
+.uh-mpanel-section:first-of-type,
+.uh-mpanel-account + .uh-mpanel-section {
+  border-top: 0;
+  margin-top: 0;
+}
+.uh-mpanel-account {
+  margin: 12px 12px 8px !important;
+  background: linear-gradient(135deg, rgba(10, 105, 64, 0.10), rgba(10, 105, 64, 0.04)) !important;
+  border: 1px solid rgba(10, 105, 64, 0.20) !important;
+  border-radius: 14px !important;
+  padding: 16px 18px !important;
+}
+.uh-mpanel-account-name {
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.3px !important;
+}
+.uh-mpanel-account-email {
+  font-size: 12.5px !important;
+  color: var(--text2) !important;
+  opacity: 0.85 !important;
+}
+
+/* Bottone "Tutte" (seleziona tutte le notifiche) nel pannello bell */
+.uh-notif-selall {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.uh-notif-selall:hover {
+  background: var(--surface);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+
+/* ============================================================
+   PROFILO — Sezione social (Seguiti / Iscritti) stile TikTok/IG
+   ============================================================ */
+.up-social {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  max-width: 800px;
+  margin: 18px auto 24px;
+  padding: 0 20px;
+}
+.up-social-card {
+  background: var(--card, #1a1a1c);
+  border: 1px solid var(--border, #2a2a2c);
+  border-radius: 16px;
+  padding: 18px 22px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.12s;
+  text-align: left;
+  font-family: inherit;
+  color: var(--text);
+}
+.up-social-card:hover {
+  background: var(--surface);
+  border-color: var(--accent, #0a6940);
+  transform: translateY(-2px);
+}
+.up-social-num {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.up-social-lbl {
+  font-size: 13px;
+  color: var(--text2);
+  font-weight: 500;
+}
+
+/* Modale lista */
+#upSocialModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 9000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#upSocialModal.open {
+  display: flex;
+}
+.up-social-modal {
+  width: 100%;
+  max-width: 480px;
+  max-height: 70vh;
+  background: var(--bg-2, #1a1a1c);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.up-social-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--border);
+}
+.up-social-title {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+.up-social-close {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+}
+.up-social-close:hover { background: var(--surface-2); }
+.up-social-body {
+  overflow-y: auto;
+  padding: 8px 12px 18px;
+  flex: 1;
+}
+.up-social-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+  color: var(--text);
+}
+.up-social-row:hover { background: var(--surface); }
+.up-social-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent, #0a6940), #1e7a55);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+.up-social-info {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.up-social-uname {
+  font-size: 14.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.up-social-meta {
+  font-size: 12px;
+  color: var(--text2);
+}
+.up-social-empty {
+  padding: 32px 18px;
+  text-align: center;
+  color: var(--text2);
+  font-size: 14px;
+}
+.up-social-verified {
+  margin-left: 6px;
+  color: var(--accent, #0a6940);
+}
+
+
+/* ============================================================
+   RESTYLE DROPDOWN DESKTOP — Stesso look del menu hamburger
+   Icone in quadratino verde + freccia › a destra al hover
+   ============================================================ */
+.uh-mnu-pop {
+  min-width: 280px !important;
+  padding: 8px !important;
+  border-radius: 14px !important;
+  background: var(--bg-2, #1a1a1c) !important;
+  border: 1px solid var(--border, #2a2a2c) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+}
+
+.uh-mnu-pop .uh-mnu-item {
+  position: relative;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  margin: 2px 0 !important;
+  padding: 11px 14px !important;
+  border-radius: 12px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.1px !important;
+  background: transparent !important;
+  border: 0 !important;
+  color: var(--text) !important;
+  text-align: left !important;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.12s ease !important;
+}
+.uh-mnu-pop .uh-mnu-item:hover {
+  background: var(--surface) !important;
+  transform: translateX(2px) !important;
+}
+.uh-mnu-pop .uh-mnu-item.active {
+  background: rgba(10, 105, 64, 0.16) !important;
+  color: #4fd698 !important;
+  font-weight: 700 !important;
+}
+
+/* Quadratino verde con icona */
+.uh-mnu-pop .uh-mnu-ico,
+.uh-mnu-pop .uh-mnu-dot {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 8px !important;
+  background: var(--surface) !important;
+  color: var(--accent, #0a6940) !important;
+  flex-shrink: 0 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+.uh-mnu-pop .uh-mnu-item.active .uh-mnu-ico,
+.uh-mnu-pop .uh-mnu-item.active .uh-mnu-dot {
+  background: rgba(10, 105, 64, 0.25) !important;
+  color: #4fd698 !important;
+}
+
+/* Pallino piccolo per categorie senza icona: lo rendo coerente */
+.uh-mnu-pop .uh-mnu-dot {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  background: var(--accent, #0a6940) !important;
+  margin: 0 12px !important;
+  flex-shrink: 0 !important;
+  opacity: 0.85;
+}
+
+/* Label che occupa tutto lo spazio */
+.uh-mnu-pop .uh-mnu-label {
+  flex: 1 1 auto !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Freccia › a destra (compare via :after sul item) */
+.uh-mnu-pop .uh-mnu-item::after {
+  content: "›";
+  margin-left: auto;
+  color: var(--text3, #666);
+  font-size: 18px;
+  font-weight: 300;
+  opacity: 0;
+  transition: opacity 0.15s, transform 0.15s;
+  transform: translateX(-4px);
+}
+.uh-mnu-pop .uh-mnu-item:hover::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Conteggio video resta più piccolo accanto al nome */
+.uh-mnu-pop .uh-mnu-count {
+  margin-left: 6px !important;
+  font-size: 11px !important;
+  color: var(--text3) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  padding: 2px 8px !important;
+  border-radius: 999px !important;
+  font-weight: 600 !important;
+}
+
+/* Voce "Tutti i tag → / Tutte le categorie →" in fondo: stile speciale */
+.uh-mnu-pop .uh-mnu-item.uh-mnu-all {
+  color: #4fd698 !important;
+  font-weight: 700 !important;
+  border-top: 1px solid var(--border) !important;
+  margin-top: 6px !important;
+  padding-top: 13px !important;
+}
+.uh-mnu-pop .uh-mnu-item.uh-mnu-all .uh-mnu-ico {
+  background: rgba(10, 105, 64, 0.18) !important;
+  color: #4fd698 !important;
+}
+
+/* Separatore tra sezioni del dropdown Esplora */
+.uh-mnu-pop .uh-mnu-sep {
+  height: 1px !important;
+  margin: 6px 12px !important;
+  background: var(--border) !important;
+  border: 0 !important;
+}
+
+/* ============================================================
+   Search bar
+   Override eleganti, animazioni morbide, dropdown glassmorphism.
+   ============================================================ */
+
+/* === BARRA PRINCIPALE === */
+.uh-search {
+  width: 480px;
+  max-width: 46vw;
+}
+.uh-search.open {
+  width: 560px;
+  max-width: 54vw;
+}
+
+.uh-search input {
+  height: 40px;
+  padding: 0 44px 0 50px;
+  border-radius: 999px;
+  font-size: 14.5px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, .06);
+  border: 1.5px solid rgba(255, 255, 255, .10);
+  color: var(--text);
+  letter-spacing: .1px;
+  transition: all .25s cubic-bezier(.2, .8, .3, 1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .2);
+}
+.uh-search input:hover {
+  background: rgba(255, 255, 255, .09);
+  border-color: rgba(255, 255, 255, .16);
+}
+.uh-search input:focus {
+  background: rgba(255, 255, 255, .10);
+  border-color: rgba(10, 105, 64, .65);
+  box-shadow:
+    0 0 0 4px rgba(10, 105, 64, .15),
+    0 8px 24px rgba(0, 0, 0, .35),
+    inset 0 1px 2px rgba(0, 0, 0, .15);
+}
+[data-theme="light"] .uh-search input {
+  background: rgba(15, 23, 42, .04);
+  border-color: rgba(15, 23, 42, .12);
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, .04);
+}
+[data-theme="light"] .uh-search input:hover {
+  background: rgba(15, 23, 42, .07);
+  border-color: rgba(15, 23, 42, .18);
+}
+[data-theme="light"] .uh-search input:focus {
+  background: #fff;
+  border-color: rgba(10, 105, 64, .55);
+  box-shadow:
+    0 0 0 4px rgba(10, 105, 64, .12),
+    0 8px 24px rgba(15, 23, 42, .12);
+}
+
+/* === ICONA LUPA (a sinistra) === */
+.uh-search-ico {
+  left: 4px;
+  width: 36px;
+  height: 36px;
+  top: 2px;
+  border-radius: 999px;
+  color: var(--text2);
+  transition: color .2s, transform .2s, background .2s;
+}
+.uh-search input:focus + .uh-search-results,
+.uh-search input:focus ~ .uh-search-ico {
+  color: #1e9659;
+  transform: scale(1.08);
+}
+.uh-search-ico svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* === BOTTONE CLEAR (X) === */
+.uh-search-clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .12);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background .15s, transform .15s;
+  z-index: 3;
+  line-height: 1;
+}
+.uh-search-clear:hover {
+  background: rgba(255, 255, 255, .22);
+  transform: translateY(-50%) scale(1.08);
+}
+[data-theme="light"] .uh-search-clear {
+  background: rgba(15, 23, 42, .12);
+}
+[data-theme="light"] .uh-search-clear:hover {
+  background: rgba(15, 23, 42, .22);
+}
+.uh-search.has-text .uh-search-clear {
+  display: flex;
+}
+
+/* === SHORTCUT BADGE "/" (visibile a riposo) === */
+.uh-search-shortcut {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .14);
+  color: var(--text3);
+  font-size: 11px;
+  font-weight: 700;
+  font-family: ui-monospace, "SF Mono", monospace;
+  pointer-events: none;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  z-index: 2;
+  transition: opacity .15s;
+}
+[data-theme="light"] .uh-search-shortcut {
+  background: rgba(15, 23, 42, .06);
+  border-color: rgba(15, 23, 42, .15);
+  color: var(--text3);
+}
+.uh-search.has-text .uh-search-shortcut,
+.uh-search input:focus ~ .uh-search-shortcut {
+  opacity: 0;
+}
+
+/* === DROPDOWN RISULTATI === */
+.uh-search-results {
+  top: calc(100% + 10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, .08);
+  background: rgba(15, 20, 28, .92);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, .55),
+    0 4px 16px rgba(0, 0, 0, .35),
+    inset 0 1px 0 rgba(255, 255, 255, .04);
+  max-height: 520px;
+  padding: 6px 0;
+}
+[data-theme="light"] .uh-search-results {
+  background: rgba(255, 255, 255, .96);
+  border-color: rgba(15, 23, 42, .08);
+  box-shadow:
+    0 24px 60px rgba(15, 23, 42, .15),
+    0 4px 16px rgba(15, 23, 42, .08);
+}
+
+@keyframes ddIn {
+  from { opacity: 0; transform: translateY(-6px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.uh-search-results.open {
+  animation: ddIn .22s cubic-bezier(.2, .8, .3, 1);
+}
+
+/* Scrollbar custom */
+.uh-search-results::-webkit-scrollbar { width: 8px; }
+.uh-search-results::-webkit-scrollbar-track { background: transparent; }
+.uh-search-results::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, .12);
+  border-radius: 999px;
+}
+.uh-search-results::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, .22);
+}
+
+/* === SEZIONI === */
+.usr-group {
+  padding: 4px 0 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, .05);
+}
+[data-theme="light"] .usr-group {
+  border-bottom-color: rgba(15, 23, 42, .06);
+}
+.usr-group:last-child { border-bottom: none; }
+
+.usr-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px 8px;
+  font-size: 10.5px;
+  font-weight: 800;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+.usr-count {
+  min-width: 20px;
+  height: 18px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: rgba(10, 105, 64, .20);
+  color: #4fd698;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .3px;
+  text-transform: none;
+}
+[data-theme="light"] .usr-count {
+  background: rgba(10, 105, 64, .12);
+  color: #0a6940;
+}
+
+/* === ITEM (riga risultato) === */
+.usr-item {
+  padding: 10px 12px;
+  margin: 1px 8px;
+  border-radius: 12px;
+  gap: 12px;
+  transition: background .18s, transform .15s;
+  position: relative;
+}
+.usr-item:hover {
+  background: rgba(255, 255, 255, .06);
+  transform: none;
+}
+.usr-item.active {
+  background: rgba(10, 105, 64, .18);
+  outline: 1px solid rgba(10, 105, 64, .35);
+}
+[data-theme="light"] .usr-item:hover {
+  background: rgba(15, 23, 42, .05);
+}
+[data-theme="light"] .usr-item.active {
+  background: rgba(10, 105, 64, .10);
+  outline: 1px solid rgba(10, 105, 64, .25);
+}
+
+/* === MINIATURA VIDEO più grande === */
+.usr-thumb {
+  width: 80px;
+  height: 45px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+}
+.usr-thumb-play {
+  background: linear-gradient(135deg, rgba(0,0,0,.2), rgba(0,0,0,.5));
+}
+
+.usr-line-1 {
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.usr-line-2 { font-size: 11.5px; }
+.usr-line-3 { font-size: 11px; margin-top: 4px; }
+
+/* Highlight del match nella query */
+.usr-match {
+  background: linear-gradient(180deg, transparent 60%, rgba(255, 220, 60, .35) 60%);
+  color: inherit;
+  font-weight: 700;
+  padding: 0 1px;
+  border-radius: 2px;
+}
+[data-theme="light"] .usr-match {
+  background: linear-gradient(180deg, transparent 60%, rgba(255, 220, 60, .55) 60%);
+}
+
+/* === STATO LOADING (skeleton) === */
+.usr-loading {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.usr-skel-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.usr-skel {
+  background: linear-gradient(90deg,
+    rgba(255,255,255,.04) 0%,
+    rgba(255,255,255,.10) 50%,
+    rgba(255,255,255,.04) 100%);
+  background-size: 200% 100%;
+  animation: skelShine 1.4s ease-in-out infinite;
+  border-radius: 8px;
+}
+[data-theme="light"] .usr-skel {
+  background: linear-gradient(90deg,
+    rgba(15,23,42,.04) 0%,
+    rgba(15,23,42,.10) 50%,
+    rgba(15,23,42,.04) 100%);
+  background-size: 200% 100%;
+}
+.usr-skel-thumb { width: 80px; height: 45px; flex: 0 0 auto; }
+.usr-skel-lines { flex: 1 1 auto; display: flex; flex-direction: column; gap: 6px; }
+.usr-skel-line-1 { height: 12px; width: 80%; border-radius: 6px; }
+.usr-skel-line-2 { height: 10px; width: 50%; border-radius: 6px; }
+@keyframes skelShine {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* === EMPTY STATE === */
+.usr-empty {
+  padding: 30px 20px 26px;
+  text-align: center;
+  color: var(--text3);
+}
+.usr-empty-ico {
+  font-size: 32px;
+  margin-bottom: 12px;
+  opacity: .7;
+}
+.usr-empty-t {
+  font-size: 13px;
+  color: var(--text2);
+  margin-bottom: 4px;
+}
+.usr-empty-q {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* === FOOTER DROPDOWN (CTA "Vai alla ricerca completa") === */
+.usr-footer {
+  padding: 10px 14px;
+  margin-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, .05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text3);
+}
+[data-theme="light"] .usr-footer {
+  border-top-color: rgba(15, 23, 42, .06);
+}
+.usr-footer-cta {
+  color: #4fd698;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 8px;
+  transition: background .15s;
+}
+.usr-footer-cta:hover {
+  background: rgba(10, 105, 64, .15);
+}
+[data-theme="light"] .usr-footer-cta { color: #0a6940; }
+.usr-footer-keys {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.usr-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .12);
+  font-family: ui-monospace, "SF Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text2);
+  min-width: 18px;
+  line-height: 1;
+}
+[data-theme="light"] .usr-kbd {
+  background: rgba(15, 23, 42, .06);
+  border-color: rgba(15, 23, 42, .12);
+}
+
+/* === RECENT SEARCHES === */
+.usr-recent-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 12px;
+  margin: 1px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .15s;
+  font-size: 13px;
+  color: var(--text);
+}
+.usr-recent-item:hover { background: rgba(255, 255, 255, .06); }
+[data-theme="light"] .usr-recent-item:hover { background: rgba(15, 23, 42, .05); }
+.usr-recent-ico {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text3);
+  font-size: 14px;
+  flex: 0 0 auto;
+}
+[data-theme="light"] .usr-recent-ico {
+  background: rgba(15, 23, 42, .06);
+}
+.usr-recent-text {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.usr-recent-del {
+  flex: 0 0 auto;
+  opacity: 0;
+  background: transparent;
+  border: 0;
+  color: var(--text3);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  transition: opacity .15s, background .15s;
+}
+.usr-recent-item:hover .usr-recent-del { opacity: 1; }
+.usr-recent-del:hover {
+  background: rgba(255, 100, 100, .15);
+  color: #ff7575;
+}
+
+/* Bottone "Cancella selezionate" del dropdown notifiche */
+.uh-notif-seldel {
+  background: rgba(239, 68, 68, .15) !important;
+  border: 1px solid rgba(239, 68, 68, .35) !important;
+  color: #f87171 !important;
+  padding: 4px 10px !important;
+  border-radius: 999px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: background .15s !important;
+}
+.uh-notif-seldel:hover {
+  background: rgba(239, 68, 68, .25) !important;
+  color: #fff !important;
+}
+[data-theme="light"] .uh-notif-seldel {
+  background: rgba(220, 38, 38, .10) !important;
+  border-color: rgba(220, 38, 38, .35) !important;
+  color: #dc2626 !important;
+}
+[data-theme="light"] .uh-notif-seldel:hover {
+  background: rgba(220, 38, 38, .20) !important;
+  color: #fff !important;
+}

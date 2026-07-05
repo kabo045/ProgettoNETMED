@@ -1,0 +1,31 @@
+node_modules
+npm-debug.log
+.env
+.env.example
+.git
+.gitignore
+.gitattributes
+.vscode
+.idea
+*.md
+LICENSE
+docs
+db-init
+docker-compose*.yml
+Dockerfile*
+test
+tests
+coverage
+.nyc_output
+*.log
+.DS_Store
+Thumbs.db
+*.zip
+*.tar.gz
+
+# File temporanei lasciati dal fix corruzione (cancellare da Esplora Risorse Windows)
+
+# File temporanei lasciati dal fix corruzione (cancellare da Esplora Risorse Windows)
+**/*.OLD_DELETE_ME
+**/*.bak
+db/notifications.js.OLD_DELETE_ME

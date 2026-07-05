@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g6" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0a0e14"/>
+      <stop offset="100%" stop-color="#155e75"/>
+    </linearGradient>
+    <radialGradient id="glow6" cx="50%" cy="30%" r="55%">
+      <stop offset="0%" stop-color="#14b8a6" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#14b8a6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#g6)"/>
+  <rect width="1920" height="1080" fill="url(#glow6)"/>
+  <!-- Stethoscope outline -->
+  <g fill="none" stroke="#2dd4bf" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.5">
+    <path d="M1350 280 L1350 480 Q1350 600 1480 600 Q1610 600 1610 480 L1610 280"/>
+    <circle cx="1350" cy="270" r="22" fill="#2dd4bf" opacity="0.6"/>
+    <circle cx="1610" cy="270" r="22" fill="#2dd4bf" opacity="0.6"/>
+    <path d="M1480 600 L1480 820"/>
+    <circle cx="1480" cy="860" r="50"/>
+    <circle cx="1480" cy="860" r="22" fill="#2dd4bf" opacity="0.5"/>
+  </g>
+  <!-- Subtle horizontal lines (medical chart) -->
+  <g stroke="#5eead4" stroke-width="1" opacity="0.15">
+    <line x1="0" y1="200" x2="1200" y2="200"/>
+    <line x1="0" y1="320" x2="1200" y2="320"/>
+    <line x1="0" y1="440" x2="1200" y2="440"/>
+    <line x1="0" y1="560" x2="1200" y2="560"/>
+    <line x1="0" y1="680" x2="1200" y2="680"/>
+    <line x1="0" y1="800" x2="1200" y2="800"/>
+    <line x1="0" y1="920" x2="1200" y2="920"/>
+  </g>
+  <!-- Floating particles -->
+  <g fill="#5eead4" opacity="0.4">
+    <circle cx="180" cy="300" r="4"/>
+    <circle cx="420" cy="500" r="3"/>
+    <circle cx="650" cy="380" r="4"/>
+    <circle cx="890" cy="620" r="3"/>
+    <circle cx="320" cy="780" r="4"/>
+    <circle cx="780" cy="900" r="3"/>
+  </g>
+</svg>

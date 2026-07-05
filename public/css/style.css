@@ -1,0 +1,17 @@
+/* ============================================================
+ *  public/css/style.css
+ *
+ *  File SVUOTATO durante la pulizia del 2026-05-31.
+ *
+ *  Conteneva la prima versione del CSS della home (palette ciano
+ *  #00d2ff, hero base, ecc.) ma non e' piu' referenziato da
+ *  nessuna pagina: il sito usa adesso i moduli CSS per area:
+ *    - public/css/index.css         (landing + auth)
+ *    - public/css/user/*.css        (area utente)
+ *    - public/css/admin/*.css       (dashboard admin)
+ *    - public/css/login.css, register.css, footer.css, ...
+ *
+ *  Non lo cancelliamo per evitare 404 in vecchie cache, ma e'
+ *  intenzionalmente vuoto. Se qualcosa appare "rotto" dopo questa
+ *  modifica, era un riferimento orfano che andava rimosso.
+ * ============================================================ */

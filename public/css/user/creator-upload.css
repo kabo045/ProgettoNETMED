@@ -1,0 +1,618 @@
+/* ============================================================
+   NETMED — Pagina dedicata Carica/Modifica video
+   Layout 2 colonne: form a sinistra, anteprima a destra (sticky).
+   ============================================================ */
+
+.cu-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 28px 80px;
+  min-width: 320px;
+}
+
+/* ---------- Breadcrumb ---------- */
+.cu-bcrumb {
+  margin-bottom: 12px;
+}
+.cu-bcrumb-link {
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  transition: background .15s, color .15s;
+}
+.cu-bcrumb-link:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* ---------- Header pagina ---------- */
+.cu-page-head {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.cu-page-head h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+.cu-page-head p {
+  font-size: 14px;
+  color: var(--text2);
+  margin: 0;
+}
+.cu-page-head .req,
+.cu-card .req,
+.cu-label .req {
+  color: var(--rose, #f43f5e);
+  font-weight: 700;
+}
+
+
+/* ---------- Layout 2 colonne ---------- */
+.cu-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 28px;
+  align-items: start;
+}
+
+.cu-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+
+/* ---------- Card / step del form ---------- */
+.cu-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px 22px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
+  transition: border-color .2s, box-shadow .2s;
+}
+.cu-card:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.cu-card-head {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+.cu-card-num {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent-strong);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
+.cu-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.cu-card-sub {
+  font-size: 12.5px;
+  color: var(--text3);
+  line-height: 1.4;
+}
+
+
+/* ---------- Input / textarea / select ---------- */
+.cu-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin: 12px 0 6px;
+}
+
+.cu-input,
+.cu-textarea {
+  width: 100%;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+  /* Sfondo chiaro che si stacca dalla card scura: sembra un campo
+     "scavato" dentro alla card. */
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 14px;
+  transition: border-color .15s, box-shadow .15s, background .15s;
+  box-sizing: border-box;
+}
+[data-theme="light"] .cu-input,
+[data-theme="light"] .cu-textarea {
+  background: var(--surface-2, var(--surface));
+}
+.cu-input::placeholder,
+.cu-textarea::placeholder {
+  color: var(--text3);
+  opacity: 1;   /* Firefox baja l'opacità di default; lo correggo */
+}
+.cu-input:focus,
+.cu-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  background: var(--card);
+}
+.cu-textarea {
+  resize: vertical;
+  min-height: 110px;
+  line-height: 1.5;
+}
+select.cu-input {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--text2) 50%),
+                    linear-gradient(135deg, var(--text2) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 36px;
+}
+
+.cu-row-meta {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 4px;
+}
+.cu-row-meta .near {
+  color: var(--rose, #f43f5e);
+  font-weight: 700;
+}
+
+
+/* ---------- YID state row ---------- */
+.cu-yid-state {
+  margin-top: 8px;
+  font-size: 12.5px;
+}
+.cu-yid-ok  { color: #10b981; font-weight: 600; }
+.cu-yid-err { color: var(--rose, #f43f5e); font-weight: 600; }
+.cu-yid-state code {
+  background: var(--surface);
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11.5px;
+}
+
+
+/* ---------- Tag chips ----------
+   Pattern robusto: l'input checkbox resta nel DOM (accessibile) ma è
+   nascosto visivamente, e usiamo il sibling selector .cb:checked ~ .lbl
+   per cambiare lo stile dell'etichetta. Niente :has(): supporto totale
+   da IE11 in poi. Il click sulla label toggla naturalmente l'input. */
+.cu-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+.cu-tag-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+/* Input nascosto ma comunque focusabile (assistive tech / tab) */
+.cu-tag-chip input.cu-tag-cb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+  /* Per evitare che catturi i click impedendo il toggle del label,
+     lo lasciamo cliccabile ma trasparente, sopra al label. */
+  z-index: 1;
+}
+/* L'etichetta vera (lo "span" dentro al label) — porta lo stile chip */
+.cu-tag-chip-lbl {
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-2);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text2);
+  transition: background .15s, border-color .15s, color .15s, transform .12s;
+  white-space: nowrap;
+}
+.cu-tag-chip:hover .cu-tag-chip-lbl {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border-2, var(--border));
+}
+/* Stato selezionato: sibling selector classico */
+.cu-tag-chip input.cu-tag-cb:checked ~ .cu-tag-chip-lbl {
+  background: linear-gradient(135deg, rgba(13, 122, 77, .22), rgba(13, 122, 77, .10));
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 1px 4px rgba(0,0,0,.12);
+}
+/* "Pallino" check accanto al testo quando selezionato */
+.cu-tag-chip input.cu-tag-cb:checked ~ .cu-tag-chip-lbl::before {
+  content: "✓";
+  font-weight: 800;
+  margin-right: 2px;
+}
+/* Focus accessibile attraverso l'input (tab) */
+.cu-tag-chip input.cu-tag-cb:focus-visible ~ .cu-tag-chip-lbl {
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  outline: none;
+}
+.cu-help {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 8px;
+}
+
+
+/* ---------- Switch privato ---------- */
+.cu-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 14px;
+  color: var(--text);
+  /* IMPORTANTE: il position relative ancora il checkbox absolute al
+     suo contenitore. Senza, il checkbox finisce in alto a sinistra
+     della pagina e rompe layout/footer. */
+  position: relative;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+.cu-switch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  /* Lo sticky il checkbox dentro al suo wrapper, in alto-sinistra */
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+.cu-switch-track {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background: var(--surface-2, var(--surface));
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transition: background .2s, border-color .2s;
+  flex-shrink: 0;
+}
+.cu-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+  transition: transform .2s;
+}
+.cu-switch input:checked + .cu-switch-track {
+  background: var(--accent-strong);
+  border-color: transparent;
+}
+.cu-switch input:checked + .cu-switch-track .cu-switch-thumb {
+  transform: translateX(20px);
+}
+.cu-switch input:focus-visible + .cu-switch-track {
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+
+/* ---------- Azioni form ---------- */
+.cu-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 6px 4px 0;
+}
+
+.cu-btn {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 11px 22px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform .08s, background .15s, border-color .15s, box-shadow .15s;
+}
+.cu-btn:hover  { background: var(--surface); }
+.cu-btn:active { transform: translateY(1px); }
+.cu-btn:disabled { opacity: .55; cursor: not-allowed; }
+
+.cu-btn-primary {
+  background: var(--accent-strong);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
+}
+.cu-btn-primary:hover {
+  background: var(--accent);
+}
+
+.cu-btn-ghost {
+  background: transparent;
+  color: var(--text2);
+}
+.cu-btn-ghost:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+
+
+/* ---------- Sidebar anteprima ---------- */
+.cu-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: calc(var(--header-h) + 24px);
+}
+
+.cu-side-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
+}
+.cu-side-title {
+  padding: 14px 18px 0;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: .6px;
+}
+
+.cu-preview {
+  position: relative;
+  margin: 12px 14px 0;
+  aspect-ratio: 16/9;
+  background: var(--surface);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cu-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.cu-preview-play {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .55);
+  color: #fff;
+  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  text-indent: 4px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, .5);
+}
+.cu-preview-empty {
+  text-align: center;
+  color: var(--text3);
+  font-size: 13px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.cu-preview-empty-ico {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--text2);
+  text-indent: 3px;
+}
+
+.cu-preview-meta {
+  padding: 12px 16px 16px;
+}
+.cu-preview-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.35;
+  margin-bottom: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+.cu-preview-author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--text2);
+}
+.cu-avatar-sm {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+
+/* ---------- Tips card ---------- */
+.cu-tips {
+  background: linear-gradient(135deg,
+    var(--accent-soft),
+    rgba(13, 122, 77, .02));
+  border: 1px solid rgba(13, 122, 77, .25);
+  border-radius: 14px;
+  padding: 14px 18px;
+}
+.cu-tips-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  margin-bottom: 8px;
+}
+.cu-tips ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.55;
+}
+.cu-tips li + li {
+  margin-top: 4px;
+}
+
+
+/* ---------- Stati alternativi (admin / non verified / not found) ---------- */
+.cu-state {
+  padding: 80px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cu-state-card {
+  max-width: 540px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 36px 32px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
+}
+.cu-state-ico {
+  font-size: 44px;
+  margin-bottom: 12px;
+}
+.cu-state-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.cu-state-msg {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.55;
+  margin: 0 0 22px;
+}
+.cu-state-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+
+/* ---------- Responsive ---------- */
+@media (max-width: 980px) {
+  .cu-layout {
+    grid-template-columns: 1fr;
+  }
+  .cu-side {
+    position: static;
+    order: -1;          /* anteprima sopra il form su mobile */
+  }
+}
+@media (max-width: 600px) {
+  .cu-wrap {
+    padding: 16px 14px 60px;
+  }
+  .cu-page-head h1 {
+    font-size: 22px;
+  }
+  .cu-card {
+    padding: 16px 16px 18px;
+    border-radius: 14px;
+  }
+  .cu-actions {
+    flex-direction: column-reverse;
+  }
+  .cu-actions .cu-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .cu-state-card {
+    padding: 28px 20px;
+  }
+}
+
+/* Campo per cercare/aggiungere tag */
+.cu-tag-input {
+  margin-bottom: 10px;
+}

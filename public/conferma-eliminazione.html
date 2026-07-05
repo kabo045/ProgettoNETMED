@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#08562f"/>
+<meta name="robots" content="noindex"/>
+<link rel="icon" type="image/svg+xml" href="img/favicon.svg"/>
+<title>NETMED</title>
+<link rel="stylesheet" href="css/login.css?v=20260615yl"/>
+<link rel="stylesheet" href="css/auth-common.css?v=20260615yl"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  .cf-card {
+    width: 100%;
+    max-width: 480px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 14px;
+    padding: 30px 26px;
+    text-align: center;
+    color: #fff;
+  }
+  .cf-state { font-size: 1.15rem; font-weight: 800; margin: 16px 0 8px; letter-spacing: -.2px; }
+  .cf-msg   { color: #c2c8cf; line-height: 1.55; font-size: .96rem; margin: 0 0 22px; }
+  .cf-cta {
+    display: inline-block;
+    background: #a02828; color: #fff;
+    text-decoration: none;
+    padding: 11px 22px; border-radius: 11px;
+    font-weight: 700; font-size: .95rem;
+    transition: background .16s;
+    cursor: pointer; border: 0;
+    font-family: inherit;
+  }
+  .cf-cta:hover { background: #b53030; }
+  .cf-cta.ghost {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,.28);
+    color: #fff;
+  }
+  .cf-cta.ghost:hover { background: rgba(255,255,255,.08); }
+  .cf-cta[disabled] { opacity: .5; cursor: wait; }
+  .cf-warn {
+    background: rgba(160,40,40,.12);
+    border: 1px solid rgba(160,40,40,.45);
+    color: #ffd5d5;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: .9rem;
+    line-height: 1.5;
+    margin: 10px 0 18px;
+    text-align: left;
+  }
+  .cf-spin {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 3px solid rgba(255,255,255,.18); border-top-color: #a02828;
+    animation: cfSpin .8s linear infinite; display: inline-block;
+  }
+  @keyframes cfSpin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="logo-netmed"><a href="index.html"><span class="logo-mark-inline">N</span></a></div>
+  <div class="cf-card" id="cfCard">
+    <div class="cf-state">Conferma eliminazione account</div>
+    <div class="cf-warn">
+      Stai per eliminare <strong>definitivamente</strong> il tuo account NETMED.
+      Tutti i tuoi dati - preferiti, commenti, cronologia, iscrizioni - verranno
+      rimossi e <strong>non potranno essere recuperati</strong>.
+    </div>
+    <div>
+      <button class="cf-cta" id="btnDelete" type="button">Elimina definitivamente</button>
+      <a class="cf-cta ghost" href="profilo.html" style="margin-left:8px">Annulla</a>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  const card  = document.getElementById("cfCard");
+  const btn   = document.getElementById("btnDelete");
+
+  function render(state, msg, primary, ghost) {
+    const btnP = primary ? '<a class="cf-cta" href="' + primary.href + '">' + primary.label + '</a>' : "";
+    const btnG = ghost   ? '<a class="cf-cta ghost" href="' + ghost.href + '" style="margin-left:8px">' + ghost.label + '</a>' : "";
+    card.innerHTML =
+      '<div class="cf-state">' + state + '</div>' +
+      '<div class="cf-msg">' + msg + '</div>' +
+      '<div>' + btnP + btnG + '</div>';
+  }
+
+  const url = new URL(location.href);
+  const token = url.searchParams.get("token");
+  if (!token) {
+    render("Link non valido", "Manca il token di conferma.",
+      { href: "profilo.html", label: "Profilo" });
+    return;
+  }
+
+  btn.addEventListener("click", async () => {
+    btn.disabled = true;
+    btn.textContent = "Eliminazione in corso...";
+    try {
+      const r = await fetch("/api/user/me/delete/confirm?token=" + encodeURIComponent(token));
+      const d = await r.json().catch(() => ({}));
+      if (r.ok) {
+        try { localStorage.removeItem("token"); localStorage.removeItem("user"); } catch(e){}
+        render("Account eliminato",
+          "Ci dispiace vederti andare. Tutti i tuoi dati sono stati rimossi dal nostro sistema.",
+          { href: "index.html", label: "Torna alla home" });
+      } else {
+        render("Eliminazione non riuscita",
+          d.error || "Link non valido o scaduto. Riprova dalla pagina del profilo.",
+          { href: "profilo.html", label: "Profilo" },
+          { href: "index.html", label: "Home" });
+      }
+    } catch (e) {
+      render("Errore di rete",
+        "Impossibile contattare il server. Riprova tra poco.",
+        { href: "profilo.html", label: "Profilo" });
+    }
+  });
+})();
+</script>
+<script src="js/cookie-banner.js?v=20260615yl"></script>
+<script src="js/i18n.js?v=20260615yl"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10202b"/>
+      <stop offset="100%" stop-color="#021015"/>
+    </linearGradient>
+    <linearGradient id="g2-cardio" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0d7a4d" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#13c089" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#0d7a4d" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="b2"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#g2)"/>
+  <!-- Grid -->
+  <g stroke="rgba(13,122,77,.15)" stroke-width="1">
+    <g><line x1="0" y1="180" x2="1920" y2="180"/><line x1="0" y1="360" x2="1920" y2="360"/><line x1="0" y1="540" x2="1920" y2="540"/><line x1="0" y1="720" x2="1920" y2="720"/><line x1="0" y1="900" x2="1920" y2="900"/></g>
+    <g><line x1="240" y1="0" x2="240" y2="1080"/><line x1="480" y1="0" x2="480" y2="1080"/><line x1="720" y1="0" x2="720" y2="1080"/><line x1="960" y1="0" x2="960" y2="1080"/><line x1="1200" y1="0" x2="1200" y2="1080"/><line x1="1440" y1="0" x2="1440" y2="1080"/><line x1="1680" y1="0" x2="1680" y2="1080"/></g>
+  </g>
+  <!-- ECG wave with glow -->
+  <g filter="url(#b2)" opacity=".9">
+    <path d="M 0 540 L 280 540 L 320 540 L 360 540 L 400 540 L 480 540 L 540 540 L 580 470 L 620 600 L 660 280 L 700 760 L 740 540 L 800 540 L 860 540 L 920 540 L 1000 540 L 1080 540 L 1140 540 L 1180 470 L 1220 600 L 1260 280 L 1300 760 L 1340 540 L 1420 540 L 1500 540 L 1620 540 L 1720 540 L 1820 540 L 1920 540" fill="none" stroke="url(#g2-cardio)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <path d="M 0 540 L 280 540 L 320 540 L 360 540 L 400 540 L 480 540 L 540 540 L 580 470 L 620 600 L 660 280 L 700 760 L 740 540 L 800 540 L 860 540 L 920 540 L 1000 540 L 1080 540 L 1140 540 L 1180 470 L 1220 600 L 1260 280 L 1300 760 L 1340 540 L 1420 540 L 1500 540 L 1620 540 L 1720 540 L 1820 540 L 1920 540" fill="none" stroke="#13c089" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Heart icon -->
+  <g transform="translate(1620 220)">
+    <path d="M 0 50 C 0 20, 20 0, 50 0 C 70 0, 85 15, 100 35 C 115 15, 130 0, 150 0 C 180 0, 200 20, 200 50 C 200 100, 150 145, 100 175 C 50 145, 0 100, 0 50 Z" fill="rgba(225,29,72,.85)" stroke="rgba(255,255,255,.4)" stroke-width="3"/>
+  </g>
+</svg>

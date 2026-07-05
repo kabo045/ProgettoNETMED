@@ -1,0 +1,453 @@
+/* ============================================================
+   NETMED — Video detail
+   Modulo VD-COMMENTS: sezione commenti con form, lista,
+   avatar, azioni elimina.
+   ============================================================ */
+
+
+/* ---------- Header sezione ---------- */
+.vd-comm {
+  margin-top: 32px;
+}
+.vd-comm-h {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.vd-comm-h h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+}
+.vd-comm-h-count {
+  font-size: 14px;
+  color: var(--text3);
+  font-weight: 600;
+}
+
+
+/* ---------- Form nuovo commento ---------- */
+.vd-comm-form {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+.vd-comm-form-avatar {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent-strong);
+  color: #fff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+}
+.vd-comm-form-body {
+  flex: 1;
+  min-width: 0;
+}
+.vd-comm-textarea {
+  width: 100%;
+  min-height: 44px;
+  max-height: 240px;
+  resize: vertical;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  padding: 10px 4px;
+  outline: none;
+  transition: border-color .2s;
+}
+.vd-comm-textarea:focus {
+  border-bottom-color: var(--accent);
+}
+.vd-comm-textarea::placeholder {
+  color: var(--text4);
+}
+.vd-comm-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+.vd-comm-cancel,
+.vd-comm-submit {
+  background: transparent;
+  border: 0;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: inherit;
+}
+.vd-comm-cancel {
+  color: var(--text2);
+}
+.vd-comm-cancel:hover {
+  background: var(--surface);
+}
+.vd-comm-submit {
+  background: var(--accent);
+  color: #fff;
+}
+.vd-comm-submit:hover {
+  background: var(--accent-strong);
+}
+.vd-comm-submit:disabled {
+  background: var(--surface-2);
+  color: var(--text4);
+  cursor: not-allowed;
+}
+
+
+/* ---------- Lista commenti ---------- */
+.vd-comm-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.vd-comm-item {
+  display: flex;
+  gap: 12px;
+  animation: fadeUp .35s ease both;
+}
+.vd-comm-avatar {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--text);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  background-image: linear-gradient(135deg, var(--surface-2), var(--surface));
+  overflow: hidden;
+}
+.vd-comm-avatar-img,
+.vd-comm-form-avatar .vd-comm-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+.vd-comm-form-avatar { overflow: hidden; }
+.vd-comm-mod-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  background: var(--accent-soft);
+  color: var(--accent);
+  padding: 3px 9px;
+  border-radius: 999px;
+  letter-spacing: .5px;
+  margin-left: 4px;
+  text-transform: uppercase;
+  font-family: 'DM Sans', sans-serif;
+}
+/* Tag "tu" — autore del commento */
+.vd-comm-mod-tag.vd-comm-tag-mine {
+  background: rgba(59, 130, 246, .15);
+  color: var(--blue);
+}
+/* Tag "creator" — proprietario del video */
+.vd-comm-mod-tag.vd-comm-tag-creator {
+  background: linear-gradient(135deg, rgba(13, 122, 77, .22), rgba(0, 138, 62, .22));
+  color: var(--accent);
+  border: 1px solid rgba(13, 122, 77, .4);
+}
+.vd-comm-mod-tag.vd-comm-tag-creator .nm-ico {
+  font-size: 11px;
+}
+/* Tag "rimosso" — commento soft-deleted */
+.vd-comm-mod-tag.vd-comm-tag-deleted {
+  background: rgba(244, 63, 94, .18);
+  color: var(--rose);
+}
+/* Badge segnalazioni — solo per creator/admin */
+.vd-comm-mod-tag.vd-comm-tag-reported {
+  background: rgba(245, 158, 11, .15);
+  color: var(--amber);
+  border: 1px solid rgba(245, 158, 11, .35);
+  font-size: 11px;
+  padding: 3px 10px;
+}
+.vd-comm-mod-tag.vd-comm-tag-reported.warn {
+  background: rgba(244, 63, 94, .15);
+  color: var(--rose);
+  border-color: rgba(244, 63, 94, .55);
+  animation: nmReportPulse 2s ease-in-out infinite;
+}
+@keyframes nmReportPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, .35); }
+  50%      { box-shadow: 0 0 0 6px rgba(244, 63, 94, 0); }
+}
+/* Strike dell'autore — info per creator */
+.vd-comm-mod-tag.vd-comm-tag-strikes {
+  background: rgba(245, 158, 11, .12);
+  color: var(--amber);
+  border: 1px solid rgba(245, 158, 11, .3);
+  font-size: 10.5px;
+}
+
+/* Riga separata con i report (sopra al testo del commento) */
+.vd-comm-reports-row {
+  margin: 4px 0 8px;
+}
+.vd-comm-item.has-reports {
+  background: linear-gradient(90deg, rgba(245, 158, 11, .06) 0%, transparent 50%);
+  border-left: 3px solid var(--amber);
+  padding-left: 10px;
+  border-radius: 8px;
+}
+
+
+/* ---------- Commenti rimossi (visibili al creator) ---------- */
+.vd-comm-item.vd-comm-deleted {
+  opacity: .65;
+  background: rgba(244, 63, 94, .04);
+  border-radius: 12px;
+  padding: 8px;
+  margin: -8px 0;
+  transition: opacity .2s;
+}
+.vd-comm-item.vd-comm-deleted:hover {
+  opacity: .95;
+}
+.vd-comm-text.deleted {
+  font-style: italic;
+  color: var(--text3);
+}
+.vd-comm-text.deleted .vd-comm-text-removed {
+  display: block;
+  margin-top: 4px;
+  padding: 8px 12px;
+  background: rgba(244, 63, 94, .08);
+  border-left: 3px solid var(--rose);
+  border-radius: 6px;
+  color: var(--text2);
+  font-style: normal;
+  font-size: 13.5px;
+}
+
+
+/* ---------- Bottone "Ripristina" ---------- */
+.vd-comm-action.restore {
+  color: var(--green);
+}
+.vd-comm-action.restore:hover {
+  background: rgba(34, 197, 94, .12);
+  color: var(--green);
+}
+
+/* ---------- Bottone "Segnala" ---------- */
+.vd-comm-action.report {
+  color: var(--amber);
+}
+.vd-comm-action.report:hover {
+  background: rgba(245, 158, 11, .12);
+  color: var(--amber);
+}
+
+
+/* ---------- Modale segnala commento: radio motivi ---------- */
+.vd-form-radios {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+.vd-form-radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, .02);
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+  font-size: 13.5px;
+  color: var(--text2);
+}
+.vd-form-radio:hover {
+  background: rgba(13, 122, 77, .06);
+  border-color: var(--accent);
+}
+.vd-form-radio input[type="radio"] {
+  accent-color: var(--accent);
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+}
+.vd-form-radio input[type="radio"]:checked + span {
+  color: var(--text);
+  font-weight: 600;
+}
+.vd-form-hint {
+  margin-top: 14px;
+  padding: 10px 12px;
+  background: rgba(245, 158, 11, .10);
+  border-left: 3px solid var(--amber);
+  border-radius: 8px;
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.45;
+}
+[data-theme="light"] .vd-form-radio {
+  background: var(--card);
+}
+.vd-comm-body {
+  flex: 1;
+  min-width: 0;
+}
+.vd-comm-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.vd-comm-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+.vd-comm-time {
+  font-size: 12px;
+  color: var(--text3);
+}
+.vd-comm-text {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text2);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.vd-comm-foot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+}
+.vd-comm-action {
+  background: transparent;
+  border: 0;
+  color: var(--text3);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color .15s;
+}
+.vd-comm-action:hover {
+  color: var(--text);
+}
+.vd-comm-action.delete:hover {
+  color: var(--rose);
+}
+
+
+/* ---------- Empty / login required ---------- */
+.vd-comm-empty {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--text3);
+  font-size: 14px;
+}
+.vd-comm-login {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.vd-comm-login-text {
+  font-size: 13px;
+  color: var(--text2);
+}
+.vd-comm-login-btn {
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.vd-comm-login-btn:hover {
+  background: var(--accent-strong);
+}
+
+
+/* ---------- Risposte ai commenti (1 livello) ---------- */
+.vd-comm-replies {
+  margin: 4px 0 0 56px;
+  padding-left: 16px;
+  border-left: 2px solid var(--border);
+}
+.vd-comm-reply {
+  margin: 8px 0 4px 0;
+}
+.vd-comm-reply .vd-comm-avatar {
+  width: 32px;
+  height: 32px;
+  font-size: 13px;
+}
+
+.vd-comm-reply-form {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.vd-comm-reply-form[hidden] { display: none; }
+.vd-comm-reply-form .vd-comm-textarea {
+  min-height: 50px;
+}
+.vd-comm-reply-form .vd-comm-form-actions {
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Forza leggibilità testo commento */
+.vd-comm-text {
+  color: var(--text, #ebebed) !important;
+  opacity: 1 !important;
+  font-size: 14.5px !important;
+}
+.vd-comm-text.deleted {
+  color: var(--text3) !important;
+  opacity: .85 !important;
+}
+.vd-comm-text-removed {
+  color: var(--text2) !important;
+  background: rgba(255,255,255,.04);
+  border-radius: 6px;
+}
+[data-theme="light"] .vd-comm-text {
+  color: var(--text) !important;
+}

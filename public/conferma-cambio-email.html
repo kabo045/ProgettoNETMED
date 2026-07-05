@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#08562f"/>
+<meta name="robots" content="noindex"/>
+<link rel="icon" type="image/svg+xml" href="img/favicon.svg"/>
+<title>NETMED</title>
+<link rel="stylesheet" href="css/login.css?v=20260615yl"/>
+<link rel="stylesheet" href="css/auth-common.css?v=20260615yl"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  .cf-card {
+    width: 100%;
+    max-width: 460px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 14px;
+    padding: 30px 26px;
+    text-align: center;
+    color: #fff;
+  }
+  .cf-state { font-size: 1.15rem; font-weight: 800; margin: 16px 0 8px; letter-spacing: -.2px; }
+  .cf-msg   { color: #c2c8cf; line-height: 1.55; font-size: .96rem; margin: 0 0 22px; }
+  .cf-cta {
+    display: inline-block;
+    background: var(--primary-strong, #0a6940);
+    color: #fff; text-decoration: none;
+    padding: 11px 22px; border-radius: 11px;
+    font-weight: 700; font-size: .95rem;
+    transition: background .16s;
+  }
+  .cf-cta:hover { background: #0d7a4d; }
+  .cf-cta.ghost { background: transparent; border: 1px solid rgba(255,255,255,.28); }
+  .cf-cta.ghost:hover { background: rgba(255,255,255,.08); }
+  .cf-spin {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 3px solid rgba(255,255,255,.18); border-top-color: #0d7a4d;
+    animation: cfSpin .8s linear infinite; display: inline-block;
+  }
+  @keyframes cfSpin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="logo-netmed"><a href="index.html"><span class="logo-mark-inline">N</span></a></div>
+  <div class="cf-card" id="cfCard">
+    <div class="cf-spin"></div>
+    <div class="cf-state">Verifica in corso...</div>
+    <div class="cf-msg">Stiamo aggiornando l'indirizzo email del tuo account.</div>
+  </div>
+</div>
+<script>
+(async function () {
+  const card = document.getElementById("cfCard");
+  function render(state, msg, primary, ghost) {
+    const btnP = primary ? '<a class="cf-cta" href="' + primary.href + '">' + primary.label + '</a>' : "";
+    const btnG = ghost   ? '<a class="cf-cta ghost" href="' + ghost.href + '" style="margin-left:8px">' + ghost.label + '</a>' : "";
+    card.innerHTML =
+      '<div class="cf-state">' + state + '</div>' +
+      '<div class="cf-msg">' + msg + '</div>' +
+      '<div>' + btnP + btnG + '</div>';
+  }
+  const url = new URL(location.href);
+  const token = url.searchParams.get("token");
+  if (!token) {
+    render("Link non valido", "Manca il token di conferma.",
+      { href: "login.html", label: "Vai al login" });
+    return;
+  }
+  try {
+    const r = await fetch("/api/user/me/email-change/confirm?token=" + encodeURIComponent(token));
+    const d = await r.json().catch(() => ({}));
+    if (r.ok) {
+      // Svuoto la sessione: il JWT vecchio ha l'email obsoleta.
+      try { localStorage.removeItem("token"); localStorage.removeItem("user"); } catch(e){}
+      render("Email aggiornata!",
+        "Il tuo nuovo indirizzo email e' attivo. Effettua di nuovo il login per continuare.",
+        { href: "login.html", label: "Vai al login" });
+    } else {
+      render("Conferma non riuscita",
+        d.error || "Link non valido o scaduto. Riprova dalla pagina del profilo.",
+        { href: "profilo.html", label: "Profilo" },
+        { href: "login.html", label: "Login" });
+    }
+  } catch (e) {
+    render("Errore di rete",
+      "Impossibile contattare il server. Riprova tra poco.",
+      { href: "login.html", label: "Vai al login" });
+  }
+})();
+</script>
+<script src="js/cookie-banner.js?v=20260615yl"></script>
+<script src="js/i18n.js?v=20260615yl"></script>
+</body>
+</html>

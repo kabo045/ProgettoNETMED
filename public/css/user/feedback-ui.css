@@ -1,0 +1,701 @@
+/* ============================================================
+   NETMED — Feedback UI (unified)
+   - Skeleton system: primitive coerenti su tutte le pagine
+   - Empty states illustrati: SVG container condiviso
+   - FAB "Carica video"
+   - Rispetta prefers-reduced-motion (gestito già in base.css)
+   ============================================================ */
+
+
+
+/* ---------- FAB Carica video — centrato in basso -------------
+   Bottone fisso al centro orizzontale, in basso. Segue lo scroll.
+   Visibile solo per creator verificati. */
+.nm-upload-fab {
+  position: fixed;
+  left: 50%;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 900;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px 14px 20px;
+  border-radius: 999px;
+  border: none;
+  background: var(--accent-strong);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: .2px;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .28);
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
+  animation: nmFabIn .35s cubic-bezier(.2, .9, .3, 1.2) both;
+}
+.nm-upload-fab:hover {
+  transform: translateX(-50%) translateY(-2px);
+  background: var(--accent);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, .35);
+}
+.nm-upload-fab:active {
+  transform: translateX(-50%) translateY(-1px) scale(.98);
+}
+.nm-upload-fab:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+.nm-upload-fab-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .25);
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+}
+.nm-upload-fab-lbl {
+  white-space: nowrap;
+}
+@keyframes nmFabIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px) scale(.85); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+/* Mobile: collassa a tondo (solo +) */
+@media (max-width: 600px) {
+  .nm-upload-fab {
+    padding: 0;
+    width: 56px;
+    height: 56px;
+    justify-content: center;
+    bottom: max(16px, env(safe-area-inset-bottom));
+  }
+  .nm-upload-fab-lbl { display: none; }
+  .nm-upload-fab-ico {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    font-size: 28px;
+  }
+}
+
+/* Light theme: shadow piu' soft */
+[data-theme="light"] .nm-upload-fab {
+  box-shadow: 0 6px 20px rgba(15, 23, 42, .18);
+}
+
+
+/* ---------- Icone Lucide SVG (NMIcons) ---------------------- */
+/* Container per le icone SVG: stessa "altezza ottica" delle emoji
+   che sostituisce, eredita colore via currentColor. */
+.nm-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  flex-shrink: 0;
+  color: currentColor;
+}
+.nm-ico svg {
+  width: 1em;
+  height: 1em;
+  display: block;
+}
+/* Dimensioni semantiche */
+.nm-ico.sm { font-size: 14px; }
+.nm-ico.md { font-size: 18px; }
+.nm-ico.lg { font-size: 22px; }
+.nm-ico.xl { font-size: 28px; }
+
+
+/* ---------- Skeleton primitives ----------------------------- */
+/* Variante MORBIDA: gradient teal subtle invece di grigio piatto.
+   Il "lampo" centrale (--accent-soft) è on-brand e meno aggressivo. */
+.nm-sk {
+  display: block;
+  background:
+    linear-gradient(
+      90deg,
+      var(--surface) 0%,
+      var(--surface-2) 30%,
+      rgba(13, 122, 77, .15) 50%,
+      var(--surface-2) 70%,
+      var(--surface) 100%
+    );
+  background-size: 220% 100%;
+  animation: shimmer 1.8s cubic-bezier(.4, 0, .2, 1) infinite;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+/* Light theme: shimmer teal molto piu' subtle */
+[data-theme="light"] .nm-sk {
+  background:
+    linear-gradient(
+      90deg,
+      #f1f5f9 0%,
+      #e2e8f0 30%,
+      rgba(13, 122, 77, .12) 50%,
+      #e2e8f0 70%,
+      #f1f5f9 100%
+    );
+  background-size: 220% 100%;
+}
+
+.nm-sk-line       { height: 12px; border-radius: 6px; }
+.nm-sk-line.lg    { height: 16px; }
+.nm-sk-line.sm    { height: 10px; }
+
+.nm-sk-w30        { width: 30%; }
+.nm-sk-w40        { width: 40%; }
+.nm-sk-w50        { width: 50%; }
+.nm-sk-w60        { width: 60%; }
+.nm-sk-w70        { width: 70%; }
+.nm-sk-w80        { width: 80%; }
+.nm-sk-w90        { width: 90%; }
+.nm-sk-w100       { width: 100%; }
+
+.nm-sk-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.nm-sk-circle.lg  { width: 64px; height: 64px; }
+.nm-sk-circle.sm  { width: 28px; height: 28px; }
+
+.nm-sk-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+}
+
+.nm-sk-pill {
+  display: inline-block;
+  width: 80px;
+  height: 22px;
+  border-radius: 999px;
+}
+
+
+/* ---------- Skeleton CARD (riutilizzabile) ------------------ */
+/* Card video skeleton: usa al posto di .vcard.loading per uniformità */
+.nm-sk-card {
+  background: var(--card);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+.nm-sk-card .nm-sk-thumb {
+  border-radius: 0;
+}
+.nm-sk-card-body {
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+/* ---------- Hero skeleton ----------------------------------- */
+.nm-sk-hero {
+  width: 100%;
+  height: clamp(280px, 38vw, 460px);
+  border-radius: 14px;
+  background: linear-gradient(
+    90deg,
+    var(--surface) 0%,
+    var(--surface-2) 50%,
+    var(--surface) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+  position: relative;
+  overflow: hidden;
+}
+.nm-sk-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 50%,
+    rgba(0, 0, 0, .35) 100%
+  );
+}
+
+
+/* ---------- Empty state — illustrazione SVG ----------------- */
+/* Container generico per le SVG illustrate. Sostituisce emoji
+   nei vari -empty-ico delle pagine esistenti senza dover
+   ridefinire i loro layout. */
+.nm-empty-illust {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 128px;
+  height: 128px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 40%,
+    var(--accent-soft) 0%,
+    transparent 70%
+  );
+  position: relative;
+}
+.nm-empty-illust svg {
+  width: 80px;
+  height: 80px;
+  display: block;
+  color: var(--accent);
+}
+.nm-empty-illust.sm {
+  width: 96px;
+  height: 96px;
+}
+.nm-empty-illust.sm svg {
+  width: 56px;
+  height: 56px;
+}
+
+/* Variante "warning" (errore) — usa amber */
+.nm-empty-illust.warn svg { color: var(--amber); }
+.nm-empty-illust.warn {
+  background: radial-gradient(
+    circle at 50% 40%,
+    rgba(245, 158, 11, .18) 0%,
+    transparent 70%
+  );
+}
+
+/* Variante "danger" (404 / non trovato) — usa rose */
+.nm-empty-illust.danger svg { color: var(--rose); }
+.nm-empty-illust.danger {
+  background: radial-gradient(
+    circle at 50% 40%,
+    rgba(244, 63, 94, .18) 0%,
+    transparent 70%
+  );
+}
+
+/* Light theme refinement: bg illustrazione un filo più visibile */
+[data-theme="light"] .nm-empty-illust {
+  background: radial-gradient(
+    circle at 50% 40%,
+    rgba(13, 122, 77, .18) 0%,
+    transparent 70%
+  );
+}
+
+
+/* ---------- Override su empty states esistenti -------------- */
+/* Per i layout già stilati (.vl-empty, .ch-empty, .mc-empty,
+   .catalog-empty) sostituisco l'icona emoji con l'illustrazione
+   SVG, mantenendo il resto del layout. */
+.vl-empty-ico:has(svg),
+.ch-empty-ico:has(svg),
+.mc-empty-ico:has(svg),
+.catalog-empty-ico:has(svg) {
+  font-size: 0;
+  margin-bottom: 0;
+  opacity: 1;
+}
+
+
+/* ---------- Allineamento layout empty ---------------------- */
+/* I contenitori esistenti usano text-align center: garantisco
+   che l'illustrazione resti centrata anche se messa via inline. */
+.vl-empty,
+.ch-empty,
+.mc-empty,
+.catalog-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/* ---------- Unificazione skeleton esistenti ----------------
+   Le pagine usavano già skeleton (vcard.loading, vl-card.loading,
+   ch-card-skeleton, mc-card-skeleton, sk, sk-line). Qui faccio in
+   modo che condividano TUTTI lo stesso gradiente e la stessa
+   durata di animazione, per un'estetica davvero uniforme. */
+.sk,
+.vcard.loading .vcard-thumb,
+.vcard.loading .vcard-title-sk,
+.vl-card.loading .vl-thumb,
+.vl-card.loading .vl-title-sk,
+.vl-card.loading .vl-meta-sk,
+.ch-card-skeleton .sk,
+.mc-card-skeleton .sk,
+.vd-loading-row,
+.vd-rel-sk-line {
+  background: linear-gradient(
+    90deg,
+    var(--surface) 0%,
+    var(--surface-2) 30%,
+    rgba(13, 122, 77, .15) 50%,
+    var(--surface-2) 70%,
+    var(--surface) 100%
+  ) !important;
+  background-size: 220% 100% !important;
+  animation: shimmer 1.8s cubic-bezier(.4, 0, .2, 1) infinite !important;
+  border-radius: 10px;
+}
+
+/* Light theme: shimmer teal subtle anche su bg bianco */
+[data-theme="light"] .sk,
+[data-theme="light"] .vcard.loading .vcard-thumb,
+[data-theme="light"] .vcard.loading .vcard-title-sk,
+[data-theme="light"] .vl-card.loading .vl-thumb,
+[data-theme="light"] .vl-card.loading .vl-title-sk,
+[data-theme="light"] .vl-card.loading .vl-meta-sk,
+[data-theme="light"] .ch-card-skeleton .sk,
+[data-theme="light"] .mc-card-skeleton .sk,
+[data-theme="light"] .vd-loading-row,
+[data-theme="light"] .vd-rel-sk-line {
+  background: linear-gradient(
+    90deg,
+    #f1f5f9 0%,
+    #e2e8f0 30%,
+    rgba(13, 122, 77, .12) 50%,
+    #e2e8f0 70%,
+    #f1f5f9 100%
+  ) !important;
+  background-size: 220% 100% !important;
+}
+
+
+/* ---------- Pulse veloce su action button empty ------------ */
+.vl-empty-btn,
+.ch-empty-btn,
+.mc-empty-btn,
+.catalog-empty-btn {
+  position: relative;
+}
+.vl-empty-btn::after,
+.ch-empty-btn::after,
+.mc-empty-btn::after,
+.catalog-empty-btn::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 999px;
+  background: var(--accent);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity .25s;
+}
+.vl-empty-btn:hover::after,
+.ch-empty-btn:hover::after,
+.mc-empty-btn:hover::after,
+.catalog-empty-btn:hover::after {
+  opacity: .22;
+}
+
+
+/* ============================================================
+   CLEAR FILTERS — bottone "Cancella filtri" unificato
+   Stesso stile su tutte le pagine: categoria, cronologia,
+   miei-commenti, preferiti, search/esplora.
+   ============================================================ */
+.nm-clear-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  /* Piu' evidente: usa accent-soft come bg + bordo accent */
+  background: rgba(244, 63, 94, .12);
+  color: var(--rose);
+  border: 1.5px solid var(--rose);
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: .2px;
+  box-shadow: 0 2px 8px rgba(244, 63, 94, .15);
+  transition:
+    background .18s ease,
+    color .18s ease,
+    border-color .18s ease,
+    transform .12s ease,
+    box-shadow .18s ease;
+}
+.nm-clear-btn:hover {
+  background: var(--rose);
+  color: #fff;
+  border-color: var(--rose);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(244, 63, 94, .45);
+}
+.nm-clear-btn:active {
+  transform: translateY(0);
+}
+.nm-clear-btn:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+.nm-clear-btn .nm-clear-ico {
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(244, 63, 94, .25);
+  color: var(--rose);
+  transition: background .18s, color .18s;
+}
+.nm-clear-btn:hover .nm-clear-ico {
+  background: rgba(255, 255, 255, .25);
+  color: #fff;
+}
+@keyframes nmClearIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+[data-theme="light"] .nm-clear-btn {
+  background: var(--card);
+}
+[data-theme="light"] .nm-clear-btn:hover {
+  background: rgba(244, 63, 94, .10);
+}
+
+
+/* ---------- Picker "aggiungi a una cartella" (condiviso) ---------- */
+.nm-fp-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, .68);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 3200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: nmFpBgIn .18s ease;
+}
+@keyframes nmFpBgIn { from { opacity: 0; } to { opacity: 1; } }
+.nm-fp-bg.open { display: flex; }
+.nm-fp {
+  width: 100%;
+  max-width: 420px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .55);
+  overflow: hidden;
+  animation: nmFpIn .22s cubic-bezier(.2,.9,.3,1.2);
+}
+@keyframes nmFpIn {
+  from { transform: translateY(8px) scale(.96); opacity: 0; }
+  to   { transform: translateY(0)    scale(1);   opacity: 1; }
+}
+
+.nm-fp-h {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.nm-fp-h-body { flex: 1; }
+.nm-fp-h-title {
+  font-family: 'Outfit', 'Inter', sans-serif;
+  font-size: 16.5px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -.3px;
+  margin: 0 0 3px;
+}
+.nm-fp-h-sub {
+  font-size: 12.5px;
+  color: var(--text3);
+  line-height: 1.5;
+}
+.nm-fp-x {
+  border: 0;
+  background: var(--surface);
+  color: var(--text2);
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  border-radius: 8px;
+  font-family: inherit;
+  flex-shrink: 0;
+  transition: background .14s, color .14s;
+}
+.nm-fp-x:hover { background: var(--surface-2); color: var(--text); }
+.nm-fp-list { max-height: 280px; overflow-y: auto; padding: 8px; }
+.nm-fp-loading,
+.nm-fp-empty {
+  padding: 20px 14px;
+  text-align: center;
+  color: var(--text3);
+  font-size: 13px;
+}
+.nm-fp-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 0;
+  background: transparent;
+  border-radius: 10px;
+  color: var(--text);
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: background .14s, transform .12s;
+  margin: 1px 0;
+}
+.nm-fp-row:hover { background: var(--surface); transform: translateX(2px); }
+.nm-fp-row-ico {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.nm-fp-row-body { flex: 1; min-width: 0; }
+.nm-fp-row-name {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nm-fp-row-sub {
+  display: block;
+  font-size: 11.5px;
+  color: var(--text3);
+  margin-top: 1px;
+  font-weight: 500;
+}
+.nm-fp-row-check {
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity .14s, transform .14s;
+  flex-shrink: 0;
+}
+.nm-fp-row:hover .nm-fp-row-check { opacity: 1; transform: translateX(-2px); }
+
+/* Empty state arricchito */
+.nm-fp-empty {
+  padding: 28px 16px;
+  text-align: center;
+}
+.nm-fp-empty-ico {
+  width: 52px; height: 52px;
+  margin: 0 auto 12px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nm-fp-empty-ico svg { width: 26px; height: 26px; }
+.nm-fp-empty-t {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.nm-fp-empty-s {
+  font-size: 12.5px;
+  color: var(--text3);
+  line-height: 1.5;
+}
+
+/* Sezione "Nuova cartella" con label evidente */
+.nm-fp-create-section {
+  border-top: 1px solid var(--border);
+  padding: 12px 12px 4px;
+}
+.nm-fp-create-label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 4px 8px;
+}
+.nm-fp-foot {
+  display: flex;
+  gap: 8px;
+  padding: 0 0 12px;
+}
+/* Override: nella nuova versione il border-top sta su .nm-fp-create-section */
+.nm-fp-create-section .nm-fp-foot {
+  border-top: 0;
+  padding: 0;
+}
+.nm-fp-foot input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 8px 12px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+.nm-fp-foot input:focus { border-color: var(--accent); }
+.nm-fp-create {
+  flex: 0 0 auto;
+  padding: 8px 14px;
+  border-radius: 9px;
+  border: 0;
+  background: var(--accent-strong);
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.nm-fp-create:hover { background: #0d7a4d; }
+.nm-fp-skip {
+  width: 100%;
+  padding: 11px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  background: transparent;
+  color: var(--text3);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.nm-fp-skip:hover { background: var(--surface); color: var(--text2); }

@@ -1,0 +1,433 @@
+/* ============================================================
+   NETMED — pagina Iscrizioni (stile home, righe per canale)
+   ============================================================ */
+
+.isc-wrap {
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 0 32px 60px;
+  width: 100%;
+}
+
+/* ---------- Header semplice come home ---------- */
+.isc-head-simple {
+  padding: 28px 4px 18px;
+  margin: 0 0 12px;
+}
+.isc-title {
+  font-family: 'Outfit','Inter',sans-serif;
+  font-size: clamp(26px, 3.2vw, 36px);
+  font-weight: 800;
+  letter-spacing: -.6px;
+  line-height: 1.05;
+  margin: 0 0 6px;
+  color: var(--text);
+}
+.isc-sub-simple {
+  margin: 0;
+  color: var(--text3);
+  font-size: 13.5px;
+  min-height: 18px;
+}
+
+/* ---------- Riga creator (una per canale) ---------- */
+.isc-creator-row {
+  margin-bottom: 32px;
+}
+
+.isc-creator-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 4px 0 14px;
+  margin: 0 0 4px;
+}
+
+.isc-creator-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text);
+  min-width: 0;
+  flex: 1 1 auto;
+  padding: 6px 10px;
+  margin: -6px -10px;
+  border-radius: 12px;
+  transition: background .15s ease;
+}
+.isc-creator-info:hover,
+.isc-creator-info:focus-visible {
+  background: var(--bg-2);
+  outline: none;
+}
+
+.isc-creator-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 20px;
+  font-family: 'Outfit','Inter',sans-serif;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid var(--border);
+  box-shadow: 0 3px 10px rgba(0,0,0,.18);
+}
+.isc-creator-avatar img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+
+.isc-creator-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.isc-creator-name {
+  font-family: 'Outfit','Inter',sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.2;
+  letter-spacing: -.2px;
+}
+.isc-creator-name .verified-tick { flex-shrink: 0; }
+.isc-creator-meta {
+  font-size: 12.5px;
+  color: var(--text3);
+  font-weight: 500;
+}
+
+.isc-row-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: var(--bg-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  flex-shrink: 0;
+  transition: background .15s, border-color .15s, color .15s;
+  white-space: nowrap;
+}
+.isc-row-link:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* ---------- Empty state ---------- */
+.isc-empty {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text3);
+  background: var(--bg-2);
+  border-radius: 18px;
+  border: 1px dashed var(--border);
+  margin-top: 20px;
+}
+.isc-empty-ico {
+  font-size: 64px;
+  margin-bottom: 18px;
+  line-height: 1;
+  opacity: .8;
+}
+.isc-empty-t {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  font-family: 'Outfit','Inter',sans-serif;
+}
+.isc-empty-d {
+  font-size: 14px;
+  max-width: 480px;
+  margin: 0 auto 22px;
+  line-height: 1.55;
+  color: var(--text2);
+}
+.isc-empty-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 26px;
+  border-radius: 999px;
+  background: var(--accent-strong, var(--accent));
+  color: #fff;
+  border: 0;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: inherit;
+  transition: filter .15s, transform .12s;
+}
+.isc-empty-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+/* ---------- Mobile ---------- */
+@media (max-width: 720px) {
+  .isc-wrap { padding: 0 14px 40px; }
+  .isc-head-simple { padding: 18px 4px 14px; }
+  .isc-creator-row { margin-bottom: 24px; }
+  .isc-creator-avatar { width: 44px; height: 44px; font-size: 17px; }
+  .isc-creator-name { font-size: 16px; }
+  .isc-row-link { padding: 6px 12px; font-size: 12px; }
+}
+
+/* ============================================================
+   YouTube-style Iscrizioni redesign (Jun 2026)
+   ============================================================ */
+.isc-head-yt {
+  padding: 28px 0 18px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 22px;
+}
+.isc-title-yt {
+  font-family: "Outfit", system-ui, sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 6px;
+  letter-spacing: -.5px;
+}
+.isc-sub-yt {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Strip canali orizzontali (Story di Instagram / YouTube channel rail) */
+.isc-channels-strip {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding: 8px 0 24px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+}
+.isc-channels-strip::-webkit-scrollbar { height: 4px; }
+.isc-channels-strip::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.isc-ch-card {
+  flex: 0 0 auto;
+  width: 88px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  padding: 4px;
+  border-radius: 12px;
+  transition: background .15s;
+}
+.isc-ch-card:hover { background: var(--surface-2); }
+.isc-ch-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary, #0a6940), #0d8050);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 28px;
+  color: #fff;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: border-color .15s, transform .15s;
+}
+.isc-ch-card:hover .isc-ch-avatar {
+  border-color: var(--primary, #0a6940);
+  transform: scale(1.04);
+}
+.isc-ch-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.isc-ch-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+  max-width: 86px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.isc-ch-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Riga creator (header + griglia video) — più pulita */
+.isc-creator-row {
+  margin-bottom: 28px;
+}
+.isc-creator-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+.isc-creator-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 4px 6px;
+  transition: background .15s;
+}
+.isc-creator-info:hover { background: var(--surface-2); }
+.isc-creator-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--text);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.isc-creator-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.isc-creator-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.isc-creator-meta {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+.isc-row-link {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+}
+.isc-row-link:hover { background: var(--surface-2); }
+
+/* Stato vuoto YouTube-style */
+.isc-empty {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-muted);
+}
+.isc-empty-ico {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: .5;
+}
+.isc-empty-t {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.isc-empty-d {
+  font-size: 14px;
+  max-width: 480px;
+  margin: 0 auto 22px;
+  line-height: 1.6;
+}
+.isc-empty-btn {
+  background: var(--primary, #0a6940);
+  color: #fff;
+  border: 0;
+  padding: 11px 24px;
+  border-radius: 22px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+}
+.isc-empty-btn:hover { backgrou
+/* ============================================================
+   Layout YouTube-like: video in griglia multi-colonna (no scroll)
+   Si adatta automaticamente alla larghezza dello schermo.
+   ============================================================ */
+.isc-creator-row .row-scroll-wrap {
+  position: relative;
+}
+.isc-creator-row .row-scroll-wrap .row-arrow {
+  display: none !important;
+}
+.isc-creator-row .row-scroll {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px 14px;
+  overflow: visible !important;
+  scroll-snap-type: none !important;
+}
+.isc-creator-row .row-scroll .vcard {
+  width: auto !important;
+  min-width: 0 !important;
+  flex: none !important;
+  scroll-snap-align: none !important;
+}
+.isc-creator-row .row-scroll .vcard .vcard-thumb {
+  width: 100% !important;
+  aspect-ratio: 16/9;
+  height: auto !important;
+}
+
+/* Strip canali full-width: spazia di più */
+.isc-channels-strip {
+  padding: 14px 4px 28px !important;
+}
+
+@media (max-width: 980px) {
+  .isc-wrap { padding: 0 16px 40px; }
+  .isc-creator-row .row-scroll {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px 12px;
+  }
+}
+@media (max-width: 640px) {
+  .isc-wrap { padding: 0 12px 32px; }
+  .isc-creator-row .row-scroll {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px 10px;
+  }
+}
+}

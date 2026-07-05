@@ -1,0 +1,56 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: always
+    container_name: netmed-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: netmed
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d netmed"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  app:
+    build: .
+    restart: always
+    container_name: netmed-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/netmed
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: netmed
+      DB_SSL: "false"
+      JWT_SECRET: ${JWT_SECRET:-change_me_in_production_super_secret_xxxxxxx}
+    env_file:
+      - .env
+
+    volumes:
+      - ./routes:/app/routes
+      - ./services:/app/services
+      - ./middleware:/app/middleware
+      - ./public:/app/public
+      - ./db:/app/db
+      - ./scripts:/app/scripts
+      - ./server.js:/app/server.js
+      - ./test:/app/test
+      - ./package.json:/app/package.json
+
+volumes:
+  pgdata:

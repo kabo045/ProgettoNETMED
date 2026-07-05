@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="description" content="Cronologia dei tuoi commenti su NETMED."/>
+  <meta name="theme-color" content="#08562f"/>
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg"/>
+  <title>NETMED</title>
+
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
+
+  <link rel="stylesheet" href="css/user/base.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/header.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/footer.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/miei-commenti.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/responsive.css?v=20260615yl"/>
+
+  <!-- CSS forzato per aprire i dropdown (utente + nav Categorie/Tag/Esplora) -->
+  <style>
+    .uh-user.open .uh-dd,
+    .uh-mnu.open .uh-mnu-pop {
+      display: block !important;
+      opacity: 1 !important;
+      transform: none !important;
+      pointer-events: auto !important;
+      visibility: visible !important;
+    }
+  </style>
+  <script>
+    // Chiusura automatica dei dropdown quando si clicca fuori
+    document.addEventListener("click", function () {
+      document.querySelectorAll(".uh-user.open, .uh-mnu.open").forEach(function (el) {
+        el.classList.remove("open");
+      });
+    });
+  </script>
+</head>
+<body>
+
+<!-- HEADER UTENTE STANDARD -->
+<header class="user-hdr" role="banner">
+  <div class="uh-l">
+    <div class="uh-logo" onclick="location.href='home.html'" role="button" tabindex="0"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='home.html'}">
+      <div class="uh-logo-mark">N</div>
+      <span class="uh-logo-name">NETMED</span>
+    </div>
+    <nav class="uh-nav" id="uhNav" aria-label="Navigazione categorie">
+      <button class="uh-nav-link" onclick="location.href='home.html'">Home</button>
+      <div class="uh-mnu" data-mnu="cats">
+        <button class="uh-nav-link uh-mnu-trigger" type="button" onclick="event.stopPropagation();this.parentElement.classList.toggle('open')">Categorie <span class="uh-mnu-caret">▾</span></button>
+        <div class="uh-mnu-pop" onclick="event.stopPropagation()">
+          <button class="uh-mnu-item uh-mnu-all" onclick="location.href='search.html?view=categories'"><span class="uh-mnu-ico">→</span><span class="uh-mnu-label">Tutte le categorie</span></button>
+        </div>
+      </div>
+      <div class="uh-mnu" data-mnu="tags">
+        <button class="uh-nav-link uh-mnu-trigger" type="button" onclick="event.stopPropagation();this.parentElement.classList.toggle('open')">Tag <span class="uh-mnu-caret">▾</span></button>
+        <div class="uh-mnu-pop" onclick="event.stopPropagation()">
+          <button class="uh-mnu-item uh-mnu-all" onclick="location.href='search.html?view=tags'"><span class="uh-mnu-ico">→</span><span class="uh-mnu-label">Tutti i tag</span></button>
+        </div>
+      </div>
+      <div class="uh-mnu" data-mnu="explore">
+        <button class="uh-nav-link uh-mnu-trigger" type="button" onclick="event.stopPropagation();this.parentElement.classList.toggle('open')">Esplora <span class="uh-mnu-caret">▾</span></button>
+        <div class="uh-mnu-pop" onclick="event.stopPropagation()">
+          <button class="uh-mnu-item" onclick="location.href='iscrizioni.html'"><span class="uh-mnu-ico">▶</span><span class="uh-mnu-label">Iscrizioni</span></button>
+          <button class="uh-mnu-item" onclick="location.href='search.html?sort=views'"><span class="uh-mnu-ico">★</span><span class="uh-mnu-label">Più visti</span></button>
+          <button class="uh-mnu-item" onclick="location.href='search.html?sort=recent'"><span class="uh-mnu-ico">🕒</span><span class="uh-mnu-label">Recenti</span></button>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div class="uh-r">
+    <div class="uh-search" role="search">
+      <span class="uh-search-ico"><svg viewBox="0 0 20 20" width="16" height="16"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+      <input id="uhSearchInput" type="text" placeholder="Cerca video, categorie, tag…" autocomplete="off" maxlength="100"/>
+      <div class="uh-search-results" id="uhSearchResults"></div>
+    </div>
+    <button class="uh-login-btn" id="uhGuest" onclick="location.href='login.html'">Accedi</button>
+    <div class="uh-user" id="uhUser" style="display:none">
+      <div class="uh-avatar" id="uhAvatar">U</div>
+      <span class="uh-uname" id="uhUname">Utente</span>
+      <span class="uh-arrow"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+      <div class="uh-dd" id="uhDd" onclick="event.stopPropagation()">
+        <div class="uh-dd-head"><div class="uh-avatar" id="uhDdAvatar">U</div><div><div class="uh-dd-name" id="uhDdName">Utente</div><div class="uh-dd-email" id="uhDdEmail">—</div></div></div>
+        <div class="uh-dd-item" onclick="location.href='profilo.html'">Il mio profilo</div>
+        <div class="uh-dd-item" onclick="location.href='preferiti.html'">Salvati</div>
+        <div class="uh-dd-item" onclick="location.href='miei-commenti.html'">I miei commenti</div>
+        <div class="uh-dd-item" onclick="location.href='cronologia.html'">Cronologia</div>
+        <div class="uh-dd-item" id="uhDdCreator" style="display:none" onclick="location.href='creator.html'">I miei video</div>
+        <div class="uh-dd-item" id="uhDdAdmin" style="display:none" onclick="location.href='admin_dashboard.html'">Dashboard admin</div>
+        <div class="uh-dd-sep"></div>
+        <div class="uh-dd-item danger" onclick="(function(){try{localStorage.removeItem('token');localStorage.removeItem('user');}catch(_){};location.href='login.html'})()">Esci</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="mc-wrap" id="mainContent" role="main">
+  <header class="mc-head">
+    <div class="mc-head-row">
+      <h1>I miei commenti</h1>
+      <div class="mc-head-stats" id="mcStats"></div>
+    </div>
+    <p class="mc-head-sub">Tutti i commenti che hai scritto su NETMED. Clicca un commento per andare al video.</p>
+    <div class="mc-tabs" id="mcTabs" role="tablist">
+      <button class="mc-tab active" data-filter="all" onclick="MCApp.setFilter('all',this)">Tutti</button>
+      <button class="mc-tab" data-filter="active" onclick="MCApp.setFilter('active',this)">Attivi</button>
+      <button class="mc-tab" data-filter="deleted" onclick="MCApp.setFilter('deleted',this)">Eliminati</button>
+    </div>
+    <div class="mc-filters">
+      <div class="mc-search-wrap">
+        <svg class="mc-search-ico" viewBox="0 0 20 20" width="16" height="16"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="mcSearchInput" type="text" class="mc-search-input" placeholder="Cerca nei tuoi commenti..." maxlength="200" oninput="MCApp.onSearchInput(event)" onkeydown="if(event.key==='Enter'){event.preventDefault();MCApp.applySearch()}"/>
+        <button type="button" id="mcSearchClear" class="mc-search-clear" onclick="MCApp.clearSearch()" style="display:none">&times;</button>
+      </div>
+      <select id="mcVideoFilter" class="mc-select" onchange="MCApp.onVideoFilterChange()">
+        <option value="">Tutti i video</option>
+      </select>
+      <select id="mcSortSelect" class="mc-select" onchange="MCApp.onSortChange()">
+        <option value="recent">Più recenti</option>
+        <option value="old">Meno recenti</option>
+      </select>
+    </div>
+  </header>
+
+  <section class="mc-list" id="mcList" aria-live="polite">
+    <div style="padding:40px;text-align:center;color:#888">Caricamento…</div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="user-footer" role="contentinfo">
+  <div class="uf-grid">
+    <div class="uf-brand">
+      <div class="uf-brand-logo"><span class="uf-mark">N</span>NETMED</div>
+      <p class="uf-brand-desc">Piattaforma video a tema medico-scientifico.</p>
+    </div>
+    <div>
+      <div class="uf-col-title">Catalogo</div>
+      <a class="uf-col-link" onclick="location.href='home.html'">Home</a>
+    </div>
+    <div>
+      <div class="uf-col-title">Account</div>
+      <a class="uf-col-link" onclick="location.href='login.html'">Accedi</a>
+      <a class="uf-col-link" onclick="location.href='registrazione.html'">Registrati</a>
+    </div>
+    <div>
+      <div class="uf-col-title">Info</div>
+      <a class="uf-col-link" onclick="location.href='index.html'">Chi siamo</a>
+      <a class="uf-col-link" onclick="location.href='privacy.html'">Privacy</a>
+    </div>
+  </div>
+  <div class="uf-bottom"><span>© NETMED</span></div>
+</footer>
+
+<script src="js/user/miei-commenti.js?v=20260615yl"></script>
+</body>
+</html>

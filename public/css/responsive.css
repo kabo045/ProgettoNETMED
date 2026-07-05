@@ -1,0 +1,1528 @@
+/* ============================================================
+   NETMED — responsive.css
+   Responsività completa per ogni dispositivo (admin + auth).
+   Breakpoint:
+     Desktop grande   : >1441px
+     Laptop / tablet  : 1024-1200px
+     Tablet portrait  : 768-1024px
+     Mobile grande    : 600-768px
+     Mobile medio     : 375-480px
+     Mobile piccolo   : 320-375px
+     Landscape mobile : altezza < 500px in orizzontale
+   ============================================================ */
+
+
+/* ---------- DESKTOP GRANDE (>1441px) ---------- */
+@media (min-width: 1441px) {
+  .main { padding: 40px 48px; }
+  .sg { gap: 24px; }
+  .sc { padding: 28px; }
+  .vdetail { gap: 32px; }
+  .card-h { padding: 24px 28px; }
+  .vrow,
+  .urow { padding: 16px 28px; }
+  tbody td { padding: 18px 24px; }
+  thead th { padding: 16px 24px; }
+}
+
+
+/* ---------- LAPTOP PICCOLO / TABLET GRANDE (1024-1200px) ---------- */
+/* iPad Pro 12.9" landscape */
+@media (max-width: 1200px) {
+  .sg { grid-template-columns: repeat(2, 1fr); }
+  .vdetail,
+  .analytics-grid { grid-template-columns: 1fr; }
+  .bg { grid-template-columns: 1fr !important; }
+  #dCats { grid-template-columns: repeat(2, 1fr) !important; }
+  .main { padding: 28px 24px; }
+  .hdr-search { width: 240px; }
+}
+
+
+/* ---------- TABLET LANDSCAPE (768-1024px) ---------- */
+/* iPad Mini, iPad, iPad Air, iPad Pro 11" */
+@media (max-width: 1024px) {
+  .side { width: 220px; padding: 20px 12px; }
+  .side-link { padding: 10px 14px; font-size: 13px; }
+  .side-link .ico { width: 26px; height: 26px; font-size: 13px; }
+
+  .hdr { padding: 0 20px; }
+  .hdr-name { font-size: 22px; }
+
+  .vd-title { font-size: 18px; }
+  .vd-stat-val { font-size: 22px; }
+
+  .modal.lg { max-width: 700px; }
+}
+
+
+/* ---------- TABLET PORTRAIT / MOBILE GRANDE (600-768px) ---------- */
+/* iPad Mini portrait, Galaxy Tab */
+@media (max-width: 768px) {
+  /* Header compatto */
+  .hdr-burger { display: flex; }
+  .hdr { padding: 0 16px; height: 60px; gap: 8px; }
+  .hdr-name { font-size: 20px; }
+  .hdr-search { display: none; }
+  .hdr-notif,
+  .theme-toggle { width: 36px; height: 36px; font-size: 16px; border-radius: 10px; }
+  .hdr-user { padding: 4px 10px 4px 4px; border-radius: 10px; }
+  .hdr-avatar { width: 30px; height: 30px; font-size: 13px; border-radius: 8px; }
+  .hdr-arrow { display: none; }
+  .hdr-uname { font-size: 12px; }
+  .hdr-urole { font-size: 9px; }
+
+  /* Sidebar mobile overlay */
+  .side {
+    position: fixed;
+    left: -280px;
+    top: 0;
+    bottom: 0;
+    z-index: 100;
+    width: 260px;
+    transition: left .3s ease;
+    box-shadow: none;
+    padding: 24px 16px 16px;
+  }
+  .side.open { left: 0; box-shadow: 4px 0 24px rgba(0, 0, 0, .15); }
+  .side-overlay.open { display: block; }
+
+  /* Notif panel + dropdown */
+  .notif-panel { width: calc(100vw - 32px); right: -60px; max-height: 70vh; }
+  .dd { width: 200px; }
+
+  /* Main content */
+  .main { padding: 20px 16px; }
+  .sg { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .sc { padding: 18px; }
+  .sc .blob { width: 60px; height: 60px; }
+  .pt { font-size: 22px; }
+  .ps { font-size: 13px; }
+  .ph { flex-direction: column; align-items: stretch; gap: 12px; }
+  .ph > div:last-child { display: flex; }
+  .ph .btn { width: 100%; justify-content: center; }
+
+  /* Toolbar stacked */
+  .toolbar { flex-direction: column; gap: 10px; }
+  .sbox { min-width: 100%; }
+  .fsel { width: 100%; }
+
+  /* Tables compact */
+  .tcard { border-radius: 12px; }
+  thead th { padding: 10px 12px; font-size: 10px; }
+  tbody td { padding: 12px; font-size: 13px; }
+  .acts { gap: 4px; }
+  .btn-i { width: 32px; height: 32px; font-size: 12px; border-radius: 8px; }
+
+  /* Forms / modali */
+  .fr { grid-template-columns: 1fr; }
+  .modal { width: calc(100% - 16px); max-height: 85vh; border-radius: 16px; }
+  .modal.lg { max-width: calc(100% - 16px); }
+  .mh { padding: 20px 20px 0; }
+  .mh h2 { font-size: 18px; }
+  .mb { padding: 20px; }
+  .mf { padding: 12px 20px 20px; }
+
+  /* Profile */
+  .prof-card { border-radius: 16px; }
+  .prof-banner { height: 100px; }
+  .prof-avatar { width: 70px; height: 70px; font-size: 28px; border-radius: 16px; }
+  .prof-body { padding: 48px 20px 20px; }
+  .prof-name { font-size: 20px; }
+
+  /* Video detail */
+  .vdetail { gap: 16px; }
+  .vd-info { padding: 16px; }
+  .vd-stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .vd-stat { padding: 10px; }
+  .vd-stat-val { font-size: 20px; }
+  .vd-title { font-size: 18px; }
+
+  /* Analytics */
+  .analytics-grid { gap: 16px; }
+  .chart-card { padding: 16px; }
+  .mini-chart { height: 70px; }
+  .cat-bar-name { width: 70px; font-size: 12px; }
+
+  /* Breadcrumb / dashboard */
+  .bc { font-size: 11px; }
+  #dCats { grid-template-columns: 1fr 1fr !important; }
+  .bg { grid-template-columns: 1fr !important; }
+
+  /* Auth pages (login/register/index) */
+  .page-header { padding: 14px 16px; }
+  .logo-netmed-header a { font-size: 20px; }
+  .back-home { padding: 7px 14px; font-size: 12px; }
+  .back-home-text { display: none; }
+}
+
+
+/* ---------- MOBILE GRANDE (480-600px) ---------- */
+/* iPhone Plus/Max, Galaxy S Ultra */
+@media (max-width: 600px) {
+  .hdr-uname,
+  .hdr-urole { display: none; }
+  .hdr-user { padding: 4px; }
+  .notif-panel { right: -100px; }
+
+  /* Tabella: nascondi colonne meno importanti */
+  thead th:nth-child(3),
+  tbody td:nth-child(3) { display: none; }
+  thead th:nth-child(5),
+  tbody td:nth-child(5) { display: none; }
+
+  .vd-desc { font-size: 13px; }
+  .card-h { padding: 16px 20px; }
+  .card-h span { font-size: 13px !important; }
+
+  .prof-body { padding: 44px 16px 16px; }
+
+  .tag-sel { gap: 6px; }
+  .tag-opt { padding: 6px 14px; font-size: 12px; }
+}
+
+
+/* ---------- MOBILE MEDIO (375-480px) ---------- */
+/* iPhone 6/7/8/SE2-3/X/11/12/13/14, Galaxy S20-S23, Pixel 5-7 */
+@media (max-width: 480px) {
+  .hdr { height: 56px; padding: 0 12px; }
+  .hdr-logo { width: 34px; height: 34px; font-size: 17px; border-radius: 10px; }
+  .hdr-name { font-size: 18px; }
+  .hdr-r { gap: 6px; }
+  .hdr-notif,
+  .theme-toggle { width: 34px; height: 34px; font-size: 15px; }
+  .hdr-avatar { width: 28px; height: 28px; font-size: 12px; }
+  .hdr-burger { width: 36px; height: 36px; font-size: 20px; border-radius: 10px; }
+
+  .notif-panel { width: calc(100vw - 16px); right: -50px; left: auto; }
+  .notif-item { padding: 12px 14px; }
+  .notif-icon { width: 32px; height: 32px; font-size: 14px; }
+  .dd { width: 170px; right: -8px; }
+  .dd-item { padding: 11px 14px; font-size: 12px; }
+
+  .main { padding: 16px 12px; }
+  .sg { grid-template-columns: 1fr; gap: 10px; }
+  .sc { padding: 16px; }
+  .sc .blob { display: none; }
+  .pt { font-size: 20px; letter-spacing: -.3px; }
+  .ps { font-size: 12px; }
+  .bc { font-size: 10px; gap: 6px; margin-bottom: 6px; }
+
+  .ph { margin-bottom: 20px; }
+  .btn { padding: 9px 18px; font-size: 13px; border-radius: 10px; }
+  .btn-sm { padding: 6px 12px; font-size: 11px; }
+
+  .sbox input { padding: 10px 14px 10px 38px; font-size: 13px; border-radius: 10px; }
+  .fsel { padding: 10px 34px 10px 14px; font-size: 13px; border-radius: 10px; }
+
+  .tcard { border-radius: 10px; }
+  thead th { padding: 8px 10px; font-size: 9px; letter-spacing: .5px; }
+  tbody td { padding: 10px; font-size: 12px; }
+  .btn-i { width: 30px; height: 30px; font-size: 11px; border-radius: 7px; }
+  .acts { gap: 3px; }
+  .badge { font-size: 9px; padding: 3px 8px; border-radius: 5px; }
+  .tag-chip { font-size: 9px; padding: 2px 8px; }
+
+  .modal { width: calc(100% - 12px); border-radius: 14px; max-height: 88vh; }
+  .mh { padding: 16px 16px 0; }
+  .mh h2 { font-size: 16px; }
+  .mb { padding: 16px; }
+  .mf { padding: 10px 16px 16px; gap: 8px; }
+  .mx { width: 32px; height: 32px; font-size: 16px; }
+  .fi { padding: 10px 12px; font-size: 13px; border-radius: 8px; }
+  .fl { font-size: 12px; }
+  .fg { margin-bottom: 14px; }
+
+  .vdetail { gap: 12px; }
+  .vd-player { border-radius: 12px; }
+  .vd-info { padding: 14px; border-radius: 12px; }
+  .vd-title { font-size: 16px; }
+  .vd-desc { font-size: 12px; }
+  .vd-stats { gap: 6px; }
+  .vd-stat { padding: 8px; }
+  .vd-stat-val { font-size: 18px; }
+  .vd-stat-lab { font-size: 9px; letter-spacing: .5px; }
+  .vd-meta { gap: 6px; }
+  .vd-section-title { font-size: 11px; margin-bottom: 8px; }
+
+  .analytics-grid { gap: 12px; }
+  .chart-card { padding: 14px; border-radius: 12px; }
+  .chart-title { font-size: 12px; margin-bottom: 12px; }
+  .mini-chart { height: 60px; gap: 2px; }
+  .mini-bar { min-width: 5px; border-radius: 2px 2px 0 0; }
+  .cat-bar-name { width: 60px; font-size: 11px; }
+  .cat-bar-fill { height: 24px; font-size: 10px; border-radius: 6px; }
+  .cat-bar-val { font-size: 11px; }
+
+  .prof-card { border-radius: 14px; }
+  .prof-banner { height: 90px; }
+  .prof-avatar { width: 64px; height: 64px; font-size: 26px; border-radius: 14px; border-width: 3px; }
+  .prof-avatar-wrap { bottom: -32px; left: 16px; }
+  .prof-body { padding: 42px 16px 16px; }
+  .prof-name { font-size: 18px; }
+  .prof-email { font-size: 13px; }
+  .prof-date { font-size: 11px; }
+  .prof-section { font-size: 14px !important; }
+  .prof-sep { margin: 14px 0; }
+
+  .pag { padding: 12px; flex-wrap: wrap; gap: 8px; }
+  .pag-info { font-size: 11px; width: 100%; text-align: center; }
+  .pag-btns { width: 100%; justify-content: center; }
+  .pag-btn { padding: 6px 10px; font-size: 11px; border-radius: 6px; }
+
+  #dCats { grid-template-columns: 1fr !important; gap: 8px !important; }
+
+  .vrow,
+  .urow { padding: 12px 16px; gap: 12px; }
+  .card-h { padding: 14px 16px; }
+
+  .toast { padding: 12px 16px; font-size: 13px; border-radius: 10px; min-width: auto; }
+  .side-logout { padding: 10px 14px; font-size: 13px; }
+
+  /* Auth pages */
+  .page-header { padding: 12px 12px; }
+  .logo-netmed-header a { font-size: 18px; }
+  .back-home { padding: 6px 12px; font-size: 11px; border-radius: 20px; }
+  .back-home-arrow { font-size: 14px; }
+
+  .hero h1 { font-size: 22px !important; }
+  .hero p { font-size: 13px !important; }
+  .cta-pill { padding: 16px !important; border-radius: 14px !important; }
+  .cta-pill input { padding: 11px 14px !important; font-size: 13px !important; border-radius: 8px !important; }
+  .btn-pill { padding: 12px !important; font-size: 14px !important; border-radius: 8px !important; }
+  .auth-buttons a { font-size: 13px !important; }
+
+  .pw-toggle { right: 6px; font-size: 14px; padding: 4px; }
+}
+
+
+/* ---------- MOBILE PICCOLO (320-375px) ---------- */
+/* iPhone SE 1st gen, vecchi Android */
+@media (max-width: 375px) {
+  .hdr { height: 52px; padding: 0 10px; }
+  .hdr-logo { width: 30px; height: 30px; font-size: 15px; }
+  .hdr-name { font-size: 16px; }
+  .hdr-notif,
+  .theme-toggle { width: 30px; height: 30px; font-size: 14px; border-radius: 8px; }
+  .hdr-burger { width: 32px; height: 32px; font-size: 18px; border-radius: 8px; }
+  .hdr-avatar { width: 26px; height: 26px; font-size: 11px; }
+
+  .main { padding: 12px 10px; }
+  .pt { font-size: 18px; }
+  .ps { font-size: 11px; }
+  .sc { padding: 14px; }
+
+  .btn { padding: 8px 14px; font-size: 12px; }
+  .sbox input { padding: 9px 12px 9px 34px; font-size: 12px; }
+  .sbox .si { left: 10px; font-size: 13px; }
+  .fsel { padding: 9px 30px 9px 12px; font-size: 12px; }
+
+  thead th { padding: 7px 8px; font-size: 8px; }
+  tbody td { padding: 8px; font-size: 11px; }
+  .btn-i { width: 28px; height: 28px; font-size: 10px; border-radius: 6px; }
+
+  .modal { width: calc(100% - 8px); border-radius: 12px; }
+  .mh { padding: 14px 14px 0; }
+  .mh h2 { font-size: 15px; }
+  .mb { padding: 14px; }
+  .mf { padding: 8px 14px 14px; }
+  .fi { padding: 9px 10px; font-size: 12px; }
+
+  .vd-player { border-radius: 10px; }
+  .vd-stat-val { font-size: 16px; }
+  .vd-stat-lab { font-size: 8px; }
+  .vd-title { font-size: 15px; }
+
+  .prof-avatar { width: 56px; height: 56px; font-size: 22px; border-radius: 12px; }
+  .prof-body { padding: 38px 12px 12px; }
+  .prof-name { font-size: 16px; }
+
+  .notif-panel { width: calc(100vw - 12px); right: auto; left: 6px; }
+  .notif-item { padding: 10px 12px; gap: 8px; }
+  .notif-text { font-size: 12px; }
+
+  /* Auth pages */
+  .page-header { padding: 10px; }
+  .logo-netmed-header a { font-size: 16px; }
+  .hero h1 { font-size: 20px !important; }
+  .hero p { font-size: 12px !important; }
+  .cta-pill { padding: 14px !important; }
+  .cta-pill input { padding: 10px 12px !important; font-size: 12px !important; }
+  .btn-pill { padding: 10px !important; font-size: 13px !important; }
+}
+
+
+/* ---------- LANDSCAPE MOBILE ---------- */
+/* Telefoni in orizzontale: poca altezza */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hdr { height: 48px; }
+  .hdr-logo { width: 28px; height: 28px; font-size: 14px; }
+  .hdr-name { font-size: 16px; }
+  .main { padding: 12px 16px; }
+  .sg { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .sc { padding: 12px; }
+  .pt { font-size: 18px; }
+  .modal { max-height: 90vh; }
+  .notif-panel { max-height: 60vh; }
+  .side { top: 48px; }
+  .prof-banner { height: 70px; }
+  .prof-avatar { width: 50px; height: 50px; font-size: 20px; }
+  .prof-body { padding: 36px 16px 16px; }
+}
+
+
+/* ---------- ALTA DENSITÀ DI PIXEL (Retina) ---------- */
+@media (-webkit-min-device-pixel-ratio: 2),
+       (min-resolution: 192dpi) {
+  .hdr-logo,
+  .hdr-avatar,
+  .prof-avatar { -webkit-font-smoothing: antialiased; }
+}
+
+
+/* ---------- RIDUZIONE MOVIMENTO (accessibilità) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* ============================================================
+   PARTE UTENTE (home Netflix-style, dettaglio video, footer)
+   Selettori .user-hdr, .uh-*, .hero-*, .row*, .vcard*, .uf-*
+   ============================================================ */
+
+
+/* ---------- USER: laptop / tablet grande (max 1200px) ---------- */
+@media (max-width: 1200px) {
+  .user-hdr { padding: 0 32px; }
+  .hero-content { padding: 0 32px 48px; }
+  .hero-title { font-size: 42px; }
+  .row-header { padding: 0 32px; }
+  .row-scroll { padding: 4px 32px 16px; }
+  /* Footer ha le sue regole responsive in css/user/footer.css — non duplico qui */
+  /* .uh-search: icona espandibile, vedi header.css */
+}
+
+
+/* ---------- USER: tablet landscape (max 1024px) ---------- */
+@media (max-width: 1024px) {
+  .user-hdr { padding: 0 24px; gap: 16px; }
+  /* La nav resta visibile: è una strip a scorrimento orizzontale,
+     funziona bene anche su tablet. */
+  .uh-nav { gap: 4px; padding: 4px 2px; }
+  .uh-nav-link { height: 34px; padding: 0 14px; font-size: 12.5px; }
+  /* .hero: rapporto 16/9 gestito da hero.css */
+  .hero-title { font-size: 36px; }
+  .hero-desc { font-size: 14px; }
+  .hero-content { padding: 0 24px 40px; }
+  .row-header { padding: 0 24px; }
+  .row-scroll { padding: 4px 24px 16px; gap: 12px; }
+  .vcard { flex: 0 0 240px; }
+  /* Footer ha le sue regole responsive in css/user/footer.css — non duplico qui */
+}
+
+
+/* ---------- USER: tablet portrait (max 768px) ---------- */
+@media (max-width: 768px) {
+  .user-hdr {
+    /* Header su due righe: top (logo + controlli) + bottom (nav scrollabile) */
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 60px;
+    padding: 8px 16px;
+    gap: 8px;
+    row-gap: 6px;
+  }
+  .uh-l {
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 10px;
+  }
+  .uh-r { gap: 8px; }
+  .uh-logo-name { font-size: 18px; }
+  /* .uh-search: icona espandibile, vedi header.css */
+  .uh-uname { display: none; }
+  .uh-user { padding: 4px; }
+  .uh-arrow { display: none; }
+  /* La strip categorie va a capo e prende tutta la larghezza */
+  .uh-nav {
+    order: 99;
+    flex: 0 0 100%;
+    margin-left: 0;
+    padding: 4px 0 2px;
+  }
+
+  .hero { margin-bottom: 24px; }
+  .hero-title { font-size: 30px; line-height: 1.1; }
+  .hero-desc { font-size: 13px; -webkit-line-clamp: 2; margin-bottom: 16px; }
+  .hero-content { padding: 0 20px 32px; max-width: 100%; }
+  .hero-badge { font-size: 10px; padding: 5px 12px; margin-bottom: 12px; }
+  .hero-meta { font-size: 12px; gap: 10px; margin-bottom: 16px; }
+  .hero-btn { padding: 10px 20px; font-size: 13px; }
+
+  .row { margin-bottom: 28px; }
+  .row-title { font-size: 18px; }
+  .row-header { padding: 0 16px; }
+  .row-scroll { padding: 4px 16px 12px; gap: 10px; }
+  .row-arrow { display: none; }
+  .vcard { flex: 0 0 220px; }
+
+  /* Footer ha le sue regole responsive in css/user/footer.css — non duplico qui */
+}
+
+
+/* ---------- USER: mobile grande (max 600px) ---------- */
+@media (max-width: 600px) {
+  /* A 600px tutti i controlli scendono a 36px per coerenza */
+  :root { --uh-ctrl-h: 36px; }
+  /* .uh-search: icona espandibile, vedi header.css */
+  .uh-search input { font-size: 12px; padding: 0 12px 0 34px; }
+  .uh-search-ico { left: 12px; font-size: 13px; }
+  .uh-icon-btn { font-size: 15px; }
+  .uh-login-btn { padding: 0 14px; font-size: 12px; }
+  .uh-avatar { width: 28px; height: 28px; font-size: 12px; }
+  .nm-lang-switch-inline { height: 36px; min-width: 50px; padding: 0 12px; font-size: 12px; }
+  .uh-nav-link { height: 32px; padding: 0 12px; font-size: 12px; }
+
+  /* Sotto a 600px la nav inline (Home / Categorie / Tag / Esplora) viene
+     nascosta: tutte le voci restano accessibili dal menu hamburger
+     (uh-mpanel), che ha gia' una sezione Categorie + Tag + Esplora
+     completa. Cosi' l'header non va in overflow su schermi stretti. */
+  .uh-nav { display: none !important; }
+
+  /* .hero: rapporto 16/9 gestito da hero.css */
+  .hero-title { font-size: 26px; }
+}
+
+
+/* ---------- USER: mobile medio (max 480px) ---------- */
+@media (max-width: 480px) {
+  :root { --uh-ctrl-h: 34px; }
+  .user-hdr { padding: 6px 12px; min-height: 56px; gap: 6px; }
+  .uh-logo-mark { width: 32px; height: 32px; font-size: 16px; border-radius: 8px; }
+  .uh-logo-name { font-size: 16px; }
+  /* .uh-search: icona espandibile, vedi header.css */
+  .uh-search input { font-size: 12px; padding: 0 10px 0 30px; }
+  .uh-search-ico { left: 10px; font-size: 12px; }
+  .uh-icon-btn { font-size: 13px; }
+  .uh-login-btn { padding: 0 12px; font-size: 11px; }
+  .uh-avatar { width: 26px; height: 26px; font-size: 11px; }
+  .nm-lang-switch-inline { height: 34px; min-width: 46px; padding: 0 10px; font-size: 11px; }
+  .uh-nav-link { height: 30px; padding: 0 10px; font-size: 11.5px; }
+
+  .hero { min-height: 300px; margin-bottom: 16px; }
+  .hero-title { font-size: 22px; letter-spacing: -.5px; margin-bottom: 10px; }
+  .hero-desc { font-size: 12px; line-height: 1.5; -webkit-line-clamp: 2; margin-bottom: 14px; }
+  .hero-content { padding: 0 14px 24px; }
+  .hero-badge { font-size: 9px; padding: 4px 10px; letter-spacing: 1.2px; }
+  .hero-meta { font-size: 11px; gap: 8px; margin-bottom: 12px; }
+  .hero-actions { gap: 8px; }
+  .hero-btn { padding: 9px 16px; font-size: 12px; gap: 6px; }
+
+  .row { margin-bottom: 22px; }
+  .row-title { font-size: 16px; }
+  .row-title::before { width: 3px; height: 18px; }
+  .row-header { padding: 0 14px; margin-bottom: 10px; }
+  .row-scroll { padding: 4px 14px 10px; gap: 10px; }
+  .row-link { font-size: 11px; }
+  .vcard { flex: 0 0 180px; border-radius: 10px; }
+  .vcard-body { padding: 10px 12px 12px; }
+  .vcard-title { font-size: 13px; min-height: 36px; }
+  .vcard-meta { font-size: 11px; gap: 6px; }
+
+  /* Footer ha le sue regole responsive in css/user/footer.css — non duplico qui */
+
+  /* Toast utente più piccoli */
+  .user-toast { padding: 12px 16px; font-size: 13px; min-width: auto; max-width: calc(100vw - 32px); }
+  .user-toast-box { right: 12px; bottom: 12px; left: 12px; }
+}
+
+
+/* ---------- USER: mobile piccolo (max 375px) ---------- */
+@media (max-width: 375px) {
+  :root { --uh-ctrl-h: 32px; }
+  .user-hdr { padding: 6px 10px; min-height: 52px; gap: 6px; }
+  .uh-logo-mark { width: 28px; height: 28px; font-size: 14px; }
+  .uh-logo-name { font-size: 14px; }
+  /* .uh-search: icona espandibile, vedi header.css */
+  .uh-search input { font-size: 11px; padding: 0 8px 0 26px; }
+  .uh-search-ico { left: 8px; font-size: 11px; }
+  .uh-icon-btn { font-size: 12px; }
+  .uh-login-btn { padding: 0 10px; font-size: 10px; }
+  .nm-lang-switch-inline { height: 32px; min-width: 42px; padding: 0 8px; font-size: 10px; }
+  .uh-nav-link { height: 28px; padding: 0 9px; font-size: 11px; }
+
+  .hero { min-height: 280px; }
+  .hero-title { font-size: 19px; }
+  .hero-desc { font-size: 11px; -webkit-line-clamp: 2; }
+  .hero-btn { padding: 8px 14px; font-size: 11px; }
+
+  .row-title { font-size: 15px; }
+  .vcard { flex: 0 0 160px; }
+  .vcard-title { font-size: 12px; min-height: 32px; }
+}
+
+
+/* ---------- USER: landscape mobile ---------- */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero { min-height: 260px; }
+  .hero-title { font-size: 26px; }
+  .hero-desc { -webkit-line-clamp: 2; }
+}
+
+
+/* ---------- USER: nascondi search input molto stretto ---------- */
+@media (max-width: 340px) {
+  .uh-search { display: none; }
+}
+
+
+/* ============================================================
+   PARTE VIDEO (pagina dettaglio video.html)
+   Layout 2 colonne -> 1 colonna su tablet/mobile, player fluido,
+   azioni che vanno a capo, correlati compatti.
+   ============================================================ */
+
+@media (max-width: 1280px) {
+  .vd-wrap { padding: 22px 32px 64px; }
+  .vd-grid { gap: 24px; grid-template-columns: minmax(0, 1fr) 340px; }
+}
+
+@media (max-width: 1100px) {
+  .vd-wrap { padding: 20px 28px 56px; }
+  .vd-grid { grid-template-columns: 1fr; gap: 32px; }
+  .vd-aside { order: 2; }
+  .vd-comm  { order: 3; }
+  .vd-rel-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .vd-rel-card { padding: 0; margin: 0; }
+  .vd-rel-thumb { width: 100%; }
+  .vd-rel-skeleton {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .vd-rel-sk-thumb { width: 100%; }
+}
+
+@media (max-width: 900px) {
+  .vd-wrap { padding: 18px 22px 48px; }
+  .vd-title { font-size: 22px; }
+  .vd-actions { gap: 6px; }
+  .va-btn,
+  .va-vote .va-vote-btn { padding: 8px 14px; font-size: 12.5px; }
+  .vd-player-play { width: 76px; height: 76px; font-size: 26px; }
+}
+
+@media (max-width: 768px) {
+  .vd-wrap { padding: 16px 18px 40px; }
+  .vd-back { padding: 7px 12px; font-size: 12px; margin-bottom: 14px; }
+  .vd-player { border-radius: 12px; }
+  .vd-title { font-size: 19px; margin-top: 14px; }
+  .vd-cat-row { gap: 8px; margin-top: 8px; }
+  .vd-cat-pill { padding: 4px 10px; font-size: 11.5px; }
+  .vd-meta-line { font-size: 12px; gap: 4px 10px; }
+
+  /* Lo "spacer" non spinge più nulla: mando il report a capo */
+  .vd-actions {
+    gap: 6px;
+    margin-top: 14px;
+    padding-top: 12px;
+  }
+  .vd-actions .va-spacer { display: none; }
+  .va-btn.report { margin-left: auto; }
+
+  .va-btn,
+  .va-vote .va-vote-btn { padding: 7px 12px; font-size: 12px; }
+  .va-btn .va-ico,
+  .va-vote .va-vote-btn .va-ico { font-size: 14px; }
+
+  .vd-desc { padding: 14px 14px; border-radius: 12px; }
+  .vd-desc-text { font-size: 13.5px; max-height: 88px; }
+
+  .vd-login-cta { padding: 14px 16px; }
+  .vd-login-cta-btn { padding: 9px 18px; font-size: 12.5px; }
+
+  .vd-comm { margin-top: 26px; }
+  .vd-comm-h h2 { font-size: 18px; }
+  .vd-comm-form-avatar,
+  .vd-comm-avatar { width: 36px; height: 36px; font-size: 14px; }
+  .vd-comm-textarea { font-size: 13.5px; }
+  .vd-comm-text { font-size: 13.5px; }
+  .vd-comm-list { gap: 18px; }
+
+  /* Correlati: torna a 1 per riga sotto i 768 */
+  .vd-rel-list,
+  .vd-rel-skeleton {
+    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .vd-rel-thumb,
+  .vd-rel-sk-thumb { width: 160px; flex-shrink: 0; }
+  .vd-rel-card { gap: 10px; }
+  .vd-rel-title { font-size: 13px; }
+  .vd-rel-meta { font-size: 11px; }
+
+  .vd-modal { border-radius: 14px; }
+  .vd-modal-h { padding: 14px 18px; }
+  .vd-modal-body { padding: 16px 18px; }
+  .vd-modal-foot { padding: 12px 18px; flex-wrap: wrap; }
+  .vd-modal-title { font-size: 15px; }
+  .vd-modal-btn { padding: 8px 14px; font-size: 12.5px; }
+}
+
+@media (max-width: 600px) {
+  .vd-wrap { padding: 14px 14px 36px; }
+  .vd-player { border-radius: 10px; }
+  .vd-player-play { width: 64px; height: 64px; font-size: 22px; padding-left: 4px; }
+  .vd-title { font-size: 17px; line-height: 1.3; }
+
+  .vd-cat-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+
+  /* Tutti i bottoni azione stessa riga, centrati, in carrellata */
+  .vd-actions {
+    margin-top: 12px;
+    padding-top: 10px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .vd-actions::-webkit-scrollbar { display: none; }
+  .vd-actions { scrollbar-width: none; }
+  .vd-actions .va-spacer,
+  .vd-actions .va-btn.report { display: none; }
+  /* Sposto "Segnala" sotto, accessibile dalla descrizione */
+  .va-btn,
+  .va-vote .va-vote-btn { padding: 7px 11px; font-size: 11.5px; flex-shrink: 0; }
+
+  .vd-desc { padding: 12px 12px; }
+  .vd-desc-meta { font-size: 12px; gap: 8px; flex-wrap: wrap; }
+
+  .vd-tag { font-size: 11px; padding: 3px 8px; }
+
+  .vd-comm-h h2 { font-size: 17px; }
+  .vd-comm-form-avatar,
+  .vd-comm-avatar { width: 32px; height: 32px; font-size: 13px; }
+  .vd-comm-textarea { font-size: 13px; min-height: 40px; }
+  .vd-comm-text { font-size: 13px; }
+  .vd-comm-name { font-size: 12.5px; }
+
+  .vd-rel-thumb,
+  .vd-rel-sk-thumb { width: 140px; }
+
+  .vd-modal { border-radius: 12px; }
+  .vd-modal-foot { gap: 6px; }
+  .vd-modal-foot .vd-modal-btn { flex: 1 1 auto; padding: 10px 12px; }
+}
+
+@media (max-width: 480px) {
+  .vd-wrap { padding: 12px 10px 32px; }
+  .vd-back { padding: 6px 10px; font-size: 11.5px; }
+  .vd-title { font-size: 16px; }
+  .vd-player { border-radius: 8px; }
+  .vd-player-play { width: 56px; height: 56px; font-size: 19px; }
+
+  .va-btn,
+  .va-vote .va-vote-btn { padding: 6px 10px; font-size: 11px; gap: 5px; }
+  .va-btn .va-ico { font-size: 13px; }
+
+  .vd-desc { padding: 10px 12px; border-radius: 10px; }
+  .vd-desc-text { font-size: 13px; line-height: 1.55; max-height: 76px; }
+
+  .vd-rel-card { padding: 4px; margin: -4px; }
+  .vd-rel-thumb,
+  .vd-rel-sk-thumb { width: 120px; }
+  .vd-rel-title { font-size: 12.5px; }
+  .vd-rel-meta { font-size: 10.5px; }
+
+  .vd-comm-form { gap: 8px; }
+  .vd-comm-item { gap: 8px; }
+  .vd-comm-form-avatar,
+  .vd-comm-avatar { width: 30px; height: 30px; font-size: 12px; }
+
+  .vd-modal { max-width: 100%; }
+  .vd-modal-h { padding: 12px 14px; }
+  .vd-modal-body { padding: 14px; }
+  .vd-modal-foot { padding: 10px 14px; }
+  .vd-form-select,
+  .vd-form-textarea,
+  .vd-share-input { font-size: 13px; }
+
+  /* Empty state più stretto */
+  .vd-empty { padding: 60px 16px; }
+  .vd-empty-ico { font-size: 56px; }
+  .vd-empty-t { font-size: 17px; }
+  .vd-empty-d { font-size: 13px; }
+}
+
+@media (max-width: 375px) {
+  .vd-wrap { padding: 10px 8px 28px; }
+  .vd-title { font-size: 15px; }
+  .vd-rel-thumb,
+  .vd-rel-sk-thumb { width: 104px; }
+  .vd-rel-title { font-size: 12px; }
+
+  .va-btn span:not(.va-ico),
+  .va-vote .va-vote-btn span:not(.va-ico) { display: none; }
+  /* Nascondo le label, mostro solo le icone per risparmiare spazio.
+     I numeri di like/dislike rimangono visibili perché non hanno la
+     classe va-ico ma sono dentro <span id> esplicito. */
+  #vdLikesN,
+  #vdDislikesN,
+  #vdFavLabel { display: inline; }
+}
+
+
+/* ============================================================
+   PARTE LISTE (categoria, search, preferiti) - vlist.css
+   Hero compatta, toolbar, griglia card responsive.
+   ============================================================ */
+
+@media (max-width: 1280px) {
+  .vl-wrap { padding: 0 32px 64px; }
+  .vl-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px 16px; }
+  .vl-hero-title { font-size: 38px; }
+}
+
+@media (max-width: 1024px) {
+  .vl-wrap { padding: 0 28px 56px; }
+  .vl-hero { padding: 44px 0 26px; margin-bottom: 20px; }
+  .vl-hero-title { font-size: 34px; }
+  .vl-hero-desc { font-size: 14px; }
+  .vl-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px 14px; }
+}
+
+@media (max-width: 768px) {
+  .vl-wrap { padding: 0 22px 48px; }
+  .vl-hero { padding: 36px 0 22px; margin-bottom: 18px; }
+  .vl-hero-eyebrow { font-size: 11px; padding: 4px 10px; margin-bottom: 12px; }
+  .vl-hero-title { font-size: 28px; }
+  .vl-hero-desc { font-size: 13.5px; }
+  .vl-hero-stats { gap: 14px; font-size: 12.5px; }
+
+  .vl-toolbar { gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+  .vl-toolbar-label { font-size: 12px; }
+  .vl-select { padding: 8px 30px 8px 12px; font-size: 12.5px; }
+
+  .vl-tabs { width: 100%; justify-content: stretch; overflow-x: auto; }
+  .vl-tab { padding: 7px 12px; font-size: 12.5px; }
+  .vl-tab-count { font-size: 10.5px; padding: 1px 6px; }
+
+  .vl-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px 12px;
+  }
+  .vl-thumb { border-radius: 10px; }
+  .vl-thumb-play { width: 48px; height: 48px; font-size: 17px; }
+  .vl-thumb-rm { width: 28px; height: 28px; font-size: 14px; }
+  .vl-card.removable .vl-thumb-rm { display: flex; }
+  .vl-title { font-size: 13.5px; }
+  .vl-meta { font-size: 11.5px; }
+
+  .vl-chip { padding: 8px 14px; font-size: 13px; }
+  .vl-chip-grid { gap: 8px; }
+
+  /* Filtri attivi e tag cloud più compatti su tablet */
+  .vl-fchip { padding: 5px 4px 5px 10px; font-size: 12px; }
+  .vl-fchip > span:nth-child(2) { max-width: 140px; }
+  .vl-fchip-x { width: 20px; height: 20px; font-size: 10px; }
+  .vl-fclear { padding: 6px 12px; font-size: 12px; }
+  .vl-tagcloud { gap: 8px; }
+  .vl-tagcloud-item.s5 { font-size: 16px; padding: 9px 16px; }
+  .vl-tagcloud-item.s4 { font-size: 14px; padding: 8px 14px; }
+  .vl-tagcloud-item.s3 { font-size: 13px; padding: 7px 13px; }
+  .vl-tagcloud-item.s2 { font-size: 12.5px; padding: 6px 12px; }
+  .vl-tagcloud-item.s1 { font-size: 12px; padding: 6px 11px; }
+
+  .vl-empty { padding: 60px 18px; }
+  .vl-empty-ico { font-size: 52px; }
+  .vl-empty-t { font-size: 17px; }
+  .vl-empty-d { font-size: 13px; }
+}
+
+@media (max-width: 600px) {
+  .vl-wrap { padding: 0 18px 40px; }
+  .vl-hero { padding: 30px 0 18px; }
+  .vl-hero-title { font-size: 24px; line-height: 1.2; }
+  .vl-hero-desc { font-size: 13px; }
+  .vl-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px 10px;
+  }
+  .vl-body { padding: 10px 2px 4px; }
+}
+
+@media (max-width: 480px) {
+  .vl-wrap { padding: 0 14px 32px; }
+  .vl-hero { padding: 24px 0 16px; }
+  .vl-hero-title { font-size: 22px; }
+  .vl-hero-desc { font-size: 12.5px; }
+  .vl-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 8px;
+  }
+  .vl-thumb { border-radius: 8px; }
+  .vl-title { font-size: 12.5px; line-height: 1.3; }
+  .vl-meta { font-size: 11px; }
+  .vl-chip { padding: 7px 12px; font-size: 12px; }
+
+  /* Tag cloud più piccolo su mobile */
+  .vl-tagcloud-item.s5 { font-size: 14px; padding: 7px 13px; }
+  .vl-tagcloud-item.s4 { font-size: 13px; padding: 6px 12px; }
+  .vl-tagcloud-item.s3,
+  .vl-tagcloud-item.s2,
+  .vl-tagcloud-item.s1 { font-size: 12px; padding: 6px 11px; }
+  .vl-tagcloud-count { font-size: 10px; padding: 1px 6px; }
+  .vl-fchip > span:nth-child(2) { max-width: 100px; }
+}
+
+@media (max-width: 380px) {
+  .vl-wrap { padding: 0 10px 28px; }
+  .vl-hero-title { font-size: 19px; }
+  .vl-grid { grid-template-columns: 1fr; gap: 14px; }
+  .vl-card { display: grid; grid-template-columns: 130px 1fr; gap: 10px; align-items: stretch; }
+  .vl-thumb { width: 130px; }
+  .vl-body { padding: 4px 4px 4px 0; }
+  .vl-title { -webkit-line-clamp: 3; }
+}
+
+
+/* ============================================================
+   PARTE PROFILO (profilo.html) - up-profile.css
+   ============================================================ */
+
+@media (max-width: 1024px) {
+  .up-wrap { padding: 28px 28px 64px; }
+  .up-stats { grid-template-columns: repeat(5, 1fr); gap: 12px; }
+}
+
+@media (max-width: 900px) {
+  .up-stats { grid-template-columns: repeat(3, 1fr); }
+  .up-stats .up-stat:nth-child(4),
+  .up-stats .up-stat:nth-child(5) { grid-column: span 1; }
+}
+
+@media (max-width: 768px) {
+  .up-wrap { padding: 22px 22px 52px; }
+  .up-hero-banner { height: 92px; }
+  .up-hero-body { padding: 0 22px 18px; gap: 16px; }
+  .up-avatar { width: 92px; height: 92px; font-size: 38px; border-width: 3px; }
+  .up-id-name { font-size: 24px; }
+  .up-id-email { font-size: 13px; }
+  .up-stats { gap: 10px; }
+  .up-stat { padding: 14px 12px; }
+  .up-stat-n { font-size: 21px; }
+  .up-stat-l { font-size: 11px; }
+  .up-section { padding: 20px 22px; }
+  .up-section-h h2 { font-size: 17px; }
+  .up-section-h-ico { width: 32px; height: 32px; font-size: 15px; }
+  .up-form { grid-template-columns: 1fr; gap: 12px; }
+  .up-fl { font-size: 11.5px; }
+  .up-fi { font-size: 13.5px; padding: 9px 12px; }
+}
+
+@media (max-width: 600px) {
+  .up-wrap { padding: 18px 16px 40px; }
+  .up-hero { border-radius: 14px; }
+  .up-hero-banner { height: 80px; }
+  .up-hero-body { padding: 0 18px 16px; margin-top: -42px; }
+  .up-avatar { width: 78px; height: 78px; font-size: 32px; border-width: 3px; }
+  .up-id-name { font-size: 20px; gap: 6px; }
+  .up-id-badge { font-size: 10px; padding: 2px 7px; }
+  .up-id-email { font-size: 12.5px; }
+  .up-id-meta { font-size: 11.5px; }
+
+  .up-stats { grid-template-columns: repeat(2, 1fr); }
+  .up-stat-ico { font-size: 20px; }
+
+  .up-section { padding: 18px 18px; border-radius: 14px; }
+  .up-form-actions { justify-content: stretch; }
+  .up-form-actions .up-btn { flex: 1 1 auto; padding: 10px 12px; font-size: 12.5px; }
+
+  .up-danger-row { flex-direction: column; align-items: stretch; }
+  .up-danger-row .up-btn { width: 100%; padding: 10px 12px; }
+}
+
+@media (max-width: 480px) {
+  .up-wrap { padding: 14px 12px 32px; }
+  .up-hero-body { padding: 0 14px 14px; gap: 12px; flex-wrap: wrap; }
+  .up-avatar { width: 68px; height: 68px; font-size: 28px; }
+  .up-id { width: 100%; padding-bottom: 0; }
+  .up-id-name { font-size: 18px; flex-wrap: wrap; }
+
+  .up-stats { gap: 8px; }
+  .up-stat { padding: 12px 8px; border-radius: 10px; }
+  .up-stat-n { font-size: 18px; }
+  .up-stat-l { font-size: 10px; }
+
+  .up-section { padding: 14px 14px; border-radius: 12px; }
+  .up-section-d { font-size: 12.5px; }
+  .up-fi { font-size: 13px; padding: 8px 10px; border-radius: 8px; }
+  .up-form-actions { gap: 6px; }
+}
+
+@media (max-width: 360px) {
+  .up-stats { grid-template-columns: 1fr 1fr; }
+  .up-id-name { font-size: 16px; }
+  .up-section-h h2 { font-size: 16px; }
+}
+
+
+/* ============================================================
+   NUOVI COMPONENTI USER (nav dropdown, creator-upload, auth pill)
+   Coperti tutti i breakpoint Google standard:
+     320, 360, 375, 411, 414, 480, 540, 600, 768, 820, 912, 1024, 1280
+   ============================================================ */
+
+/* ---------- Tablet landscape: nav dropdown compatti ---------- */
+@media (max-width: 1024px) {
+  .uh-nav { gap: 6px; }
+  .uh-nav-link { height: 36px; padding: 0 13px; font-size: 13px; }
+  .uh-nav-cta { height: 36px; padding: 0 13px 0 11px; font-size: 12.5px; }
+  .uh-mnu-pop { min-width: 220px; }
+}
+
+/* ---------- Tablet medio (820px Surface Duo / iPad) ---------- */
+@media (max-width: 912px) {
+  .uh-nav-link { padding: 0 12px; font-size: 12.5px; }
+  .uh-nav-link.uh-nav-home::before { font-size: 12px; }
+}
+
+/* ---------- Tablet portrait (max 768px) ---------- */
+@media (max-width: 768px) {
+  /* La nav è già su seconda riga; assicuriamo i menu non sforino */
+  .uh-mnu-pop {
+    min-width: 220px;
+    max-width: calc(100vw - 24px);
+  }
+  /* Per evitare che il dropdown della seconda voce esca dallo schermo,
+     se è l'ultimo lo facciamo aprire allineato a destra. */
+  .uh-mnu:last-of-type .uh-mnu-pop {
+    left: auto;
+    right: 0;
+    transform-origin: top right;
+  }
+  /* CTA Carica video: spinto a destra naturalmente, ma su nav su seconda
+     riga lo manteniamo a destra dell'ultimo dropdown. */
+  .uh-nav-cta { margin-left: auto; }
+
+  /* creator-upload: il layout passa già a single col a 980px;
+     ridimensioniamo le card per stare bene su tablet. */
+  .cu-wrap { padding: 20px 20px 64px; }
+  .cu-card { padding: 18px 18px 20px; }
+
+  /* Dropdown utente: assicuriamo non esca dal viewport */
+  .uh-dd { width: min(260px, calc(100vw - 24px)); }
+}
+
+/* ---------- Mobile grande (max 600px) ---------- */
+@media (max-width: 600px) {
+  /* Nav header ridotta */
+  .uh-nav { gap: 4px; }
+  .uh-nav-link { height: 32px; padding: 0 11px; font-size: 12px; border-radius: 10px; }
+  .uh-nav-cta { height: 34px; padding: 0; width: 34px; justify-content: center; }
+  .uh-nav-cta-lbl { display: none; }
+  .uh-nav-cta-ico { font-size: 15px; }
+  .uh-mnu-caret { font-size: 8px; }
+
+  /* Dropdown nav: fluido, posizionato sotto il trigger */
+  .uh-mnu-pop {
+    min-width: 200px;
+    max-width: calc(100vw - 24px);
+    border-radius: 12px;
+    padding: 6px;
+  }
+  .uh-mnu-item { padding: 9px 10px; font-size: 12.5px; }
+  .uh-mnu-ico { width: 20px; height: 20px; font-size: 11px; }
+
+  /* Dropdown utente: full bleed con safe area */
+  .uh-dd {
+    width: min(280px, calc(100vw - 16px));
+    right: 8px;
+    top: calc(100% + 10px);
+    border-radius: 16px;
+  }
+  .uh-dd-head { padding: 10px 12px 12px; }
+
+  /* Auth pill: campi più stretti ma sempre allineati */
+  .cta-pill { max-width: 100%; }
+  .cta-pill input { font-size: 14px; padding: 13px 22px; }
+  .cta-pill .pw-wrap input { padding-right: 44px; }
+
+  /* Creator-upload: actions impilati, anteprima sopra */
+  .cu-wrap { padding: 16px 14px 60px; }
+}
+
+/* ---------- Mobile medio Galaxy/iPhone (max 480px) ---------- */
+@media (max-width: 480px) {
+  .uh-nav { gap: 3px; }
+  .uh-nav-link { height: 30px; padding: 0 9px; font-size: 11.5px; }
+  .uh-nav-link.uh-nav-home::before { font-size: 11px; margin-right: 2px; }
+  .uh-nav-cta { height: 32px; width: 32px; }
+  .uh-nav-cta-ico { font-size: 14px; }
+
+  .uh-mnu-pop { padding: 5px; min-width: 180px; }
+  .uh-mnu-item { padding: 8px 10px; gap: 8px; font-size: 12px; }
+  .uh-mnu-ico { width: 18px; height: 18px; font-size: 10px; border-radius: 6px; }
+
+  .uh-dd { width: min(260px, calc(100vw - 12px)); right: 6px; }
+  .uh-dd-name { font-size: 12.5px; }
+  .uh-dd-email { font-size: 10.5px; max-width: 130px; }
+  .uh-dd-item { padding: 9px 12px; font-size: 12.5px; }
+
+  /* Auth: pill più piccolo coerente */
+  .cta-pill input { padding: 12px 18px; font-size: 13px; }
+  .cta-pill .pw-wrap input { padding-right: 40px; }
+  .pw-toggle { right: 6px; font-size: 14px; }
+}
+
+/* ---------- Mobile piccolo Android (max 411px) ---------- */
+@media (max-width: 411px) {
+  .uh-nav-link { height: 28px; padding: 0 8px; font-size: 11px; }
+  .uh-mnu-caret { font-size: 7px; margin-left: 1px; }
+  .uh-mnu-pop { min-width: 170px; max-width: calc(100vw - 16px); }
+  .cu-card-num { width: 26px; height: 26px; font-size: 12px; }
+}
+
+/* ---------- Mobile mini iPhone SE (max 375px) ---------- */
+@media (max-width: 375px) {
+  .uh-nav { gap: 2px; }
+  .uh-nav-link { padding: 0 7px; font-size: 10.5px; }
+  .uh-nav-cta { width: 30px; height: 30px; }
+  .uh-nav-cta-ico { font-size: 13px; }
+  .uh-mnu-pop { min-width: 160px; }
+  .uh-dd { width: calc(100vw - 12px); }
+  .cu-card { padding: 14px; border-radius: 12px; }
+  .cu-page-head h1 { font-size: 20px; }
+}
+
+/* ---------- Mobile microscopico (max 320px iPhone 5) ---------- */
+@media (max-width: 320px) {
+  .uh-nav-link { padding: 0 6px; font-size: 10px; }
+  .uh-nav-link.uh-nav-home::before { display: none; }
+  .uh-mnu-caret { display: none; }
+  .uh-nav-cta { width: 28px; height: 28px; }
+}
+
+/* ---------- Min/max width hardening per layout principali ---------- */
+.cu-wrap,
+.cp-wrap,
+.cr-wrap,
+.up-wrap,
+.vd-wrap,
+.vl-wrap {
+  min-width: 0;
+  max-width: 1600px;
+}
+.user-hdr,
+.user-footer { min-width: 0; }
+
+
+/* ---------- PRINT (per chi vuole stampare) ---------- */
+@media print {
+  .hdr,
+  .side,
+  .side-overlay,
+  .toast-box,
+  .hdr-burger,
+  .notif-panel,
+  .dd { display: none !important; }
+  .layout { display: block; }
+  .main { padding: 0; overflow: visible; height: auto; }
+  .modal-bg { display: none !important; }
+  .sc,
+  .card,
+  .tcard,
+  .prof-card,
+  .chart-card { box-shadow: none; border: 1px solid #ddd; }
+}
+
+
+/* ============================================================
+   HARDENING RESPONSIVE FINALE — lato user
+   Regole difensive per garantire che NESSUNA pagina utente esca
+   dai limiti del viewport, NESSUN testo straripi, e tutti i
+   wrapper si comportino correttamente da 320px a 2560px.
+   ============================================================ */
+
+/* ---------- Body / html: limiti e niente scroll laterali ---------- */
+html {
+  /* Evita zoom orizzontale involontario su iOS Safari */
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+html, body {
+  /* Difesa contro contenuti che provano a sforare lateralmente */
+  overflow-x: hidden;
+  max-width: 100%;
+}
+body {
+  min-width: 320px;
+  max-width: 2560px;
+  /* Anche se base.css lo imposta, lo ribadisco qui per sicurezza */
+}
+
+/* ---------- Tutti i wrapper user: min-width 0 + max-width 1600 ---------- */
+.vl-wrap, .vd-wrap, .up-wrap,
+.cu-wrap, .cp-wrap, .cr-wrap,
+.ch-wrap, .mc-wrap {
+  min-width: 0;
+  max-width: 1600px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Le immagini non superano mai la cella che le contiene */
+img, video, iframe, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* I titoli lunghi non straripano: word-break per parole molto lunghe */
+h1, h2, h3, h4, .vd-title, .vl-hero-title,
+.cu-page-head h1, .ch-head h1, .mc-head h1 {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+
+/* ============================================================
+   FOOTER — tutte le regole responsive sono ora centralizzate in
+   css/user/footer.css. Qui mantengo solo le difese minime.
+   ============================================================ */
+.user-footer {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+
+/* ============================================================
+   FOCUS / TOUCH — accessibilità minima 44px su tutti i tap target
+   Apple HIG e WCAG AA raccomandano almeno 44×44px per touch
+   ============================================================ */
+@media (pointer: coarse) {
+  .uh-nav-link,
+  .uh-icon-btn,
+  .uh-login-btn,
+  .uh-mnu-item,
+  .uh-dd-item,
+  .uh-nav-cta,
+  .ch-clear-btn,
+  .mc-tab,
+  .mc-pag-btn,
+  .ch-pag-btn,
+  .vl-tab,
+  .vl-fclear,
+  .nm-confirm-btn {
+    min-height: 38px;       /* compromesso fra estetica e usabilità */
+  }
+}
+
+
+/* ============================================================
+   PROTEZIONE OVERFLOW per griglie / liste card
+   ============================================================ */
+.row-scroll,
+.uh-mnu-pop,
+.uh-dd,
+.uh-search-results,
+.uh-notif-dd,
+.usr-line,
+.mc-card-text,
+.mc-card-video-title,
+.ch-card-title,
+.vl-title,
+.vcard-title {
+  /* Non permettere a contenuti interni di sforare e creare scroll laterali */
+  min-width: 0;
+}
+
+
+/* ============================================================
+   SAFE-AREA INSET (iPhone X+, dynamic island, Android notch)
+   Aggiunge padding aggiuntivo dove il viewport è coperto dal
+   notch o dai bordi arrotondati. Usa env() con fallback per
+   browser senza supporto.
+   ============================================================ */
+
+/* Header: padding orizzontale rispetta la safe-area
+   (notch + dynamic island a sinistra/destra in landscape) */
+.user-hdr {
+  padding-left:  max(48px, env(safe-area-inset-left));
+  padding-right: max(48px, env(safe-area-inset-right));
+}
+
+/* Wrapper principali: idem, per non far entrare contenuto sotto al notch */
+.vl-wrap,
+.vd-wrap,
+.up-wrap,
+.cu-wrap,
+.cp-wrap,
+.cr-wrap,
+.ch-wrap,
+.mc-wrap {
+  padding-left:  max(var(--wrap-pad-x, 32px), env(safe-area-inset-left));
+  padding-right: max(var(--wrap-pad-x, 32px), env(safe-area-inset-right));
+}
+
+/* Toast: rispetta la safe-area sul fondo del telefono */
+.user-toast-box {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* In landscape su iPhone X+ il padding header va più stretto e
+   le safe-area diventano relevant (bordo arrotondato sui lati) */
+@media (max-width: 1024px) {
+  .user-hdr {
+    padding-left:  max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+  }
+}
+@media (max-width: 768px) {
+  .user-hdr {
+    padding-left:  max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+}
+@media (max-width: 480px) {
+  .user-hdr {
+    padding-left:  max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+}
+
+
+/* ============================================================
+   COPERTURA COMPLETA PRESET CHROME DEVTOOLS
+   Aggiunge breakpoint puntuali per ogni preset Google standard.
+   Ordine: dal più grande al più piccolo (last wins).
+   ============================================================ */
+
+/* ---------- Galaxy Z Fold 5 — aperto (≤853×1280) ---------- */
+/* Tablet stretto: come iPad portrait, ma proporzioni più squadrate */
+@media (max-width: 880px) and (min-width: 800px) {
+  .vl-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .ch-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+}
+
+/* ---------- iPad Air (820×1180) ---------- */
+@media (max-width: 820px) {
+  /* .uh-search: icona espandibile, vedi header.css */
+  .vl-hero-title { font-size: 30px; }
+  .ch-head h1, .mc-head h1, .cu-page-head h1 { font-size: 26px; }
+}
+
+/* ---------- Surface Duo (540×720) ---------- */
+@media (max-width: 540px) {
+  .uh-nav { gap: 4px; }
+  .uh-nav-link { padding: 0 11px; font-size: 11.5px; }
+  .uh-mnu-pop { min-width: 200px; max-width: calc(100vw - 24px); }
+  /* Grid card già 2 colonne fisse a 600px — qui rimane fluido */
+  .vl-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .ch-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  /* Footer: regole in css/user/footer.css */
+}
+
+/* ---------- iPhone XR / Plus (414×896) ---------- */
+@media (max-width: 414px) {
+  .uh-nav-link { padding: 0 9px; font-size: 11px; }
+  .uh-mnu-pop { min-width: 180px; }
+  .vl-hero-title { font-size: 22px; }
+  .ch-head h1, .mc-head h1 { font-size: 21px; }
+  /* .uh-search: icona espandibile, vedi header.css */
+}
+
+/* ---------- Pixel 7 / Galaxy S20 / S23 (412×915) ---------- */
+@media (max-width: 412px) {
+  /* Footer: regole in css/user/footer.css */
+  .nm-confirm-card { padding: 22px 18px 20px; }
+}
+
+/* ---------- iPhone 12/13/14 Pro (390×844) ---------- */
+@media (max-width: 390px) {
+  .uh-logo-name { font-size: 14px; }
+  .uh-icon-btn { font-size: 13px; }
+  .vl-hero-eyebrow { font-size: 10px; padding: 3px 8px; }
+  .vd-title { font-size: 17px; }
+}
+
+/* ---------- Galaxy S8+ / Android medio (360×740) ---------- */
+@media (max-width: 360px) {
+  /* Header ultra-compatto */
+  .user-hdr { padding: 6px 10px; gap: 5px; min-height: 52px; }
+  .uh-logo-mark { width: 26px; height: 26px; font-size: 13px; }
+  /* .uh-search: icona espandibile, vedi header.css */
+  .uh-search input { font-size: 11px; padding: 0 8px 0 28px; }
+  /* Card grid si stringe ancora */
+  .vl-grid, .ch-grid { gap: 10px 8px; }
+  .vl-title, .ch-card-title { font-size: 12.5px; }
+  /* Cronologia/commenti: padding ridotto */
+  .ch-wrap, .mc-wrap, .vd-wrap, .vl-wrap, .cu-wrap, .up-wrap, .cr-wrap, .cp-wrap {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  /* Footer: regole in css/user/footer.css */
+}
+
+/* ---------- Galaxy Z Fold 5 chiuso (344×882) ---------- */
+@media (max-width: 344px) {
+  /* Schermo MOLTO stretto: priorità lettura, niente icone superflue */
+  .user-hdr { padding: 4px 8px; gap: 4px; }
+  .uh-logo-name { display: none; }
+  .uh-icon-btn,
+  .uh-nav-cta { width: 28px; height: 28px; font-size: 12px; }
+  .uh-nav-link { padding: 0 6px; font-size: 10px; }
+  .uh-nav-link.uh-nav-home::before { display: none; }
+  .uh-mnu-caret { display: none; }
+  /* Card cronologia/preferiti: single column con thumb laterale piccola */
+  .vl-grid { grid-template-columns: 1fr; gap: 10px; }
+  .ch-grid { grid-template-columns: 1fr; gap: 10px; }
+  .vl-card, .ch-card {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 10px;
+    align-items: center;
+  }
+  .vl-thumb, .ch-card-thumb {
+    margin-bottom: 0;
+    width: 110px;
+    height: 62px;
+  }
+  /* Padding wrapper minimo */
+  .ch-wrap, .mc-wrap, .vd-wrap, .vl-wrap, .cu-wrap, .up-wrap, .cr-wrap, .cp-wrap {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  /* Modal nmConfirm si adatta */
+  .nm-confirm-card { padding: 18px 14px 16px; }
+  .nm-confirm-title { font-size: 15px; }
+  .nm-confirm-msg { font-size: 12.5px; }
+}
+
+
+/* ============================================================
+   NEST HUB LANDSCAPE (1024×600) — tablet bassi
+   Display orizzontali con poca altezza disponibile.
+   ============================================================ */
+@media (min-width: 1000px) and (max-height: 700px) {
+  /* Hero più basso per fare spazio ai contenuti */
+  .hero { min-height: 300px; }
+  .vl-hero { padding: 32px 0 20px; }
+  .vl-hero-title { font-size: 30px; }
+  .ch-head h1, .mc-head h1, .cu-page-head h1 { font-size: 24px; }
+  /* Sticky title dei gruppi cronologia/commenti: meno top offset */
+  .ch-group-title, .mc-group-title { top: 56px; }
+}
+
+
+/* ============================================================
+   FOLDABLE APERTI (es. Galaxy Z Fold open ≥800×1280)
+   ============================================================ */
+@media (min-width: 800px) and (max-width: 900px) and (min-height: 1100px) {
+  .vl-grid { grid-template-columns: repeat(3, 1fr); }
+  .ch-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+
+/* ============================================================
+   ULTRA-WIDE (≥1920px) — desktop grandi, evita stretch
+   ============================================================ */
+@media (min-width: 1920px) {
+  .vl-wrap, .vd-wrap, .up-wrap, .cu-wrap, .cp-wrap, .cr-wrap,
+  .ch-wrap, .mc-wrap { max-width: 1700px; }
+}
+
+
+/* ============================================================
+   PRINT (per la stampa della pagina video o di un commento)
+   ============================================================ */
+@media print {
+  .user-hdr, .user-footer, .user-toast-box,
+  .uh-search-results, .uh-dd, .uh-notif-dd,
+  .vd-actions, .ch-card-rm, .ch-toolbar, .mc-tabs,
+  .vd-state-banner { display: none !important; }
+  body { background: #fff; color: #000; }
+  .vd-wrap, .ch-wrap, .mc-wrap { padding: 0; max-width: 100%; }
+}
+
+
+/* ============================================================
+   HARDENING RESPONSIVE (giugno 2026)
+   Regole trasversali per evitare problemi comuni:
+    - overflow orizzontale su mobile
+    - safe-area iOS (notch)
+    - touch target minimo 44x44
+    - font-size base scaling
+   ============================================================ */
+
+/* No overflow orizzontale, mai. */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* iPhone safe-area: padding extra a sinistra/destra in orientamento
+   landscape per non avere contenuto sotto la notch. */
+@supports (padding: max(0px)) {
+  body {
+    padding-left:  env(safe-area-inset-left, 0);
+    padding-right: env(safe-area-inset-right, 0);
+  }
+}
+
+/* Tutte le immagini scalano fluide entro il loro contenitore. */
+img, video, iframe {
+  max-width: 100%;
+}
+
+/* Touch target minimo 44x44 su mobile (linea guida iOS/Apple HIG). */
+@media (max-width: 768px) and (pointer: coarse) {
+  button,
+  .btn,
+  [role="button"],
+  a.nm-btn,
+  .uh-icon-btn {
+    min-height: 44px;
+  }
+}
+
+/* Tap highlight color piu' sobrio (la default su iOS e' un blu acceso). */
+* {
+  -webkit-tap-highlight-color: rgba(13, 122, 77, 0.18);
+}
+
+/* Disattiva il "double-tap to zoom" sui controlli interattivi:
+   evita ritardi di ~300ms su iOS Safari vecchio. */
+button, .btn, [role="button"], a, input, select, textarea {
+  touch-action: manipulation;
+}
+
+/* Anti-zoom su input su iOS (font-size < 16px causa auto-zoom). */
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="number"],
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}

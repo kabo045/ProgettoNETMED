@@ -1,0 +1,1389 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+/* ============================================================
+   NETMED — User catalog
+   Modulo BASE: reset, font Google, variabili tema (default scuro,
+   con tema chiaro switchabile), body, animazioni globali.
+   ============================================================ */
+
+
+/* ---------- Font Google ---------- */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Outfit:wght@600;700;800;900&display=swap');
+
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* ---------- Tema scuro (default) ---------- */
+/* ============================================================
+   Palette NETMED "Healing"
+   Pensata per una piattaforma medica: non e' Netflix nero puro ne'
+   GitHub bianco asettico, ha un'anima verde-petrolio caldo che
+   richiama camice/sala operatoria moderna.
+
+   DARK  ("Forest Operating Theater"):
+     - fondali neri con tinta verde notte sottile
+     - card che emergono dolcemente, niente neri assoluti
+   LIGHT ("Clean Clinic"):
+     - bianchi off-white con leggero tono menta
+     - superfici primarie ancora pure (#fff) per gerarchia
+     - bordi caldi con sfumatura verde
+   ============================================================ */
+:root {
+  /* Scala verde NETMED (accent) — calibrata: meno fluo, piu' matura.
+     Era una scala "pharmacy green" molto satura, ora va verso il
+     "forest/sage" che riposa l'occhio e ha vibe medico professionale. */
+  --t9: #0a5530;
+  --t7: #0d7240;
+  --t6: #138253;
+  --t5: #1ea968;
+  --t4: #41c184;
+  --t2: #a7e0c4;
+  --t1: #d6efde;
+
+  /* Dark: nero neutro. Il verde sta solo sugli accenti
+     (bottoni, badge, focus). Background sobrio, riposante. */
+  --bg:        #0a0a0b;
+  --bg-2:      #131315;
+  --surface:   #1a1a1c;
+  --surface-2: #232326;
+  --border:    #2a2a2d;
+  --border-2:  #3a3a3d;
+  --card:      #161618;
+
+  /* Testo slate neutro, niente sfumature verdi.
+     Contrast target: text/text2 AAA, text3 ≥ AA (~7.5:1), text4 solo per
+     elementi non testuali (border/disabled). */
+  --text:   #ebebed;
+  --text2:  #c4c4c8;
+  --text3:  #a0a0a6;
+  --text4:  #74747a;
+
+  /* Accent verde NETMED — tinta sage piu' matura, meno smeraldo fluo */
+  --accent:        #0d7a4d;
+  --accent-strong: #0a6940;
+  --accent-soft:   rgba(13, 122, 77, .12);
+
+  /* Accenti supportati */
+  --rose:   #f43f5e;
+  --amber:  #f59e0b;
+  --green:  #22c55e;
+  --blue:   #3b82f6;
+
+  /* Ombre con leggera tinta verde profonda */
+  --shadow-1: 0 4px 20px rgba(6, 24, 16, .55);
+  --shadow-2: 0 10px 40px rgba(6, 24, 16, .65);
+
+  --header-h: 68px;
+}
+
+
+/* ---------- Tema chiaro: "Healing Mint" ----------
+   Sfumature verde-salvia molto chiare invece del bianco/grigio.
+   Bg = mint pallido (#e6efe9), card = bianco-mint (#f1f6f3),
+   surface-2 = sage piu' scuro per gerarchia visiva.
+   Tutte le tinte hanno H ~150 (verde-salvia), S basso 8-15%, L alto.
+   Risultato: pulito, "ospedaliero" senza essere asettico, identita'
+   chiaramente medico-scientifica anche in light mode. */
+[data-theme="light"] {
+  /* Verde-bianco soft.
+     L'obiettivo e' che lo sfondo non "abbagli" ma resti riposante
+     sobrio. Tutti i livelli ora hanno una
+     componente verde leggermente piu' satura per togliere quella
+     sensazione di "bianco da Word" che dava nell'occhio. */
+  --bg:        #d2e0d4;  /* mint medicale saturo (pagina) */
+  --bg-2:      #dde9df;  /* mint chiaro (header / nav) */
+  --surface:   #e3eee5;  /* superficie card primaria */
+  --surface-2: #c8d7cc;  /* card piu' definita / hover */
+  --border:    #b3c3b9;  /* bordo morbido sage */
+  --border-2:  #95a89c;  /* bordo evidenziato (focus / drag) */
+  --card:      #e3eee5;  /* alias di surface */
+
+  /* Testo: nero verde-bluastro per coerenza col bg */
+  --text:   #11211b;  /* primario quasi nero, leggera tinta verde */
+  --text2:  #2c3b35;  /* secondario sage scuro */
+  --text3:  #50615a;  /* terziario meta info */
+  --text4:  #74847d;  /* quaternario disabled/icone */
+
+  --accent-soft: rgba(13, 122, 77, .14);
+
+  /* Shadow piu' verde-tinted (richiama il bg) */
+  --shadow-1: 0 4px 18px rgba(22, 50, 38, .08);
+  --shadow-2: 0 10px 36px rgba(22, 50, 38, .12);
+}
+
+
+/* ---------- Body e tipografia ---------- */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  /* Limiti minimo/massimo per garantire layout stabile su tutti i device:
+     - min-width 320px → soglia mobile più piccola (iPhone SE 1st gen)
+     - max-width 2560px → evita stretch eccessivi su monitor ultra-wide */
+  min-width: 320px;
+  max-width: 2560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  transition: background .3s, color .3s;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font-family: inherit;
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+.outfit {
+  font-family: 'Outfit', sans-serif;
+}
+
+
+/* ---------- Container massimo ---------- */
+.container {
+  width: 100%;
+  max-width: 1600px;
+  min-width: 0;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+/* ---------- Wrapper di pagina (vl-wrap, vd-wrap, up-wrap) ----------
+   Limiti coerenti per tutte le pagine utente, in modo che non si
+   "spappolino" su monitor enormi e mantengano leggibilità su mobile. */
+.vl-wrap,
+.vd-wrap,
+.up-wrap {
+  width: 100%;
+  max-width: 1600px;
+  min-width: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* ---------- Animazioni globali ---------- */
+@keyframes fadeUp   { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn   { from { opacity: 0; }                                 to { opacity: 1; } }
+@keyframes ddIn     { from { opacity: 0; transform: translateY(-6px); }    to { opacity: 1; transform: translateY(0); } }
+@keyframes shimmer  { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@keyframes slideInR { from { transform: translateX(80px); opacity: 0; }    to { transform: translateX(0); opacity: 1; } }
+
+
+/* ---------- Skeleton loader ---------- */
+.sk {
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 50%, var(--surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 10px;
+}
+
+/* Helper diffusi per skeleton inline: linea (testo) e bolla (avatar/icona).
+   Usabili come <span class="sk-line"></span>, <span class="sk-circle"></span>. */
+.sk-line {
+  display: block;
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 50%, var(--surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+.sk-line.lg { height: 16px; border-radius: 8px; }
+.sk-line.sm { height: 10px; border-radius: 5px; }
+.sk-line.short { width: 40%; }
+.sk-line.medium { width: 70%; }
+.sk-circle {
+  display: inline-block;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 50%, var(--surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+/* Contenitore "lista" di skeleton (es. notifiche in caricamento) */
+.sk-list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+}
+.sk-list-item .sk-lines { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+
+
+/* ---------- Scrollbar coerente ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-2);
+  border-radius: 6px;
+  border: 2px solid var(--bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text4);
+}
+
+
+/* ---------- Skip link accessibilità ---------- */
+/* Visibile solo quando riceve il focus (Tab da inizio pagina) */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  background: var(--accent);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  z-index: 9999;
+  transition: top .2s;
+  text-decoration: none;
+}
+.skip-link:focus {
+  top: 12px;
+  outline: 2px solid var(--bg);
+  outline-offset: 2px;
+}
+
+
+/* ---------- Focus-visible standardizzato ---------- */
+/* Outline coerente per chi naviga con tastiera, niente outline sui click */
+:focus { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible,
+[role="menuitem"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+
+/* ---------- Micro-transizioni coerenti ---------------------
+   Tutti gli elementi interattivi condividono un easing morbido
+   e naturale. Easing "standard" Material: cubic-bezier(.4,0,.2,1). */
+button,
+a,
+.uh-nav-link,
+.uf-col-link,
+[role="button"],
+[role="menuitem"] {
+  transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+}
+/* Tap feedback universale: leggero "press" su click degli elementi
+   interattivi (escluso input/textarea per non disturbare la scrittura). */
+button:active,
+[role="button"]:active {
+  transform: translateY(.5px);
+}
+
+
+/* ---------- Riduzione movimento per chi lo richiede ---------- */
+/* Rispetta la preferenza di sistema "reduce motion" */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* ============================================================
+   VERIFIED TICK — componente condiviso
+   Cerchio blu con ✓, da mettere inline subito dopo lo username
+   ovunque appaia (commenti, dettaglio video, card, profilo,
+   dropdown header). Stessa identità visiva del lato admin.
+     - default: 16px, ok per testo normale
+     - .lg     : 20px, per intestazioni medie (dettaglio video)
+     - .xl     : 24px, per profilo / hero
+   ============================================================ */
+.verified-tick {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #0a6940;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+  vertical-align: middle;
+  line-height: 1;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
+.verified-tick::before { content: "✓"; }
+.verified-tick.lg {
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+}
+.verified-tick.xl {
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+}
+
+/* Wrapper che mette nome + tick in fila senza far spezzare il tick.
+   Gap 6px per dare aria al tick (era 4 e visivamente attaccato). */
+.with-tick {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+/* ============================================================
+   LIGHT-THEME AUDIT: override per leggibilità ottimale
+   Risolve problemi specifici dove le rgba/colors funzionano bene
+   sul tema scuro ma perdono contrasto su sfondo chiaro.
+   ============================================================ */
+
+/* Input search header: sfondo white-on-white quasi invisibile → grigio chiaro */
+[data-theme="light"] .uh-search input {
+  background: var(--surface-2);
+  color: var(--text);
+}
+[data-theme="light"] .uh-search input:focus {
+  background: var(--card);
+}
+
+/* Dropdown items: contrasto migliore al hover */
+[data-theme="light"] .uh-dd-item:hover,
+[data-theme="light"] .uh-mnu-item:hover {
+  background: var(--surface-2);
+}
+
+/* Card video: aggiungere bordo + ombra leggera così non si confondono col bg */
+[data-theme="light"] .vcard,
+[data-theme="light"] .vl-card,
+[data-theme="light"] .ch-card,
+[data-theme="light"] .cp-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, .04);
+}
+[data-theme="light"] .vcard:hover,
+[data-theme="light"] .vl-card:hover,
+[data-theme="light"] .ch-card:hover {
+  border-color: rgba(13, 122, 77, .35);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, .08);
+}
+
+/* Bottoni "ghost" o transparent: bordo visibile in light */
+[data-theme="light"] .cu-btn,
+[data-theme="light"] .cr-btn {
+  border: 1px solid var(--border);
+}
+
+/* Pillole stat / chip su sfondo bianco: aumento opacità background per essere visibili */
+[data-theme="light"] .ch-stat-pill,
+[data-theme="light"] .mc-stat-pill {
+  background: rgba(13, 122, 77, .10);
+  border-color: rgba(13, 122, 77, .35);
+  color: var(--text);
+}
+
+/* Pattern di base body: pseudo-element fisso, sotto tutto */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: var(--bg, #0a0a0b);
+  pointer-events: none;
+}
+
+/* === LIGHT MODE: triangoli azzurri geometrici === */
+[data-theme="light"] body::before {
+  background:
+    /* Triangoli sovrapposti azzurri */
+    linear-gradient(135deg, rgba(33, 150, 243, .10) 25%, transparent 25%) -40px 0/120px 120px,
+    linear-gradient(225deg, rgba(33, 150, 243, .10) 25%, transparent 25%) -40px 0/120px 120px,
+    linear-gradient(45deg,  rgba(100, 181, 246, .07) 25%, transparent 25%) 0 0/180px 180px,
+    linear-gradient(315deg, rgba(100, 181, 246, .07) 25%, transparent 25%) 0 0/180px 180px,
+    /* Sfondo bianco azzurrino base */
+    linear-gradient(180deg, #eaf4fb 0%, #f7fbfd 100%);
+}
+
+/* === DARK MODE: esagoni medical su gradient blu scuro === */
+[data-theme="dark"] body::before,
+:root:not([data-theme]) body::before {
+  background-color: #0b1220;
+  background-image:
+    /* Esagoni decorativi - pattern SVG ripetuto */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='104' viewBox='0 0 120 104'><g fill='none' stroke='%23163a52' stroke-width='1' stroke-opacity='.45'><polygon points='30,8 50,8 60,25 50,42 30,42 20,25'/><polygon points='80,8 100,8 110,25 100,42 80,42 70,25'/><polygon points='55,60 75,60 85,77 75,94 55,94 45,77'/></g></svg>"),
+    /* Glow radiale punti decorativi */
+    radial-gradient(circle at 20% 30%, rgba(33, 150, 243, .08) 0%, transparent 35%),
+    radial-gradient(circle at 80% 70%, rgba(56, 189, 248, .07) 0%, transparent 38%),
+    /* Gradient blu petrolio scuro di base */
+    linear-gradient(135deg, #0a1320 0%, #0d1828 100%);
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
+}
+
+/* Overlay leggero per garantire SEMPRE la leggibilità del testo sopra il body */
+main, header.user-hdr, footer.user-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Header e footer leggermente più opachi per stacco dal pattern */
+.user-hdr {
+  background: rgba(15, 23, 42, .85) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+[data-theme="light"] .user-hdr {
+  background: rgba(255, 255, 255, .85) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Sfondo base */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background: var(--bg, #0a0a0b);
+}
+
+/* === DARK MODE: mesh gradient blu-petrolio con glow verde NETMED === */
+[data-theme="dark"] body::before,
+:root:not([data-theme]) body::before {
+  background:
+    /* Glow verde primary in alto a sinistra */
+    radial-gradient(ellipse 700px 500px at 5% 0%, rgba(10, 105, 64, .25) 0%, transparent 60%),
+    /* Glow blu petrolio in basso a destra */
+    radial-gradient(ellipse 800px 600px at 95% 100%, rgba(20, 70, 120, .22) 0%, transparent 60%),
+    /* Glow ciano leggero centrale alto */
+    radial-gradient(ellipse 500px 400px at 50% 10%, rgba(56, 189, 248, .07) 0%, transparent 70%),
+    /* Base scura quasi nera con tinta blu */
+    linear-gradient(180deg, #0a0d12 0%, #0d1118 50%, #0a0d12 100%);
+}
+
+/* Particelle/punti decorativi nel dark - secondo pseudo-element */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+[data-theme="dark"] body::after,
+:root:not([data-theme]) body::after {
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(255,255,255,.4) 0.5px, transparent 1px),
+    radial-gradient(circle at 25% 60%, rgba(255,255,255,.3) 0.5px, transparent 1px),
+    radial-gradient(circle at 45% 30%, rgba(255,255,255,.35) 0.5px, transparent 1px),
+    radial-gradient(circle at 70% 80%, rgba(255,255,255,.3) 0.5px, transparent 1px),
+    radial-gradient(circle at 85% 15%, rgba(255,255,255,.4) 0.5px, transparent 1px),
+    radial-gradient(circle at 60% 50%, rgba(255,255,255,.25) 0.5px, transparent 1px),
+    radial-gradient(circle at 15% 85%, rgba(255,255,255,.3) 0.5px, transparent 1px),
+    radial-gradient(circle at 90% 65%, rgba(255,255,255,.35) 0.5px, transparent 1px);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  opacity: .6;
+}
+
+/* === LIGHT MODE: bianco con soft blobs azzurro/verde === */
+[data-theme="light"] body::before {
+  background:
+    /* Blob azzurro tenue top-left */
+    radial-gradient(ellipse 600px 400px at 0% 0%, rgba(96, 165, 250, .18) 0%, transparent 65%),
+    /* Blob verde primary tenue bottom-right */
+    radial-gradient(ellipse 700px 500px at 100% 100%, rgba(10, 105, 64, .12) 0%, transparent 60%),
+    /* Blob azzurro chiarissimo centrale */
+    radial-gradient(ellipse 500px 350px at 70% 30%, rgba(125, 211, 252, .10) 0%, transparent 70%),
+    /* Base bianco quasi puro */
+    linear-gradient(180deg, #fafcff 0%, #f3f8fc 50%, #fafcff 100%);
+}
+[data-theme="light"] body::after {
+  /* Niente particelle in light - troppo distraenti su bianco */
+  display: none;
+}
+
+/* Header/footer trasparenti */
+.user-hdr {
+  background: rgba(13, 17, 24, .72) !important;
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+[data-theme="light"] .user-hdr {
+  background: rgba(255, 255, 255, .78) !important;
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border-bottom: 1px solid rgba(0,0,0,.05);
+}
+
+/* Footer pulito */
+.user-footer {
+  position: relative;
+  z-index: 1;
+  background: rgba(13, 17, 24, .5) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+[data-theme="light"] .user-footer {
+  background: rgba(255, 255, 255, .6) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+main { position: relative; z-index: 1; }
+
+/* Base sfondo */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* === DARK MODE: pattern medical su sfondo blu petrolio === */
+[data-theme="dark"] body::before,
+:root:not([data-theme]) body::before {
+  background-color: #0a0f17;
+  background-image:
+    /* Pattern SVG: croce, cuore, DNA, pillola, esagono, stetoscopio, molecola */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'><g fill='none' stroke='%231a4d3a' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' opacity='.75'><!-- croce medica --><g transform='translate(35,35)'><rect x='-3' y='-12' width='6' height='24' rx='1'/><rect x='-12' y='-3' width='24' height='6' rx='1'/></g><!-- cuore --><g transform='translate(120,30)'><path d='M0 6c-3-5-12-5-12 2 0 6 12 14 12 14s12-8 12-14c0-7-9-7-12-2z'/></g><!-- DNA helix --><g transform='translate(220,40)'><path d='M-8 -15 Q0 -7 8 -15 M-8 0 Q0 8 8 0 M-8 15 Q0 7 8 15 M-8 -15 L-8 15 M8 -15 L8 15'/></g><!-- pillola --><g transform='translate(50,130)'><rect x='-13' y='-5' width='26' height='10' rx='5'/><line x1='0' y1='-5' x2='0' y2='5'/></g><!-- esagono --><g transform='translate(140,135)'><polygon points='0,-14 12,-7 12,7 0,14 -12,7 -12,-7'/><polygon points='0,-8 7,-4 7,4 0,8 -7,4 -7,-4'/></g><!-- stetoscopio --><g transform='translate(230,140)'><path d='M-10 -10 Q-10 0 -5 5 L-5 12 M10 -10 Q10 0 5 5 L5 12 M-5 12 Q0 18 5 12 M0 -10 Q0 -16 -6 -16 M0 -10 Q0 -16 6 -16'/><circle cx='0' cy='15' r='3'/></g><!-- molecola --><g transform='translate(35,225)'><circle cx='0' cy='0' r='3'/><circle cx='14' cy='-8' r='2.5'/><circle cx='14' cy='8' r='2.5'/><circle cx='-14' cy='0' r='2.5'/><line x1='0' y1='0' x2='14' y2='-8'/><line x1='0' y1='0' x2='14' y2='8'/><line x1='0' y1='0' x2='-14' y2='0'/></g><!-- cardiogramma --><g transform='translate(125,220)'><path d='M-18 0 L-10 0 L-7 -8 L-4 8 L0 -12 L4 6 L7 0 L18 0'/></g><!-- microscopio --><g transform='translate(225,225)'><circle cx='0' cy='-12' r='3'/><line x1='0' y1='-9' x2='-6' y2='3'/><line x1='-6' y1='3' x2='-6' y2='10'/><rect x='-10' y='10' width='20' height='4' rx='1'/></g></g></svg>"),
+    /* Glow verde primary NETMED */
+    radial-gradient(ellipse 800px 600px at 10% 10%, rgba(10, 105, 64, .15) 0%, transparent 60%),
+    /* Glow blu petrolio */
+    radial-gradient(ellipse 700px 500px at 90% 90%, rgba(20, 70, 120, .15) 0%, transparent 60%),
+    /* Gradient di base scuro */
+    linear-gradient(135deg, #0a0f17 0%, #0c1320 50%, #0a0f17 100%);
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
+  background-size: 280px 280px, auto, auto, auto;
+}
+
+/* === LIGHT MODE: stesso pattern ma azzurrino su bianco === */
+[data-theme="light"] body::before {
+  background-color: #f7fbfd;
+  background-image:
+    /* Stesso SVG pattern ma con stroke azzurro chiaro */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'><g fill='none' stroke='%237dc6e8' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' opacity='.55'><g transform='translate(35,35)'><rect x='-3' y='-12' width='6' height='24' rx='1'/><rect x='-12' y='-3' width='24' height='6' rx='1'/></g><g transform='translate(120,30)'><path d='M0 6c-3-5-12-5-12 2 0 6 12 14 12 14s12-8 12-14c0-7-9-7-12-2z'/></g><g transform='translate(220,40)'><path d='M-8 -15 Q0 -7 8 -15 M-8 0 Q0 8 8 0 M-8 15 Q0 7 8 15 M-8 -15 L-8 15 M8 -15 L8 15'/></g><g transform='translate(50,130)'><rect x='-13' y='-5' width='26' height='10' rx='5'/><line x1='0' y1='-5' x2='0' y2='5'/></g><g transform='translate(140,135)'><polygon points='0,-14 12,-7 12,7 0,14 -12,7 -12,-7'/><polygon points='0,-8 7,-4 7,4 0,8 -7,4 -7,-4'/></g><g transform='translate(230,140)'><path d='M-10 -10 Q-10 0 -5 5 L-5 12 M10 -10 Q10 0 5 5 L5 12 M-5 12 Q0 18 5 12 M0 -10 Q0 -16 -6 -16 M0 -10 Q0 -16 6 -16'/><circle cx='0' cy='15' r='3'/></g><g transform='translate(35,225)'><circle cx='0' cy='0' r='3'/><circle cx='14' cy='-8' r='2.5'/><circle cx='14' cy='8' r='2.5'/><circle cx='-14' cy='0' r='2.5'/><line x1='0' y1='0' x2='14' y2='-8'/><line x1='0' y1='0' x2='14' y2='8'/><line x1='0' y1='0' x2='-14' y2='0'/></g><g transform='translate(125,220)'><path d='M-18 0 L-10 0 L-7 -8 L-4 8 L0 -12 L4 6 L7 0 L18 0'/></g><g transform='translate(225,225)'><circle cx='0' cy='-12' r='3'/><line x1='0' y1='-9' x2='-6' y2='3'/><line x1='-6' y1='3' x2='-6' y2='10'/><rect x='-10' y='10' width='20' height='4' rx='1'/></g></g></svg>"),
+    /* Blob azzurro */
+    radial-gradient(ellipse 600px 400px at 0% 0%, rgba(96, 165, 250, .15) 0%, transparent 65%),
+    /* Blob verde leggero */
+    radial-gradient(ellipse 700px 500px at 100% 100%, rgba(10, 105, 64, .08) 0%, transparent 60%),
+    /* Base bianco/azzurrino */
+    linear-gradient(180deg, #fafdff 0%, #f0f7fc 100%);
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
+  background-size: 280px 280px, auto, auto, auto;
+}
+
+/* Header/footer trasparenti */
+.user-hdr {
+  background: rgba(10, 15, 23, .75) !important;
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+[data-theme="light"] .user-hdr {
+  background: rgba(247, 251, 253, .80) !important;
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid rgba(10, 105, 64, .08);
+}
+.user-footer {
+  position: relative;
+  z-index: 1;
+  background: rgba(10, 15, 23, .55) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+[data-theme="light"] .user-footer {
+  background: rgba(247, 251, 253, .70) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+main { position: relative; z-index: 1; }
+
+/* === DARK MODE: cuore verde NETMED su gradient scuro === */
+[data-theme="dark"] body::before,
+:root:not([data-theme]) body::before {
+  background-color: #0a0f17;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'><g fill='none' stroke='%231e5a3f' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' opacity='.55'><path d='M80 110 c-5-8 -20-8 -20 3 c0 10 20 24 20 24 s20-14 20-24 c0-11 -15-11 -20-3z'/><path d='M240 250 c-5-8 -20-8 -20 3 c0 10 20 24 20 24 s20-14 20-24 c0-11 -15-11 -20-3z'/></g></svg>"),
+    radial-gradient(ellipse 900px 700px at 8% 8%, rgba(10, 105, 64, .14) 0%, transparent 60%),
+    radial-gradient(ellipse 800px 600px at 92% 92%, rgba(20, 70, 120, .12) 0%, transparent 60%),
+    linear-gradient(135deg, #0a0f17 0%, #0c1320 50%, #0a0f17 100%);
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
+  background-size: 320px 320px, auto, auto, auto;
+}
+
+/* === LIGHT MODE: cuore azzurro tenue su gradient bianco === */
+[data-theme="light"] body::before {
+  background-color: #f7fbfd;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'><g fill='none' stroke='%2390cae5' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' opacity='.45'><path d='M80 110 c-5-8 -20-8 -20 3 c0 10 20 24 20 24 s20-14 20-24 c0-11 -15-11 -20-3z'/><path d='M240 250 c-5-8 -20-8 -20 3 c0 10 20 24 20 24 s20-14 20-24 c0-11 -15-11 -20-3z'/></g></svg>"),
+    radial-gradient(ellipse 700px 500px at 0% 0%, rgba(96, 165, 250, .12) 0%, transparent 65%),
+    radial-gradient(ellipse 800px 600px at 100% 100%, rgba(10, 105, 64, .06) 0%, transparent 60%),
+    linear-gradient(180deg, #fafdff 0%, #f0f7fc 100%);
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
+  background-size: 320px 320px, auto, auto, auto;
+}
+
+/* Glassmorphism header/footer */
+.user-hdr {
+  background: rgba(10, 15, 23, .75) !important;
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+[data-theme="light"] .user-hdr {
+  background: rgba(247, 251, 253, .80) !important;
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid rgba(10, 105, 64, .08);
+}
+.user-footer {
+  position: relative;
+  z-index: 1;
+  background: rgba(10, 15, 23, .55) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+[data-theme="light"] .user-footer {
+  background: rgba(247, 251, 253, .70) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+main { position: relative; z-index: 1; }
+
+/* === DARK MODE === */
+[data-theme="dark"] body::before,
+:root:not([data-theme]) body::before {
+  background-color: #0a0f17;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='380' height='380' viewBox='0 0 380 380'><g fill='none' stroke='%231e5a3f' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' opacity='.55'><!-- croce medica top-left --><g transform='translate(70,90)'><rect x='-4' y='-14' width='8' height='28' rx='2'/><rect x='-14' y='-4' width='28' height='8' rx='2'/></g><!-- DNA helix top-right --><g transform='translate(290,80)'><path d='M-10 -20 Q0 -10 10 -20 M-10 -7 Q0 3 10 -7 M-10 6 Q0 16 10 6 M-10 19 Q0 29 10 19'/><path d='M-10 -20 L-10 19 M10 -20 L10 19'/></g><!-- croce medica bottom-right --><g transform='translate(310,290)'><rect x='-4' y='-14' width='8' height='28' rx='2'/><rect x='-14' y='-4' width='28' height='8' rx='2'/></g><!-- DNA helix bottom-left --><g transform='translate(80,300)'><path d='M-10 -20 Q0 -10 10 -20 M-10 -7 Q0 3 10 -7 M-10 6 Q0 16 10 6 M-10 19 Q0 29 10 19'/><path d='M-10 -20 L-10 19 M10 -20 L10 19'/></g></g></svg>"),
+    radial-gradient(ellipse 900px 700px at 8% 8%, rgba(10, 105, 64, .14) 0%, transparent 60%),
+    radial-gradient(ellipse 800px 600px at 92% 92%, rgba(20, 70, 120, .12) 0%, transparent 60%),
+    linear-gradient(135deg, #0a0f17 0%, #0c1320 50%, #0a0f17 100%);
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
+  background-size: 380px 380px, auto, auto, auto;
+}
+
+/* === LIGHT MODE === */
+[data-theme="light"] body::before {
+  background-color: #f7fbfd;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='380' height='380' viewBox='0 0 380 380'><g fill='none' stroke='%2390cae5' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' opacity='.45'><g transform='translate(70,90)'><rect x='-4' y='-14' width='8' height='28' rx='2'/><rect x='-14' y='-4' width='28' height='8' rx='2'/></g><g transform='translate(290,80)'><path d='M-10 -20 Q0 -10 10 -20 M-10 -7 Q0 3 10 -7 M-10 6 Q0 16 10 6 M-10 19 Q0 29 10 19'/><path d='M-10 -20 L-10 19 M10 -20 L10 19'/></g><g transform='translate(310,290)'><rect x='-4' y='-14' width='8' height='28' rx='2'/><rect x='-14' y='-4' width='28' height='8' rx='2'/></g><g transform='translate(80,300)'><path d='M-10 -20 Q0 -10 10 -20 M-10 -7 Q0 3 10 -7 M-10 6 Q0 16 10 6 M-10 19 Q0 29 10 19'/><path d='M-10 -20 L-10 19 M10 -20 L10 19'/></g></g></svg>"),
+    radial-gradient(ellipse 700px 500px at 0% 0%, rgba(96, 165, 250, .12) 0%, transparent 65%),
+    radial-gradient(ellipse 800px 600px at 100% 100%, rgba(10, 105, 64, .06) 0%, transparent 60%),
+    linear-gradient(180deg, #fafdff 0%, #f0f7fc 100%);
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
+  background-size: 380px 380px, auto, auto, auto;
+}
+
+/* Glassmorphism header/footer */
+.user-hdr {
+  background: rgba(10, 15, 23, .75) !important;
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+[data-theme="light"] .user-hdr {
+  background: rgba(247, 251, 253, .80) !important;
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid rgba(10, 105, 64, .08);
+}
+.user-footer {
+  position: relative;
+  z-index: 1;
+  background: rgba(10, 15, 23, .55) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+[data-theme="light"] .user-footer {
+  background: rgba(247, 251, 253, .70) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+main { position: relative; z-index: 1; }
+
+/* ============================================================
+   Sfondi tema
+   Nessun disegnino. Gradient pulito + texture noise sottile.
+   Adatto a contesto accademico/professionale.
+   ============================================================ */
+
+body {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* === DARK MODE: gradient deep navy con vignettatura ai bordi === */
+[data-theme="dark"] body::before,
+:root:not([data-theme]) body::before {
+  background:
+    /* Vignettatura nera ai bordi per profondità */
+    radial-gradient(ellipse 130% 100% at 50% 50%, transparent 40%, rgba(0,0,0,.35) 100%),
+    /* Glow verde NETMED molto sottile in alto a sinistra */
+    radial-gradient(ellipse 900px 600px at 0% 0%, rgba(10, 105, 64, .08) 0%, transparent 65%),
+    /* Glow blu petrolio molto sottile in basso a destra */
+    radial-gradient(ellipse 800px 500px at 100% 100%, rgba(20, 70, 120, .07) 0%, transparent 65%),
+    /* Base: gradient verticale near-black con tinta blu/petrolio */
+    linear-gradient(180deg, #0b1118 0%, #0d141d 50%, #0a0f17 100%);
+}
+/* Texture noise sottile sopra (separato pseudo-element) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+[data-theme="dark"] body::after,
+:root:not([data-theme]) body::after {
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: .85;
+  mix-blend-mode: overlay;
+}
+
+/* === LIGHT MODE: paper-style serissimo === */
+[data-theme="light"] body::before {
+  background:
+    radial-gradient(ellipse 130% 100% at 50% 50%, transparent 50%, rgba(15, 23, 42, .04) 100%),
+    radial-gradient(ellipse 700px 500px at 0% 0%, rgba(10, 105, 64, .04) 0%, transparent 65%),
+    radial-gradient(ellipse 800px 600px at 100% 100%, rgba(20, 70, 120, .03) 0%, transparent 65%),
+    linear-gradient(180deg, #fbfdfe 0%, #f4f8fb 100%);
+}
+[data-theme="light"] body::after {
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: .7;
+  mix-blend-mode: multiply;
+}
+
+/* Glassmorphism header/footer */
+.user-hdr {
+  background: rgba(10, 15, 23, .80) !important;
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+[data-theme="light"] .user-hdr {
+  background: rgba(247, 251, 253, .85) !important;
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid rgba(10, 105, 64, .08);
+}
+.user-footer {
+  position: relative;
+  z-index: 1;
+  background: rgba(10, 15, 23, .60) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+[data-theme="light"] .user-footer {
+  background: rgba(247, 251, 253, .72) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+main { position: relative; z-index: 1; }
+
+/* ============================================================
+   Padding pagina ricerca
+   ============================================================ */
+main.vl-wrap {
+  padding: 0 24px 60px !important;
+}
+@media (max-width: 900px) {
+  main.vl-wrap { padding: 0 16px 50px !important; }
+}
+@media (max-width: 480px) {
+  main.vl-wrap { padding: 0 10px 30px !important; }
+}
+/* Hero respira sempre */
+.vl-hero,
+.vl-hero-inner {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* ============================================================
+   Responsive
+   Rifiniture per breakpoint mobile/tablet sui componenti
+   aggiunti di recente (search bar, vl-hero, vl-tabs, fchips).
+   ============================================================ */
+
+/* === TABLET / SMALL DESKTOP (≤ 900px) === */
+@media (max-width: 900px) {
+  /* Hero più piccolo */
+  .vl-hero { padding: 24px 0 12px; }
+  .vl-hero-title { font-size: clamp(24px, 6vw, 34px) !important; }
+  .vl-hero-desc { font-size: 14px; }
+  /* Search bar header un po' più stretta */
+  .uh-search { width: 360px; max-width: 38vw; }
+  .uh-search.open { width: 420px; max-width: 46vw; }
+  /* Card grid colonne ridotte */
+  .vl-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important; gap: 18px 14px; }
+}
+
+/* === TABLET portrait (≤ 768px) === */
+@media (max-width: 768px) {
+  /* Hero compatto */
+  .vl-hero { padding: 20px 0 10px; }
+  .vl-hero-title { font-size: clamp(22px, 6.5vw, 30px) !important; }
+  .vl-hero-eyebrow {
+    padding: 4px 10px !important;
+    font-size: 10.5px !important;
+    letter-spacing: 1.2px !important;
+  }
+  /* Tabs scrollabili senza barra */
+  .vl-tabs {
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .vl-tabs::-webkit-scrollbar { display: none; }
+  .vl-tab { padding: 10px 14px !important; font-size: 13px !important; }
+  /* Filter chips si avvolgono */
+  .vl-fchips { gap: 6px !important; }
+  .vl-fchip { padding: 6px 6px 6px 12px !important; font-size: 12px !important; }
+  /* Card grid 2 colonne fisse */
+  .vl-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 16px 12px; }
+}
+
+/* === MOBILE (≤ 480px) === */
+@media (max-width: 480px) {
+  .vl-hero { padding: 16px 0 8px; }
+  .vl-hero-title { font-size: clamp(20px, 7vw, 26px) !important; }
+  .vl-hero-desc { font-size: 13px; line-height: 1.5; }
+  .vl-hero-count {
+    padding: 5px 10px !important;
+    font-size: 12px !important;
+  }
+  /* Toolbar verticale */
+  .vl-toolbar { gap: 8px; flex-direction: column; align-items: stretch; }
+  .vl-toolbar-spacer { display: none; }
+  /* Card grid: 1 colonna sotto 380px, 2 sopra */
+  .vl-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+    gap: 14px 10px;
+  }
+  /* Tag cloud + cat cloud più stretti */
+  .vl-tagcols {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+  .vl-chip {
+    padding: 8px 14px !important;
+    font-size: 12.5px !important;
+  }
+  /* Notifica toast position */
+  #userToastBox {
+    right: 10px !important;
+    left: 10px !important;
+  }
+}
+
+/* === EXTRA SMALL (≤ 380px) === */
+@media (max-width: 380px) {
+  .vl-hero-title { font-size: 20px !important; }
+  .vl-fchip {
+    padding: 5px 5px 5px 10px !important;
+    font-size: 11.5px !important;
+  }
+  .vl-fchip-ico, .vl-fchip-x {
+    width: 18px !important;
+    height: 18px !important;
+    font-size: 10px !important;
+  }
+  /* Card su mobile mini */
+  .vl-grid { grid-template-columns: 1fr !important; }
+}
+
+/* === SEARCH BAR HEADER responsive su mobile === */
+@media (max-width: 600px) {
+  .uh-search {
+    width: var(--uh-ctrl-h, 40px) !important;
+    max-width: var(--uh-ctrl-h, 40px) !important;
+  }
+  .uh-search.open {
+    width: 88vw !important;
+    max-width: 92vw !important;
+    position: absolute;
+    right: 6px;
+    top: 8px;
+    z-index: 220;
+  }
+  .uh-search-shortcut { display: none !important; }
+}
+
+/* ============================================================
+   Stile bottoni filtri
+   Tutti i tab/pill/chip lato utente: grigio neutro a riposo,
+   bianco su nero quando attivi. Niente verde dominante.
+   ============================================================ */
+
+/* === BASE: tutti i pill (tab/chip filtri) === */
+.mc-tab,
+.vl-col-chip,
+.isc-tab,
+.isc-chip,
+.cr-tab,
+.up-tab,
+.ch-tab {
+  background: rgba(255, 255, 255, .08) !important;
+  border: 1px solid rgba(255, 255, 255, .12) !important;
+  color: var(--text) !important;
+  padding: 8px 16px !important;
+  border-radius: 999px !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: background .15s, border-color .15s, color .15s !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+.mc-tab:hover,
+.vl-col-chip:hover,
+.isc-tab:hover,
+.isc-chip:hover,
+.cr-tab:hover,
+.up-tab:hover,
+.ch-tab:hover {
+  background: rgba(255, 255, 255, .16) !important;
+  border-color: rgba(255, 255, 255, .20) !important;
+}
+
+/* === ATTIVO: bianco su nero (YouTube) === */
+.mc-tab.active,
+.vl-col-chip.active,
+.isc-tab.active,
+.isc-chip.active,
+.cr-tab.active,
+.up-tab.active,
+.ch-tab.active {
+  background: #f1f1f1 !important;
+  color: #0f0f0f !important;
+  border-color: #f1f1f1 !important;
+  font-weight: 700 !important;
+}
+
+/* === LIGHT MODE: nero su bianco === */
+[data-theme="light"] .mc-tab,
+[data-theme="light"] .vl-col-chip,
+[data-theme="light"] .isc-tab,
+[data-theme="light"] .isc-chip,
+[data-theme="light"] .cr-tab,
+[data-theme="light"] .up-tab,
+[data-theme="light"] .ch-tab {
+  background: rgba(15, 23, 42, .07) !important;
+  border-color: rgba(15, 23, 42, .10) !important;
+  color: var(--text) !important;
+}
+[data-theme="light"] .mc-tab:hover,
+[data-theme="light"] .vl-col-chip:hover,
+[data-theme="light"] .isc-tab:hover,
+[data-theme="light"] .isc-chip:hover,
+[data-theme="light"] .cr-tab:hover,
+[data-theme="light"] .up-tab:hover,
+[data-theme="light"] .ch-tab:hover {
+  background: rgba(15, 23, 42, .14) !important;
+  border-color: rgba(15, 23, 42, .18) !important;
+}
+[data-theme="light"] .mc-tab.active,
+[data-theme="light"] .vl-col-chip.active,
+[data-theme="light"] .isc-tab.active,
+[data-theme="light"] .isc-chip.active,
+[data-theme="light"] .cr-tab.active,
+[data-theme="light"] .up-tab.active,
+[data-theme="light"] .ch-tab.active {
+  background: #0f0f0f !important;
+  color: #fff !important;
+  border-color: #0f0f0f !important;
+}
+
+/* === BOTTONE "+ Nuova cartella" preferiti — coerente YT === */
+.vl-col-new {
+  background: rgba(255, 255, 255, .08) !important;
+  border: 1px dashed rgba(255, 255, 255, .25) !important;
+  color: var(--text2) !important;
+  padding: 8px 16px !important;
+  border-radius: 999px !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all .15s !important;
+}
+.vl-col-new:hover {
+  background: rgba(255, 255, 255, .16) !important;
+  border-color: rgba(255, 255, 255, .40) !important;
+  color: var(--text) !important;
+}
+[data-theme="light"] .vl-col-new {
+  background: rgba(15, 23, 42, .05) !important;
+  border-color: rgba(15, 23, 42, .25) !important;
+}
+[data-theme="light"] .vl-col-new:hover {
+  background: rgba(15, 23, 42, .12) !important;
+  border-color: rgba(15, 23, 42, .40) !important;
+}
+
+/* === Action buttons in card commenti / cronologia === */
+.mc-card-action,
+.ch-card-action {
+  background: rgba(255, 255, 255, .06) !important;
+  border: 1px solid rgba(255, 255, 255, .10) !important;
+  color: var(--text2) !important;
+  padding: 5px 12px !important;
+  border-radius: 999px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all .15s !important;
+}
+.mc-card-action:hover,
+.ch-card-action:hover {
+  background: rgba(255, 255, 255, .14) !important;
+  border-color: rgba(255, 255, 255, .18) !important;
+  color: var(--text) !important;
+}
+.mc-card-action.danger {
+  color: #f87171 !important;
+  border-color: rgba(248, 113, 113, .25) !important;
+}
+.mc-card-action.danger:hover {
+  background: rgba(239, 68, 68, .15) !important;
+  border-color: rgba(239, 68, 68, .45) !important;
+  color: #fca5a5 !important;
+}
+[data-theme="light"] .mc-card-action,
+[data-theme="light"] .ch-card-action {
+  background: rgba(15, 23, 42, .05) !important;
+  border-color: rgba(15, 23, 42, .10) !important;
+  color: var(--text2) !important;
+}
+[data-theme="light"] .mc-card-action:hover,
+[data-theme="light"] .ch-card-action:hover {
+  background: rgba(15, 23, 42, .10) !important;
+  border-color: rgba(15, 23, 42, .18) !important;
+  color: var(--text) !important;
+}
+[data-theme="light"] .mc-card-action.danger {
+  color: #dc2626 !important;
+  border-color: rgba(220, 38, 38, .25) !important;
+}
+[data-theme="light"] .mc-card-action.danger:hover {
+  background: rgba(220, 38, 38, .12) !important;
+  border-color: rgba(220, 38, 38, .45) !important;
+  color: #b91c1c !important;
+}
+
+/* === Pulsanti azione/primari (nm-add-btn) — VERDE leggero per CTA === */
+/* Manteniamo il verde NETMED solo sui CTA tipo "Aggiungi" / "Crea":
+   distinzione visiva tra filtri (neutri) e azioni (accent). */
+
+/* === Select uniformi === */
+.vl-select,
+.mc-select,
+.ch-select {
+  background: rgba(255, 255, 255, .08) !important;
+  border: 1px solid rgba(255, 255, 255, .12) !important;
+  color: var(--text) !important;
+}
+.vl-select:hover,
+.mc-select:hover,
+.ch-select:hover {
+  border-color: rgba(255, 255, 255, .22) !important;
+}
+[data-theme="light"] .vl-select,
+[data-theme="light"] .mc-select,
+[data-theme="light"] .ch-select {
+  background: rgba(15, 23, 42, .05) !important;
+  border-color: rgba(15, 23, 42, .12) !important;
+}
+[data-theme="light"] .vl-select:hover,
+[data-theme="light"] .mc-select:hover,
+[data-theme="light"] .ch-select:hover {
+  border-color: rgba(15, 23, 42, .22) !important;
+}
+
+/* ---------- Skeleton uniformi ---------- */
+.nm-sk {
+  background: linear-gradient(90deg,
+    rgba(255,255,255,.04) 0%,
+    rgba(255,255,255,.10) 50%,
+    rgba(255,255,255,.04) 100%);
+  background-size: 200% 100%;
+  animation: nmShimmer 1.5s ease-in-out infinite;
+  border-radius: 6px;
+  display: inline-block;
+}
+[data-theme="light"] .nm-sk {
+  background: linear-gradient(90deg,
+    rgba(15,23,42,.04) 0%,
+    rgba(15,23,42,.10) 50%,
+    rgba(15,23,42,.04) 100%);
+  background-size: 200% 100%;
+}
+@keyframes nmShimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.nm-sk-line   { height: 12px; width: 100%; border-radius: 6px; }
+.nm-sk-line.short { width: 40%; }
+.nm-sk-line.medium { width: 70%; }
+.nm-sk-thumb  { width: 100%; aspect-ratio: 16/9; border-radius: 10px; }
+.nm-sk-avatar { width: 40px; height: 40px; border-radius: 50%; }
+.nm-sk-pill   { height: 28px; width: 80px; border-radius: 999px; }
+
+/* ---------- Empty state base (riusato in più pagine) ---------- */
+.nm-empty {
+  text-align: center;
+  padding: 56px 24px;
+  color: var(--text2);
+}
+.nm-empty-ico {
+  font-size: 48px;
+  opacity: .55;
+  margin-bottom: 14px;
+}
+.nm-empty-t {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.nm-empty-d {
+  font-size: 14px;
+  color: var(--text3);
+  max-width: 420px;
+  margin: 0 auto 18px;
+  line-height: 1.5;
+}
+.nm-empty-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: var(--accent, #0a6940);
+  color: #fff;
+  border: 0;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, transform .15s;
+}
+.nm-empty-cta:hover {
+  background: var(--accent-strong, #08562f);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   RIFINITURE GRAFICHE — Font YT + gestione commenti
+   ============================================================ */
+
+/* Font tipo YouTube per i bottoni: Roboto come primary, fallback al
+   font del sistema. YouTube usa "Roboto" su tutto. */
+button,
+input[type="button"],
+input[type="submit"],
+.btn,
+.nm-add-btn,
+.nm-clear-btn,
+.mc-card-action,
+.vl-fchip,
+.vl-tab,
+.vl-chip,
+.cat-chip,
+.vcard,
+.vl-card {
+  font-family: "Roboto", "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: .1px;
+}
+
+/* Bottoni primari stile YouTube (border-radius 18px, peso 500) */
+.btn.btn-p,
+.hero-btn,
+.hero-btn-play,
+.vl-empty-btn,
+.mc-empty-btn {
+  border-radius: 18px !important;
+  font-weight: 500 !important;
+  letter-spacing: .2px !important;
+  padding: 9px 16px !important;
+}
+
+/* Riduce padding laterale row-scroll su schermi piccoli per evitare
+   che la prima card "sembri" troppo distante dal bordo */
+@media (max-width: 720px) {
+  .row-scroll {
+    padding: 12px 16px 18px !important;
+    scroll-padding-left: 16px !important;
+    gap: 12px !important;
+  }
+}
+
+/* Commenti video — textarea senza linea brutta sotto */
+.vd-comm-textarea {
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+  padding: 10px 12px !important;
+  transition: border-color .2s, background .2s !important;
+}
+.vd-comm-textarea:focus {
+  border-color: var(--accent) !important;
+  background: var(--surface) !important;
+  border-bottom-color: var(--accent) !important;
+}
+
+/* Card commento "I miei commenti" — niente linea separator sopra,
+   solo un bordo arrotondato del card stesso */
+.mc-card {
+  border: 1px solid var(--border) !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, .02) !important;
+  padding: 14px 16px !important;
+  margin: 8px 0 !important;
+}
+.mc-card-head {
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+}
+[data-theme="light"] .mc-card {
+  background: rgba(255, 255, 255, .85) !important;
+  border-color: rgba(15, 23, 42, .08) !important;
+}
+
+/* Tag stile YouTube nei commenti — pill verde NETMED soft */
+.mc-card-content + div .nm-tag,
+.vd-comm-item .nm-tag {
+  font-family: "Roboto", system-ui, sans-serif;
+}
+
+/* ============================================================
+   Bottoni neutri stile "+ Create" — grigio scuro semitrasparente
+   Override per cancella filtro / delete cartella / azioni neutre
+   I bottoni verdi (.nm-add-btn, primary, accent) restano verdi.
+   ============================================================ */
+
+.nm-clear-btn,
+.vl-empty-btn:not(.nm-add-btn),
+.mc-empty-btn,
+button.btn-pill:not(.btn-pill-primary) {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  height: 38px !important;
+  padding: 0 18px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, .06) !important;
+  border: 1px solid rgba(255, 255, 255, .14) !important;
+  color: var(--text) !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  font-family: "Roboto", "DM Sans", system-ui, sans-serif !important;
+  cursor: pointer !important;
+  transition: background .15s, border-color .15s !important;
+}
+.nm-clear-btn:hover,
+.vl-empty-btn:not(.nm-add-btn):hover,
+.mc-empty-btn:hover,
+button.btn-pill:not(.btn-pill-primary):hover {
+  background: rgba(255, 255, 255, .12) !important;
+  border-color: rgba(255, 255, 255, .22) !important;
+  color: var(--text) !important;
+}
+[data-theme="light"] .nm-clear-btn,
+[data-theme="light"] .vl-empty-btn:not(.nm-add-btn),
+[data-theme="light"] .mc-empty-btn,
+[data-theme="light"] button.btn-pill:not(.btn-pill-primary) {
+  background: rgba(15, 23, 42, .05) !important;
+  border-color: rgba(15, 23, 42, .15) !important;
+}
+[data-theme="light"] .nm-clear-btn:hover,
+[data-theme="light"] .vl-empty-btn:not(.nm-add-btn):hover,
+[data-theme="light"] .mc-empty-btn:hover {
+  background: rgba(15, 23, 42, .10) !important;
+  border-color: rgba(15, 23, 42, .25) !important;
+}
+
+/* "Cancella filtro" — niente più cerchio rosso, X piccola normale */
+.nm-clear-btn .nm-clear-ico {
+  width: 16px !important;
+  height: 16px !important;
+  background: transparent !important;
+  border: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--text2) !important;
+  font-size: 13px !important;
+  padding: 0 !important;
+  margin-right: 2px !important;
+}
+.nm-clear-btn:hover .nm-clear-ico {
+  color: var(--text) !important;
+}

@@ -1,0 +1,94 @@
+/* ============================================================
+   NETMED — Stile pulsante switch lingua IT/EN
+   Bottone fluttuante in alto a destra, riusabile su qualsiasi pagina.
+   ============================================================ */
+
+.nm-lang-switch {
+  background: rgba(255, 255, 255, .08);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .2s, border-color .2s, transform .15s;
+  user-select: none;
+  line-height: 1;
+}
+.nm-lang-switch:hover {
+  background: rgba(255, 255, 255, .16);
+  border-color: rgba(255, 255, 255, .35);
+}
+.nm-lang-switch:active {
+  transform: scale(.96);
+}
+.nm-lang-switch:focus-visible {
+  outline: 2px solid #e50914;
+  outline-offset: 2px;
+}
+
+/* Variante fluttuante (auto-iniettata se la pagina non ne ospita una) */
+.nm-lang-switch-floating {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9000;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  background: rgba(20, 20, 20, .55);
+  border-color: rgba(255, 255, 255, .25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .3);
+}
+
+/* Variante "inline" da inserire dentro un header / navbar.
+   Allineata in altezza agli altri controlli dell'header (40px). */
+.nm-lang-switch-inline {
+  height: 40px;
+  min-width: 56px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, .25);
+  color: rgba(255, 255, 255, .9);
+  font-size: 13px;
+  flex: 0 0 auto;
+}
+.nm-lang-switch-inline:hover {
+  background: rgba(255, 255, 255, .1);
+  color: #fff;
+}
+
+/* Tema chiaro: bordo/colore per la versione inline */
+[data-theme="light"] .nm-lang-switch-inline {
+  border-color: rgba(0, 0, 0, .15);
+  color: #0f172a;
+}
+[data-theme="light"] .nm-lang-switch-inline:hover {
+  background: rgba(0, 0, 0, .06);
+}
+
+/* Mobile: tasto un pelo più piccolo */
+@media (max-width: 640px) {
+  .nm-lang-switch-floating {
+    top: 10px;
+    right: 10px;
+    padding: 5px 11px;
+    font-size: 11px;
+  }
+}
+
+/* Tema chiaro (se attivo): colori invertiti per il floating */
+[data-theme="light"] .nm-lang-switch-floating {
+  background: rgba(255, 255, 255, .85);
+  border-color: rgba(0, 0, 0, .15);
+  color: #111;
+}
+[data-theme="light"] .nm-lang-switch-floating:hover {
+  background: #fff;
+  border-color: rgba(0, 0, 0, .3);
+}

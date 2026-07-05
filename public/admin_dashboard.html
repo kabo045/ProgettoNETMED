@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="description" content="Dashboard di amministrazione NETMED."/>
+  <meta name="theme-color" content="#08562f"/>
+
+  <meta name="robots" content="noindex"/>
+
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg"/>
+  <title>NETMED — Admin</title>
+
+
+  <link rel="stylesheet" href="css/admin/base.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/admin/header.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/admin/sidebar.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/admin/buttons.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/admin/tables.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/admin/cards.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/admin/modal.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/admin/feedback.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/admin/video.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/admin/profile.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/admin/analytics.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/responsive.css?v=20260615yl"/>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-l">
+    <button class="hdr-burger" onclick="toggleSidebar()">☰</button>
+    <div class="hdr-logo outfit" onclick="nav('dashboard')">N</div>
+    <span class="hdr-name outfit" onclick="nav('dashboard')">NETMED</span>
+  </div>
+
+  <div class="hdr-r">
+    <!-- Ricerca globale (video, utenti, commenti) -->
+    <div class="hdr-search">
+      <span class="hdr-search-ico" aria-hidden="true">
+        <svg viewBox="0 0 20 20" width="16" height="16" style="vertical-align:-3px">
+          <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M13 13l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <input id="globalSearch" type="text" placeholder="Cerca video, utenti, commenti…" autocomplete="off" maxlength="100"/>
+      <div class="hdr-search-results" id="globalSearchResults"></div>
+    </div>
+
+    <!-- Campanella notifiche con badge conteggio -->
+    <div class="hdr-notif" onclick="toggleNotif(event)" id="notifBtn">
+      <span class="notif-count" id="notifCount" style="display:none">0</span>
+      <div class="notif-panel" id="notifPanel">
+        <div class="notif-header">
+          <span class="notif-title">Notifiche</span>
+          <div class="notif-actions">
+            <span class="notif-clear" onclick="clearNotifs(event)">Segna lette</span>
+            <span class="notif-del-all" onclick="deleteAllNotifs(event)">Elimina tutte</span>
+          </div>
+        </div>
+        <div id="notifList"></div>
+      </div>
+    </div>
+
+    <!-- Dropdown utente admin -->
+    <div class="hdr-user" onclick="toggleDD(event)">
+      <div class="hdr-avatar outfit" id="hdrAvatar">A</div>
+      <div>
+        <div class="hdr-uname" id="hdrName">Admin</div>
+        <div class="hdr-urole">Amministratore</div>
+      </div>
+      <span class="hdr-arrow">▼</span>
+      <div class="dd" id="userDD">
+        <div class="dd-item" onclick="nav('profile')">Il mio profilo</div>
+        <div class="dd-item" onclick="nav('analytics')">Analytics</div>
+        <div class="dd-item" onclick="nav('dashboard')">Dashboard</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item danger" onclick="doLogout()">Esci</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<div class="side-overlay" id="sideOverlay" onclick="toggleSidebar()"></div>
+<!--
+  Contenitori vuoti: la sidebar la renderizza renderSidebar() in core.js
+  al primo nav(), il main lo riempie la pagina.
+-->
+<div class="layout">
+  <nav class="side" id="sidebar"></nav>
+  <main class="main" id="mainContent"></main>
+</div>
+
+<div class="toast-box" id="toastBox"></div>
+<script src="js/admin/core.js?v=20260615yl"></script>
+<script src="js/admin/dashboard.js?v=20260615yl"></script>
+<script src="js/admin/video.js?v=20260615yl"></script>
+<script src="js/admin/categorie.js?v=20260615yl"></script>
+<script src="js/admin/utenti.js?v=20260615yl"></script>
+<script src="js/admin/commenti.js?v=20260615yl"></script>
+<script src="js/admin/segnalazioni.js?v=20260615yl"></script>
+<script src="js/admin/audit.js?v=20260615yl"></script>
+<script src="js/admin/profilo.js?v=20260615yl"></script>
+<script src="js/admin/init.js?v=20260615yl"></script>
+<script src="js/cookie-banner.js?v=20260615yl"></script>
+</body>
+</html>

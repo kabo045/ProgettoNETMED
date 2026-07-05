@@ -1,0 +1,119 @@
+/* ============================================================
+   NETMED — Admin dashboard
+   Modulo VIDEO: dettaglio video (player, info, stat, sezioni).
+   ============================================================ */
+
+
+/* ---------- Layout dettaglio ---------- */
+.vdetail {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 24px;
+  opacity: 0;
+  animation: fu .4s ease .1s forwards;
+}
+
+
+/* ---------- Player video ---------- */
+.vd-player {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  aspect-ratio: 16/9;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, .2);
+}
+
+.vd-player iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+
+/* ---------- Info video ---------- */
+.vd-info {
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 24px;
+}
+
+.vd-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.vd-desc {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+
+/* ---------- Statistiche video ---------- */
+.vd-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.vd-stat {
+  text-align: center;
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--s0);
+  border: 1px solid var(--border);
+  transition: all .2s;
+}
+
+.vd-stat-val {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.vd-stat-lab {
+  font-size: 10px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  font-weight: 600;
+}
+
+
+/* ---------- Meta + sezioni ---------- */
+.vd-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.vd-section {
+  margin-top: 24px;
+}
+
+.vd-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text2);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vd-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}

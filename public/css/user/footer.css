@@ -1,0 +1,268 @@
+/* ============================================================
+   NETMED — User catalog
+   Modulo FOOTER (riscritto): leggibile e responsive su ogni device.
+   Mobile-first. Touch target >= 44px. Font >= 12.5px.
+   Safe-area-inset per notch iPhone X+.
+   ============================================================ */
+
+
+/* ---------- Footer base (mobile first) ---------------------- */
+.user-footer {
+  margin-top: 48px;
+  padding: 32px 20px 28px;
+  padding-left:   max(20px, env(safe-area-inset-left));
+  padding-right:  max(20px, env(safe-area-inset-right));
+  padding-bottom: max(28px, env(safe-area-inset-bottom));
+
+  background: var(--bg-2);
+  color: var(--text2);
+  border-top: 1px solid var(--border);
+
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+
+/* ---------- Grid colonne (mobile = 1 col) ------------------- */
+.uf-grid {
+  max-width: 1600px;
+  margin: 0 auto 28px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+
+
+/* ---------- Brand block ------------------------------------ */
+.uf-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+.uf-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -.5px;
+}
+.uf-brand-logo .uf-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--t9), var(--t5));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+.uf-brand-desc {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text2);
+  max-width: 100%;
+}
+
+
+/* ---------- Colonne link ----------------------------------- */
+.uf-col-title {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 12px;
+}
+.uf-col-link {
+  display: block;
+  font-size: 14px;
+  color: var(--text2);
+  padding: 10px 0;
+  min-height: 24px;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: color .2s, transform .15s;
+}
+.uf-col-link:hover {
+  color: var(--accent);
+  transform: translateX(2px);
+}
+
+
+/* ---------- Bottom bar ------------------------------------- */
+.uf-bottom {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+.uf-bottom-links {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.uf-bottom-links a {
+  color: var(--text2);
+  cursor: pointer;
+  transition: color .2s;
+  padding: 4px 0;
+  font-size: 13px;
+}
+.uf-bottom-links a:hover {
+  color: var(--accent);
+}
+
+
+/* ============================================================
+   RESPONSIVE BREAKPOINTS — progressivi e SENZA schiacciamenti
+   ============================================================ */
+
+/* ---------- >= 520px : 2 colonne (brand su tutta la riga) --- */
+@media (min-width: 520px) {
+  .user-footer {
+    padding: 36px 24px 30px;
+    padding-left:   max(24px, env(safe-area-inset-left));
+    padding-right:  max(24px, env(safe-area-inset-right));
+    padding-bottom: max(30px, env(safe-area-inset-bottom));
+  }
+  .uf-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 32px;
+    margin-bottom: 30px;
+  }
+  .uf-brand { grid-column: 1 / -1; }
+}
+
+/* ---------- >= 768px : brand a sinistra + 2 col link a destra */
+@media (min-width: 768px) {
+  .user-footer {
+    margin-top: 56px;
+    padding: 40px 32px 32px;
+    padding-left:   max(32px, env(safe-area-inset-left));
+    padding-right:  max(32px, env(safe-area-inset-right));
+    padding-bottom: max(32px, env(safe-area-inset-bottom));
+  }
+  .uf-grid {
+    grid-template-columns: 1.6fr 1fr 1fr;
+    gap: 32px;
+  }
+  .uf-brand { grid-column: auto; }
+  .uf-brand-logo { font-size: 22px; }
+  .uf-brand-logo .uf-mark { width: 36px; height: 36px; font-size: 18px; }
+  .uf-brand-desc { font-size: 14px; max-width: 360px; }
+  .uf-col-link { font-size: 13.5px; padding: 7px 0; }
+  .uf-col-title { font-size: 12.5px; margin-bottom: 14px; }
+}
+
+/* ---------- >= 1024px : 4 colonne piene + più aria ---------- */
+@media (min-width: 1024px) {
+  .user-footer {
+    margin-top: 64px;
+    padding: 48px 48px 36px;
+    padding-left:   max(48px, env(safe-area-inset-left));
+    padding-right:  max(48px, env(safe-area-inset-right));
+    padding-bottom: max(36px, env(safe-area-inset-bottom));
+  }
+  .uf-grid {
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 36px;
+  }
+  .uf-bottom { padding-top: 28px; font-size: 13px; }
+}
+
+/* ---------- <= 380px : iPhone SE — compatto ma leggibile --- */
+@media (max-width: 380px) {
+  .user-footer {
+    padding: 28px 16px 24px;
+    padding-left:   max(16px, env(safe-area-inset-left));
+    padding-right:  max(16px, env(safe-area-inset-right));
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+  }
+  .uf-grid { gap: 22px; margin-bottom: 22px; }
+  .uf-brand-logo { font-size: 18px; }
+  .uf-brand-logo .uf-mark { width: 30px; height: 30px; font-size: 15px; }
+  .uf-brand-desc { font-size: 13px; }
+  .uf-col-title { font-size: 12px; margin-bottom: 10px; }
+  .uf-col-link { font-size: 13.5px; padding: 9px 0; }
+  .uf-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 12.5px;
+    padding-top: 20px;
+  }
+  .uf-bottom-links { gap: 14px; }
+  .uf-bottom-links a { font-size: 12.5px; }
+}
+
+
+/* ============================================================
+   GARANTISCO VISIBILITA' DEL FOOTER
+   Body è display:flex column (base.css). Spingo <main> a
+   prendere lo spazio rimanente così il footer è sempre in fondo.
+   ============================================================ */
+body > main,
+body > #mainContent,
+body > .vl-wrap,
+body > .vd-wrap,
+body > .up-wrap,
+body > .cu-wrap,
+body > .cp-wrap,
+body > .cr-wrap,
+body > .ch-wrap,
+body > .mc-wrap {
+  flex: 1 0 auto;
+}
+
+.user-footer {
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+/* Light theme: footer chiaro e testo ad alto contrasto. Regole
+   esplicite per ogni elemento, così non resta mai testo scuro
+   su fondo scuro (o viceversa). */
+[data-theme="light"] .user-footer {
+  background: #eef2f7;
+  border-top: 1px solid #d8dee8;
+  color: #475569;
+}
+[data-theme="light"] .uf-col-title,
+[data-theme="light"] .uf-brand-logo {
+  color: #0f172a;
+}
+[data-theme="light"] .uf-col-link,
+[data-theme="light"] .uf-brand-desc,
+[data-theme="light"] .uf-bottom,
+[data-theme="light"] .uf-bottom-links a {
+  color: #475569;
+}
+[data-theme="light"] .uf-col-link:hover,
+[data-theme="light"] .uf-bottom-links a:hover {
+  color: var(--accent-strong);
+}
+[data-theme="light"] .uf-bottom {
+  border-top: 1px solid #d8dee8;
+}

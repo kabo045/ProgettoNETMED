@@ -1,0 +1,275 @@
+/* ============================================================
+   NETMED — User catalog
+   Modulo ROW: riga categoria scrollabile orizzontale
+    con titolo, sfumature laterali,
+   frecce ribbon e contenitore card a snap.
+   ============================================================ */
+
+
+/* Respiro in cima alle righe: utile sia con hero (già ha margin-bottom)
+   sia quando l'hero è nascosto. La prima riga non resta attaccata. */
+#homeRows {
+  padding-top: 8px;
+}
+#homeRows .row:first-child {
+  margin-top: 0;
+}
+
+
+/* ---------- Riga di categoria ---------- */
+.row {
+  margin-bottom: 14px;          /* righe compatte, stile Netflix */
+  position: relative;
+}
+
+.row-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 0 48px;
+}
+
+.row-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 26px;              /* + grande, gerarchia piu' forte */
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -.6px;
+  line-height: 1.15;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Accento laterale a "barra" più presente e con glow soft */
+.row-title::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 26px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--t4), var(--t6));
+  box-shadow: 0 0 12px rgba(13, 122, 77, .45);
+  flex-shrink: 0;
+}
+
+/* Link "Vedi tutti" con freccina che si muove */
+.row-link {
+  font-size: 13px;
+  color: var(--text3);
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: .3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: color .2s, background .2s, transform .2s;
+}
+
+.row-link:hover {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.row-link:hover::after {
+  transform: translateX(3px);
+}
+
+.row-link::after {
+  content: '→';
+  display: inline-block;
+  transition: transform .2s;
+}
+
+
+/* ---------- Contenitore scroll orizzontale ---------- */
+.row-scroll-wrap {
+  position: relative;
+}
+
+.row-scroll {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 48px;
+  /* Padding generoso top/bottom per non tagliare lift + ombra in hover.
+     overflow-y diventa "hidden" automaticamente con overflow-x: auto
+     in alcuni browser; aggiungiamo abbastanza spazio. */
+  padding: 12px 48px 18px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.row-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* ---------- Sfumature laterali (fade edges) ---------- */
+/* Assicurano che le card non escano "tagliate" sul bordo
+   ma sfumino dentro il viewport, alla Netflix. */
+.row-scroll-wrap::before,
+.row-scroll-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+  transition: opacity .25s;
+}
+
+.row-scroll-wrap::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--bg) 20%, transparent 100%);
+}
+
+.row-scroll-wrap::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--bg) 20%, transparent 100%);
+}
+
+.row-scroll-wrap:hover::before,
+.row-scroll-wrap:hover::after {
+  opacity: 1;
+}
+
+
+/* ---------- Frecce ribbon (full-height, Netflix-like) ---------- */
+.row-arrow {
+  position: absolute;
+  top: 20px;
+  bottom: 40px;
+  width: 56px;
+  border-radius: 0;
+  background: rgba(10, 10, 11, .5);
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 700;
+  z-index: 6;
+  opacity: 0;
+  transition: opacity .25s, background .2s, transform .2s;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+[data-theme="light"] .row-arrow {
+  background: rgba(255, 255, 255, .65);
+  color: var(--text);
+}
+
+.row-scroll-wrap:hover .row-arrow {
+  opacity: 1;
+}
+
+.row-arrow:hover {
+  background: rgba(10, 10, 11, .75);
+  transform: scale(1.02);
+}
+
+[data-theme="light"] .row-arrow:hover {
+  background: rgba(255, 255, 255, .9);
+}
+
+.row-arrow:active {
+  transform: scale(.98);
+}
+
+.row-arrow:focus-visible {
+  opacity: 1;
+  outline: 2px solid var(--accent);
+  outline-offset: -4px;
+}
+
+.row-arrow.left {
+  left: 0;
+}
+
+.row-arrow.right {
+  right: 0;
+}
+
+.row-arrow:disabled {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+
+/* ---------- Stato vuoto / fine catalogo ---------- */
+.row-empty {
+  padding: 40px 48px;
+  text-align: center;
+  color: var(--text3);
+  font-size: 14px;
+}
+
+
+/* ---------- Catalogo intero vuoto ---------- */
+.catalog-empty {
+  padding: 80px 48px;
+  text-align: center;
+  color: var(--text3);
+}
+
+.catalog-empty-ico {
+  font-size: 64px;
+  opacity: .35;
+  margin-bottom: 18px;
+}
+
+.catalog-empty-t {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text2);
+  margin-bottom: 8px;
+}
+
+.catalog-empty-d {
+  font-size: 14px;
+  color: var(--text3);
+}
+
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .row {
+    margin-bottom: 18px;
+  }
+  .row-header {
+    padding: 0 16px;
+    margin-bottom: 12px;
+  }
+  .row-title {
+    font-size: 18px;
+  }
+  .row-scroll {
+    gap: 12px;
+    padding: 6px 16px 18px;
+    scroll-padding-left: 16px;
+  }
+  /* Su mobile manteniamo le frecce visibili per chi non vuole/puo'
+     fare swipe (es. devtools desktop in modalita' mobile). */
+  .row-arrow {
+    display: flex;
+    width: 40px;
+    font-size: 22px;
+    opacity: .85;
+  }
+  .row-scroll-wrap::before,
+  .row-scroll-wrap::after {
+    width: 24px;
+  }
+}

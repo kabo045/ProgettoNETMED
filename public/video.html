@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="description" content="Guarda video divulgativi medico-scientifici su NETMED, con commenti, voti e contenuti correlati."/>
+  <meta name="theme-color" content="#08562f"/>
+
+  <!-- Open Graph: per l'anteprima quando condivido il link su whatsapp/social -->
+  <meta property="og:title" content="NETMED — Video"/>
+  <meta property="og:description" content="Video divulgativi medico-scientifici su NETMED."/>
+  <meta property="og:type" content="video.other"/>
+
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg"/>
+  <title>NETMED</title>
+
+  <link rel="stylesheet" href="css/user/base.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/header.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/footer.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/feedback.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/feedback-ui.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/vd-page.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/vd-player.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/vd-actions.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/vd-channel.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/vd-comments.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/vd-related.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/vd-modal.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/preview-modal.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/responsive.css?v=20260615yl"/>
+</head>
+<body>
+<a class="skip-link" href="#vdMain" data-i18n="home.skip">Salta al contenuto principale</a>
+
+
+<!-- Riusa lo stesso markup della home. Contiene logo, ricerca, dropdown utente. -->
+<header class="user-hdr" role="banner">
+  <div class="uh-l">
+    <div class="uh-logo" onclick="goTo('home.html')">
+      <div class="uh-logo-mark">N</div>
+      <span class="uh-logo-name">NETMED</span>
+    </div>
+    <nav class="uh-nav" id="uhNav">
+      <button class="uh-nav-link" onclick="goTo('home.html')" data-i18n="home.nav_home">Home</button>
+    </nav>
+  </div>
+
+  <div class="uh-r">
+    <!-- Barra di ricerca con dropdown risultati (search-v2.js) -->
+    <div class="uh-search" role="search">
+      <span class="uh-search-ico" aria-hidden="true">
+        <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" style="vertical-align:-3px">
+          <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M13 13l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <input id="uhSearchInput" type="text" placeholder="Cerca video, categorie, tag…" autocomplete="off"
+             maxlength="100" aria-label="Cerca video, categorie o tag"
+             data-i18n-placeholder="home.search_ph" data-i18n-aria-label="home.search_aria">
+      <div class="uh-search-results" id="uhSearchResults" role="listbox" aria-label="Risultati ricerca"></div>
+    </div>
+
+    <!-- Bottone "Accedi": visibile solo se non loggato (core.js lo nasconde per gli utenti loggati) -->
+    <button class="uh-login-btn" id="uhGuest" onclick="goLogin()" data-i18n="common.login">Accedi</button>
+
+    <!-- Dropdown utente: visibile solo se loggato -->
+    <div class="uh-user" id="uhUser" style="display:none" onclick="toggleUserDD(event)">
+      <div class="uh-avatar" id="uhAvatar">U</div>
+      <span class="uh-uname" id="uhUname">Utente</span>
+      <span class="uh-arrow">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </span>
+
+      <div class="uh-dd" id="uhDd" onclick="event.stopPropagation()">
+        <div class="uh-dd-head">
+          <div class="uh-avatar" id="uhDdAvatar">U</div>
+          <div>
+            <div class="uh-dd-name" id="uhDdName">Utente</div>
+            <div class="uh-dd-email" id="uhDdEmail">—</div>
+          </div>
+        </div>
+        <div class="uh-dd-item" onclick="goProfile()"><span data-i18n="home.dd_profile">Il mio profilo</span></div>
+        <div class="uh-dd-item" onclick="goFavorites()"><span data-i18n="home.dd_saved">Salvati</span></div>
+        <div class="uh-dd-item" onclick="goTo('miei-commenti.html')"><span data-i18n="home.dd_comments">I miei commenti</span></div>
+        <div class="uh-dd-item" onclick="goTo('cronologia.html')"><span data-i18n="home.dd_history">Cronologia</span></div>
+        <div class="uh-dd-item" id="uhDdCreator" style="display:none" onclick="goCreator()"><span data-i18n="home.dd_creator">I miei video</span></div>
+        <div class="uh-dd-item" id="uhDdAdmin" style="display:none" onclick="goAdmin()"><span data-i18n="home.dd_admin">Dashboard admin</span></div>
+        <div class="uh-dd-sep"></div>
+        <div class="uh-dd-item danger" onclick="doLogout()">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;vertical-align:-3px">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          <span data-i18n="home.dd_logout">Esci</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<!--
+  Le tre sezioni sotto sono contenitori vuoti: vengono riempite da video.js
+  dopo aver fetchato /api/videos/:id. Lo skeleton di default lo mostrano
+  loro finche' arriva la risposta.
+-->
+<main class="vd-wrap">
+  <div class="vd-grid">
+    <!-- Colonna principale: player + info + azioni (like/salvati/segnala) -->
+    <section class="vd-main" id="vdMain"></section>
+
+    <!-- Sidebar destra: video correlati (stessa categoria/tag) -->
+    <aside class="vd-aside" id="vdAside"></aside>
+  </div>
+
+  <section class="vd-comm" id="vdComments"></section>
+</main>
+
+
+<!-- Modale "Condividi": mostra il link copiabile del video -->
+<div class="vd-modal-bg" id="vdShareModal">
+  <div class="vd-modal" onclick="event.stopPropagation()">
+    <div class="vd-modal-h">
+      <div class="vd-modal-title">↗ Condividi</div>
+      <button class="vd-modal-close" onclick="vdCloseShare()" aria-label="Chiudi">×</button>
+    </div>
+    <div class="vd-modal-body">
+      <div class="vd-form-group">
+        <label class="vd-form-label">Link del video</label>
+        <div class="vd-share-url">
+          <input class="vd-share-input" id="vdShareInput" readonly/>
+          <button class="vd-share-copy" onclick="vdCopyShare()">Copia</button>
+        </div>
+        <div class="vd-share-hint">Chiunque abbia questo link potrà aprire la pagina del video.</div>
+      </div>
+    </div>
+    <div class="vd-modal-foot">
+      <button class="vd-modal-btn" onclick="vdCloseShare()">Chiudi</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modale "Segnala": form con motivo + note per il moderatore -->
+<div class="vd-modal-bg" id="vdReportModal">
+  <div class="vd-modal" onclick="event.stopPropagation()">
+    <div class="vd-modal-h">
+      <div class="vd-modal-title">Segnala video</div>
+      <button class="vd-modal-close" onclick="vdCloseReport()" aria-label="Chiudi">×</button>
+    </div>
+    <div class="vd-modal-body">
+      <p class="vd-form-help">
+        La tua segnalazione e' <strong>anonima</strong>. Un moderatore valutera' il contenuto.
+      </p>
+
+      <div class="vd-form-group">
+        <label class="vd-form-label">Motivo della segnalazione</label>
+        <select class="vd-form-select" id="vdReportReason" onchange="vdUpdateReportReasonHelp()">
+          <option value="spam">Spam o contenuto promozionale</option>
+          <option value="inappropriato">Contenuto inappropriato</option>
+          <option value="violenza">Violenza o linguaggio offensivo</option>
+          <option value="copyright">Violazione copyright</option>
+          <option value="altro">Altro motivo</option>
+        </select>
+        <div class="vd-form-hint" id="vdReportReasonHelp">
+          Pubblicita', link esterni a fini commerciali o contenuti ripetuti privi di valore divulgativo.
+        </div>
+      </div>
+
+      <div class="vd-form-group">
+        <label class="vd-form-label">Note per il moderatore <span class="vd-form-opt">(opzionale, max 500)</span></label>
+        <textarea class="vd-form-textarea" id="vdReportComment" maxlength="500"
+                  oninput="vdUpdateReportCharCount()"
+                  placeholder="Es. al minuto 2:30 viene presentata una terapia priva di evidenze scientifiche..."></textarea>
+        <div class="vd-form-hint">
+          <span id="vdReportCharCount">0</span>/500 caratteri. Maggiori dettagli aiutano la valutazione.
+        </div>
+      </div>
+    </div>
+    <div class="vd-modal-foot">
+      <button class="vd-modal-btn" onclick="vdCloseReport()">Annulla</button>
+      <button class="vd-modal-btn danger" id="vdReportSubmitBtn" onclick="vdSubmitReport()">Invia segnalazione</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Riusato dalla home. Colonne: brand, catalogo, account, info -->
+<footer class="user-footer" role="contentinfo">
+  <div class="uf-grid">
+    <div class="uf-brand">
+      <div class="uf-brand-logo">
+        <span class="uf-mark">N</span>
+        NETMED
+      </div>
+      <p class="uf-brand-desc" data-i18n="footer.brand_desc">Piattaforma video a tema medico-scientifico.</p>
+    </div>
+    <div>
+      <div class="uf-col-title" data-i18n="footer.col_catalog">Catalogo</div>
+      <a class="uf-col-link" onclick="goTo('home.html')">Home</a>
+      <a class="uf-col-link" onclick="goCategory(1)">Fisioterapia</a>
+      <a class="uf-col-link" onclick="goCategory(2)">Neurologia</a>
+      <a class="uf-col-link" onclick="goCategory(3)">Ortopedia</a>
+    </div>
+    <div>
+      <div class="uf-col-title" data-i18n="footer.col_account">Account</div>
+      <a class="uf-col-link" onclick="goLogin()">Accedi</a>
+      <a class="uf-col-link" onclick="goTo('registrazione.html')">Registrati</a>
+      <a class="uf-col-link" onclick="goFavorites()">I miei salvati</a>
+    </div>
+    <div>
+      <div class="uf-col-title" data-i18n="footer.col_info">Info</div>
+      <a class="uf-col-link" onclick="goTo('index.html')">Chi siamo</a>
+      <a class="uf-col-link" onclick="goTo('privacy.html')">Privacy</a>
+      <a class="uf-col-link" onclick="goTo('termini.html')">Termini e condizioni</a>
+      <a class="uf-col-link" onclick="goTo('contatti.html')">Contatti</a>
+    </div>
+  </div>
+
+  <div class="uf-bottom">
+    © NETMED.
+  </div>
+</footer>
+
+<script src="js/user/core.js?v=20260615yl"></script>
+<script src="js/i18n.js?v=20260615yl"></script>
+
+<!-- UI condivisa -->
+<script src="js/user/nm-icons.js?v=20260615yl"></script>
+<script src="js/user/preview-modal.js?v=20260615yl"></script>
+<script src="js/user/hover-preview.js?v=20260615yl"></script>
+<script src="js/user/feedback-ui.js?v=20260615yl"></script>
+
+<!-- Ricerca -->
+<script src="js/user/search-v2.js?v=20260615yl"></script>
+
+<!-- Pagina video -->
+<script src="js/user/video.js?v=20260615yl"></script>
+<script src="js/user/video-init.js?v=20260615yl"></script>
+
+<!-- Cookie banner (parte per ultimo, non deve bloccare la pagina) -->
+<script src="js/cookie-banner.js?v=20260615yl"></script>
+</body>
+</html>

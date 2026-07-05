@@ -1,0 +1,42 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "init-db": "node scripts/init-db.js",
+    "setup": "node scripts/init-db.js && node server.js",
+    "seed-admin": "node scripts/createAdmin.js",
+    "reset-admin": "node scripts/createAdmin.js --reset",
+    "format": "prettier --write \"**/*.js\"",
+    "format:check": "prettier --check \"**/*.js\"",
+    "test": "NODE_ENV=test mocha --config test/.mocharc.json",
+    "test:utente": "NODE_ENV=test mocha test/test-utente-api.js",
+    "test:creator": "NODE_ENV=test mocha test/test-creator-api.js",
+    "test:admin": "NODE_ENV=test mocha test/test-admin-api.js",
+    "compose:test": "docker compose run --rm -e NODE_ENV=test app npm test",
+    "compose:test:utente": "docker compose run --rm -e NODE_ENV=test app npx mocha test/test-utente-api.js",
+    "compose:test:creator": "docker compose run --rm -e NODE_ENV=test app npx mocha test/test-creator-api.js",
+    "compose:test:admin": "docker compose run --rm -e NODE_ENV=test app npx mocha test/test-admin-api.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^6.9.16",
+    "pg": "^8.20.0",
+    "web-push": "^3.6.7"
+  },
+  "devDependencies": {
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
+  },
+  "description": ""
+}

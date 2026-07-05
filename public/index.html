@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08562f">
+  <title>NETMED</title>
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+
+
+  <link rel="stylesheet" href="css/auth-common.css?v=20260615yl">
+  <link rel="stylesheet" href="css/index.css?v=20260615yl">
+  <link rel="stylesheet" href="css/footer.css?v=20260615yl">
+  <link rel="stylesheet" href="css/i18n.css">
+  <style>
+    .ix-top5 {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 64px 0 72px;
+    }
+    .ix-top5-head { margin: 0 0 28px; padding: 0 96px; }
+    .ix-top5-eyebrow {
+      color: #0d7a4d;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .ix-top5-eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 22px; height: 2px;
+      background: #0d7a4d;
+      border-radius: 2px;
+    }
+    .ix-top5-title {
+      font-family: 'Outfit', 'Inter', sans-serif;
+      color: #fff;
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 800;
+      letter-spacing: -.8px;
+      line-height: 1.1;
+      margin: 0 0 8px;
+    }
+    .ix-top5-sub {
+      color: #9ea0a4;
+      font-size: 14.5px;
+      line-height: 1.5;
+      margin: 0;
+      max-width: 540px;
+    }
+
+    .ix-top5-scroll-wrap { position: relative; }
+    .ix-top5-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(20,20,22,.78);
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 4;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: background .15s, border-color .15s, transform .15s;
+    }
+    .ix-top5-arrow.left  { left: 40px; }
+    .ix-top5-arrow.right { right: 40px; }
+    .ix-top5-arrow:hover { background: rgba(13,122,77,.92); border-color: #0d7a4d; transform: translateY(-50%) scale(1.06); }
+    .ix-top5-grid {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      overflow-y: visible;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding: 14px 96px 22px;
+      scrollbar-width: none;
+    }
+    .ix-top5-grid::-webkit-scrollbar { display: none; }
+
+    .ix-top5-card {
+      flex: 0 0 160px;
+      width: 160px;
+      aspect-ratio: 2/3;
+      height: 240px; 
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      text-decoration: none;
+      display: block;
+      cursor: pointer;
+      background: #131315;
+      scroll-snap-align: start;
+      transition: transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s;
+    }
+    .ix-top5-card:hover {
+      transform: translateY(-6px) scale(1.04);
+      box-shadow: 0 22px 44px rgba(0,0,0,.55), 0 8px 16px rgba(13,122,77,.20);
+      z-index: 3;
+    }
+
+    .ix-top5-poster {
+      position: absolute; inset: 0;
+      background-color: #1a1a1c;
+      overflow: hidden;
+    }
+    .ix-top5-poster img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    /* Sfumatura nera in basso per rendere leggibile il numero e il titolo */
+    .ix-top5-poster::after {
+      content: "";
+      position: absolute; inset: auto 0 0 0;
+      height: 55%;
+      background: linear-gradient(180deg, transparent, rgba(0,0,0,.92));
+      pointer-events: none;
+      z-index: 1;
+    }
+    .ix-top5-num {
+      position: absolute;
+      left: -6px;
+      bottom: -10px;
+      font-family: 'Outfit', 'Inter', sans-serif;
+      font-size: clamp(90px, 9vw, 140px);
+      font-weight: 900;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 3px #fff;
+      text-shadow: 4px 4px 0 rgba(0,0,0,.55);
+      letter-spacing: -6px;
+      pointer-events: none;
+      z-index: 2;
+      user-select: none;
+    }
+
+    /* Info card visibili solo su hover */
+    .ix-top5-info {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 10px 12px 12px;
+      z-index: 3;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity .22s, transform .22s;
+      pointer-events: none;
+    }
+    .ix-top5-card:hover .ix-top5-info { opacity: 1; transform: translateY(0); }
+    .ix-top5-info-title {
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.25;
+      margin: 0 0 3px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-shadow: 0 2px 8px rgba(0,0,0,.7);
+    }
+    .ix-top5-info-author {
+      color: #d8d8db;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-shadow: 0 2px 6px rgba(0,0,0,.7);
+    }
+    .ix-top5-card.sk-card .ix-top5-poster {
+      background: linear-gradient(90deg, #1a1a1c 25%, #232326 50%, #1a1a1c 75%);
+      background-size: 200% 100%;
+      animation: ixShimmer 1.4s infinite;
+    }
+    @keyframes ixShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .ix-top5-empty {
+      flex: 1;
+      grid-column: 1/-1;
+      text-align: center;
+      color: #8e8e94;
+      padding: 60px 20px;
+      font-size: 14px;
+      min-height: 240px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    @media (max-width: 900px) {
+      .ix-top5 { padding: 48px 0 56px; }
+      .ix-top5-head { padding: 0 32px; }
+      .ix-top5-grid { padding: 14px 32px 20px; gap: 14px; }
+      .ix-top5-card { flex-basis: 150px; width: 150px; height: 225px; }
+      .ix-top5-arrow.left  { left: 8px; }
+      .ix-top5-arrow.right { right: 8px; }
+      .ix-top5-num { font-size: 100px; }
+    }
+    @media (max-width: 600px) {
+      .ix-top5 { padding: 36px 0 48px; }
+      .ix-top5-head { padding: 0 20px; margin-bottom: 18px; }
+      .ix-top5-grid { padding: 10px 20px 16px; gap: 10px; }
+      .ix-top5-card { flex-basis: 130px; width: 130px; height: 195px; }
+      .ix-top5-arrow { width: 36px; height: 36px; font-size: 20px; }
+      .ix-top5-arrow.left  { left: 6px; }
+      .ix-top5-arrow.right { right: 6px; }
+      .ix-top5-num { font-size: 88px; left: -4px; bottom: -8px; -webkit-text-stroke-width: 2.5px; }
+    }
+
+    .ix-navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 14px 36px;
+      background: rgba(10,10,11,.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      position: sticky; top: 0; z-index: 50;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .ix-logo { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: #fff; }
+    .ix-logo .logo-mark-inline {
+      width: 38px; height: 38px;
+      background: #0a6940; color: #fff;
+      border-radius: 9px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: 'Outfit','Inter',sans-serif; font-weight: 800; font-size: 18px;
+      margin-bottom: 0;
+    }
+    .ix-logo-text { display: inline-flex; flex-direction: column; line-height: 1.05; }
+    .ix-logo-text b { font-weight: 900; font-size: 17px; letter-spacing: -.5px; display: inline; }
+    .ix-logo-text i { font-style: normal; color: #0d7a4d; font-weight: 900; font-size: 17px; letter-spacing: -.5px; display: inline; }
+    .ix-logo-sub { font-size: 10px; font-weight: 600; color: #9ea0a4; letter-spacing: .4px; margin-top: 1px; }
+    .ix-nav-center { display: flex; align-items: center; gap: 4px; flex: 1; justify-content: center; position: relative; }
+    .ix-nav-link {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: none; border: 0;
+      color: #d8d8db; font-family: inherit; font-size: 13px; font-weight: 700; letter-spacing: .6px;
+      padding: 10px 16px; border-radius: 9px;
+      cursor: pointer; text-decoration: none;
+      transition: background .15s, color .15s;
+      text-transform: uppercase;
+    }
+    .ix-nav-link:hover { background: rgba(255,255,255,.06); color: #fff; }
+    @media (max-width: 900px) {
+      .ix-nav-center { display: none; }
+      .ix-navbar { padding: 12px 16px; }
+      .ix-logo-text b, .ix-logo-text i { font-size: 15px; }
+      .ix-logo-sub { display: none; }
+    }
+
+
+    /* ============ Footer landing ricco ============ */
+    .ix-footer {
+      background: #0a0a0b;
+      color: #c4c4c8;
+      padding: 56px 36px 22px;
+      border-top: 1px solid rgba(255,255,255,.06);
+      margin-top: 32px;
+    }
+    .ix-footer-grid {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 40px;
+    }
+    .ix-foot-brand h3 {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -.3px;
+      margin: 0 0 10px;
+      font-family: 'Outfit','Inter',sans-serif;
+    }
+    .ix-foot-brand p {
+      color: #9ea0a4;
+      font-size: 13.5px;
+      line-height: 1.6;
+      margin: 0 0 16px;
+      max-width: 320px;
+    }
+    .ix-foot-social { display: flex; gap: 10px; }
+    .ix-foot-social a {
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.05);
+      color: #d8d8db;
+      display: inline-flex; align-items: center; justify-content: center;
+      text-decoration: none;
+      transition: background .15s, color .15s, transform .12s;
+    }
+    .ix-foot-social a:hover { background: rgba(13,122,77,.18); color: #1e9659; transform: translateY(-2px); }
+    .ix-foot-social svg { width: 16px; height: 16px; fill: currentColor; }
+    .ix-foot-col h4 {
+      color: #fff;
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin: 4px 0 14px;
+    }
+    .ix-foot-col a {
+      display: block;
+      color: #b0b1b6;
+      font-size: 13.5px;
+      text-decoration: none;
+      padding: 5px 0;
+      transition: color .14s, transform .12s;
+    }
+    .ix-foot-col a:hover { color: #fff; transform: translateX(2px); }
+    .ix-foot-bottom {
+      max-width: 1280px;
+      margin: 32px auto 0;
+      padding-top: 22px;
+      border-top: 1px solid rgba(255,255,255,.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-size: 12.5px;
+      color: #7a7a80;
+    }
+    .ix-foot-bottom-links { display: flex; gap: 16px; flex-wrap: wrap; }
+    .ix-foot-bottom-links a { color: #9ea0a4; text-decoration: none; transition: color .14s; }
+    .ix-foot-bottom-links a:hover { color: #fff; }
+
+    @media (max-width: 900px) {
+      .ix-footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+      .ix-footer { padding: 44px 24px 18px; }
+    }
+    @media (max-width: 540px) {
+      .ix-footer-grid { grid-template-columns: 1fr; gap: 24px; }
+      .ix-foot-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar ix-navbar">
+  <a href="index.html" class="logo-netmed ix-logo" aria-label="NETMED — vai alla home">
+    <span class="logo-mark-inline">N</span>
+    <span class="ix-logo-text"><b>NET</b><i>MED</i><span class="ix-logo-sub">Piattaforma medico-scientifica</span></span>
+  </a>
+
+  <!-- Menu centrale -->
+  <div class="ix-nav-center" role="menubar">
+    <a class="ix-nav-link" href="termini.html">CHI SIAMO</a>
+    <a class="ix-nav-link" href="contatti.html">CONTATTI</a>
+  </div>
+
+  <div class="nav-buttons ix-nav-right">
+    <a href="login.html" class="btn-access" data-i18n="common.login">Accedi</a>
+    <a href="registrazione.html" class="btn-register" data-i18n="common.register">Registrati</a>
+    <button type="button" class="nm-lang-switch nm-lang-switch-inline" aria-label="Switch language">EN</button>
+  </div>
+</nav>
+
+
+<div class="hero">
+  <div class="hero-content">
+    <h1 data-i18n-html="index.hero_h1_full">Tutta la medicina,<br><span>in un unico streaming.</span></h1>
+    <p data-i18n="index.hero_p">Guarda lezioni di chirurgia, protocolli di fisioterapia e casi clinici ovunque tu sia.</p>
+
+    <!-- Il form invia direttamente a registrazione.html: l'email digitata viene precompilata -->
+    <form action="registrazione.html" class="cta-pill">
+      <input type="email" data-i18n-placeholder="index.email_ph" placeholder="Il tuo indirizzo email" required maxlength="50">
+      <button type="submit" class="btn-pill" data-i18n="index.cta">Inizia ora ›</button>
+    </form>
+    <p class="hero-note" data-i18n="index.note">Inserisci l'email per creare il tuo account.</p>
+  </div>
+</div>
+
+
+<!--
+  I 5 video piu' visti della settimana. Poster verticali 2:3, numero
+  gigante outline Top 10. Al click, non loggato -> login.html per atterrare sul video dopo l'accesso.
+-->
+<section class="ix-top5" aria-label="I titoli del momento su NETMED">
+  <div class="ix-top5-head">
+    <div class="ix-top5-eyebrow">In tendenza</div>
+    <h2 class="ix-top5-title">titoli del momento</h2>
+    <p class="ix-top5-sub">I contenuti piu' visti dai nostri utenti questa settimana, scelti dai medici verificati di NETMED.</p>
+  </div>
+
+  <div class="ix-top5-scroll-wrap">
+    <button type="button" class="ix-top5-arrow left"  onclick="ixTop5Scroll(-1)" aria-label="Scorri indietro">&lsaquo;</button>
+    <button type="button" class="ix-top5-arrow right" onclick="ixTop5Scroll(1)"  aria-label="Scorri avanti">&rsaquo;</button>
+
+    <!-- Skeleton di 5 card -->
+    <div class="ix-top5-grid" id="ixTop5">
+      <div class="ix-top5-card sk-card"><div class="ix-top5-num">1</div><div class="ix-top5-poster"></div></div>
+      <div class="ix-top5-card sk-card"><div class="ix-top5-num">2</div><div class="ix-top5-poster"></div></div>
+      <div class="ix-top5-card sk-card"><div class="ix-top5-num">3</div><div class="ix-top5-poster"></div></div>
+      <div class="ix-top5-card sk-card"><div class="ix-top5-num">4</div><div class="ix-top5-poster"></div></div>
+      <div class="ix-top5-card sk-card"><div class="ix-top5-num">5</div><div class="ix-top5-poster"></div></div>
+    </div>
+  </div>
+</section>
+
+
+<footer class="ix-footer" role="contentinfo">
+  <div class="ix-footer-grid">
+
+    <div class="ix-foot-brand">
+      <h3>NETMED</h3>
+      <p>La piattaforma video medico-scientifici.</p>
+      <!-- Social: placeholder per un futuro rilascio -->
+      <div class="ix-foot-social">
+        <a href="#" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.91 1.65-1.85 3.4-1.85 3.64 0 4.31 2.4 4.31 5.52v6.22zM5.34 7.43a2.07 2.07 0 110-4.13 2.07 2.07 0 010 4.13zm1.78 13.02H3.56V9h3.56v11.45z"/></svg></a>
+        <a href="#" aria-label="Twitter" title="Twitter"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="#" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.22.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.22-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.22-.41a3.72 3.72 0 01-1.38-.9 3.72 3.72 0 01-.9-1.38c-.16-.42-.36-1.05-.41-2.22-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.22.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.05-.36 2.22-.41C8.42 2.17 8.8 2.16 12 2.16zM12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63a5.88 5.88 0 00-2.13 1.38A5.88 5.88 0 00.63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91a5.88 5.88 0 001.38 2.13 5.88 5.88 0 002.13 1.38c.76.3 1.64.5 2.91.56 1.28.06 1.69.07 4.95.07s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.88 5.88 0 002.13-1.38 5.88 5.88 0 001.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.88 5.88 0 00-1.38-2.13A5.88 5.88 0 0019.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zm0 10.16a4 4 0 110-8 4 4 0 010 8zm7.85-10.4a1.44 1.44 0 11-2.88 0 1.44 1.44 0 012.88 0z"/></svg></a>
+      </div>
+    </div>
+
+    <div class="ix-foot-col">
+      <h4>Catalogo</h4>
+      <a href="login.html">Tutti i video</a>
+      <a href="login.html?next=search.html?view=tags">Esplora per tag</a>
+      <a href="login.html?next=search.html?sort=views">Piu' visti</a>
+      <a href="login.html?next=search.html?sort=recent">Recenti</a>
+    </div>
+
+    <div class="ix-foot-col">
+      <h4>Account</h4>
+      <a href="login.html">Accedi</a>
+      <a href="registrazione.html">Registrati</a>
+      <a href="password-reset-request.html">Password dimenticata?</a>
+    </div>
+
+    <div class="ix-foot-col">
+      <h4>Info</h4>
+      <a href="termini.html">Termini di servizio</a>
+      <a href="privacy.html">Privacy policy</a>
+      <a href="cookie.html">Cookie policy</a>
+      <a href="contatti.html">Contatti</a>
+      <a href="accessibilita.html">Accessibilita</a>
+    </div>
+
+  </div>
+
+  <div class="ix-foot-bottom">
+    <span>&copy;NETMED</span>
+    <div class="ix-foot-bottom-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="termini.html">Termini</a>
+      <a href="cookie.html">Cookie</a>
+    </div>
+  </div>
+</footer>
+<script>
+  function ixEsc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  // Scroll orizzontale del carosello Top 5 (freccette laterali).
+  function ixTop5Scroll(dir) {
+    const grid = document.getElementById("ixTop5");
+    if (!grid) return;
+    const step = Math.max(200, Math.round(grid.clientWidth * 0.6));
+    grid.scrollBy({ left: dir * step, behavior: "smooth" });
+  }
+  window.ixTop5Scroll = ixTop5Scroll;
+
+  // Carica i video Top 5 dall'API explore.
+  // In caso di errore o array vuoto mostro il messaggio di catalogo vuoto
+  (function () {
+    const grid = document.getElementById("ixTop5");
+    if (!grid) return;
+
+    fetch("/api/user/explore?sort=views&limit=10")
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (!d || !Array.isArray(d.videos) || !d.videos.length) {
+          grid.innerHTML = '<div class="ix-top5-empty">Il catalogo sara presto disponibile.</div>';
+          return;
+        }
+        const videos = d.videos.slice(0, 10);
+
+        // Uso <img loading="lazy"> invece di background-image cosi' posso provare
+        // maxresdefault (1280x720, alta qualita') e fallback automatico su
+        // hqdefault (480x360) se l'HD non esiste (video piu' vecchi).
+        grid.innerHTML = videos.map((v, i) => {
+          const num = i + 1;
+          const ytId = v.youtube_id || "";
+          const hi  = ytId ? "https://i.ytimg.com/vi/" + encodeURIComponent(ytId) + "/maxresdefault.jpg" : "";
+          const med = ytId ? "https://i.ytimg.com/vi/" + encodeURIComponent(ytId) + "/hqdefault.jpg"    : "";
+          const img = v.thumbnail_url || hi || med;
+          const author = v.uploaded_by_username || "Creator NETMED";
+          const title  = v.title || "Video";
+
+          // Click da guest 
+          // Cosi dopo l'accesso l'utente atterra direttamente sul video.
+          const nextUrl   = "video.html?id=" + encodeURIComponent(v.id);
+          const loginHref = "login.html?next=" + encodeURIComponent(nextUrl);
+
+          return '<a class="ix-top5-card" href="' + ixEsc(loginHref) + '" aria-label="' + ixEsc(title) + '">'
+               +   '<div class="ix-top5-poster">'
+               +     (img ? '<img src="' + ixEsc(img) + '" alt="" loading="lazy" decoding="async"'
+                          + ' onerror="this.onerror=null;this.src=\'' + ixEsc(med) + '\'">' : '')
+               +   '</div>'
+               +   '<div class="ix-top5-num">' + num + '</div>'
+               +   '<div class="ix-top5-info">'
+               +     '<div class="ix-top5-info-title">' + ixEsc(title) + '</div>'
+               +     '<div class="ix-top5-info-author">' + ixEsc(author) + '</div>'
+               +   '</div>'
+               + '</a>';
+        }).join("");
+      })
+      .catch(() => {
+        grid.innerHTML = '<div class="ix-top5-empty">Il catalogo sara presto disponibile.</div>';
+      });
+  })();
+</script>
+
+<script src="js/i18n.js?v=20260615yl"></script>
+<script src="js/cookie-banner.js?v=20260615yl"></script>
+</body>
+</html>

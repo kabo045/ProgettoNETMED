@@ -1,0 +1,248 @@
+/* ============================================================
+   NETMED — Admin dashboard
+   Modulo TABLES: tabelle, righe video/utente, paginazione,
+   badge di stato e tag chip.
+   ============================================================ */
+
+
+/* ---------- Card che contiene la tabella ---------- */
+.tcard {
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  opacity: 0;
+  animation: fu .4s ease .1s forwards;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .03);
+  transition: background .3s;
+}
+
+.twrap {
+  overflow-x: auto;
+}
+
+
+/* ---------- Tabelle ---------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  padding: 14px 20px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  background: var(--thead);
+  border-bottom: 1.5px solid var(--border);
+  white-space: nowrap;
+}
+
+tbody td {
+  padding: 16px 20px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--s1);
+  vertical-align: middle;
+}
+
+tbody tr {
+  transition: all .2s;
+}
+
+tbody tr:hover {
+  background: var(--hover);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.acts {
+  display: flex;
+  gap: 6px;
+}
+
+
+/* ---------- Righe video / utente (pannelli a lista) ---------- */
+.vrow,
+.urow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--s0);
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.vrow:last-child,
+.urow:last-child {
+  border-bottom: none;
+}
+
+.vrow:hover,
+.urow:hover {
+  background: var(--hover);
+}
+
+
+/* ---------- Paginazione ---------- */
+.pag {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+}
+
+.pag-info {
+  font-size: 13px;
+  color: var(--text2);
+}
+
+.pag-btns {
+  display: flex;
+  gap: 4px;
+}
+
+.pag-btn {
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  color: var(--text2);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.pag-btn:hover:not(:disabled) {
+  background: var(--hover);
+  border-color: var(--t2);
+}
+
+.pag-btn:disabled {
+  opacity: .4;
+  cursor: default;
+}
+
+.pag-btn.act {
+  background: linear-gradient(135deg, var(--t6), var(--t5));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(0, 138, 62, .25);
+}
+
+
+/* ---------- Badge di stato ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  letter-spacing: .3px;
+}
+
+.b-priv {
+  background: #fef3c7;
+  color: var(--amber);
+}
+
+.b-pub {
+  background: #dcfce7;
+  color: var(--green);
+}
+
+.b-del {
+  background: #fef2f2;
+  color: var(--rose);
+}
+
+.b-act {
+  background: #dcfce7;
+  color: var(--green);
+}
+
+.b-admin {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--rose);
+  background: #fef2f2;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+}
+
+.b-ban {
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+}
+
+/* ---------- Verified badge ---------- */
+.b-verified {
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  background: #0a6940;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Tick inline accanto a uno username — usato in tabelle, modali, liste.
+   .verified-tick è il pattern condiviso con il lato utente. */
+.verified-tick {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #0a6940;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+  vertical-align: middle;
+  line-height: 1;
+}
+.verified-tick::before { content: "✓"; }
+.verified-tick.lg {
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+}
+
+
+/* ---------- Tag chip ---------- */
+.tag-chip {
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: var(--t0);
+  color: var(--t6);
+  border: 1px solid var(--t2);
+  font-weight: 500;
+  display: inline-block;
+  margin: 1px;
+  transition: all .2s;
+}

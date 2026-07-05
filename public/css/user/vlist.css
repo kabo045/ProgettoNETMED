@@ -1,0 +1,2282 @@
+/* ============================================================
+   NETMED — User catalog
+   Modulo VLIST: layout per pagine lista video
+   (categoria, ricerca, preferiti). Hero compatta, toolbar
+   con ordinamento/filtro, griglia responsive di card.
+   ============================================================ */
+
+
+/* ---------- Card meta riga 2 (autore + data) ----------------
+   Aggiunta sotto la riga primaria con categoria/views.
+   Stile compatto con autore cliccabile (link al profilo). */
+.vl-meta-2 {
+  margin-top: 6px !important;
+  font-size: 12.5px;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.vl-meta-2 .dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text4);
+  flex-shrink: 0;
+}
+.vl-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: color .15s;
+  font-weight: 500;
+}
+.vl-author:hover {
+  color: var(--accent);
+}
+.vl-author-by {
+  color: var(--text4);
+  font-weight: 400;
+}
+.vl-author-name {
+  color: var(--text2);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.vl-author:hover .vl-author-name {
+  color: var(--accent);
+}
+.vl-date {
+  color: var(--text3);
+  font-weight: 500;
+}
+[data-theme="light"] .vl-meta-2 .dot { background: var(--text3); }
+
+
+/* ---------- Wrapper ---------- */
+.vl-wrap {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 48px 80px;
+}
+
+
+/* ---------- Hero compatta (titolo pagina) ---------- */
+.vl-hero {
+  position: relative;
+  padding: 32px 0 16px;
+  margin-bottom: 0;
+  border-bottom: none;
+  overflow: visible;
+}
+.vl-hero::before { content: none; display: none; }
+.vl-hero-inner {
+  position: relative;
+  z-index: 1;
+}
+.vl-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+}
+.vl-hero-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 44px;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.vl-hero-desc {
+  font-size: 15px;
+  color: var(--text2);
+  max-width: 720px;
+  line-height: 1.55;
+}
+.vl-hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--text3);
+}
+.vl-hero-stats strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+
+/* ---------- Toolbar (ordinamento / filtri) ---------- */
+.vl-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+.vl-toolbar-spacer { flex: 1; min-width: 0; }
+.vl-toolbar-label {
+  font-size: 13px;
+  color: var(--text3);
+  font-weight: 600;
+}
+.vl-select {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 9px 32px 9px 14px;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--text3) 50%),
+                    linear-gradient(135deg, var(--text3) 50%, transparent 50%);
+  background-position: calc(100% - 16px) center, calc(100% - 11px) center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  transition: all .2s;
+}
+.vl-select:hover { border-color: var(--border-2); }
+.vl-select:focus { border-color: var(--accent); }
+
+
+/* ---------- Tabs (per pagina ricerca) ---------- */
+.vl-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px;
+}
+.vl-tab {
+  background: transparent;
+  border: 0;
+  color: var(--text2);
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: inherit;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.vl-tab:hover { color: var(--text); }
+.vl-tab.active {
+  background: var(--accent);
+  color: #fff;
+}
+.vl-tab-count {
+  font-size: 11px;
+  background: var(--surface-2);
+  color: var(--text3);
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+.vl-tab.active .vl-tab-count {
+  background: rgba(255, 255, 255, .25);
+  color: #fff;
+}
+
+
+/* ---------- Griglia card ---------- */
+.vl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 22px 18px;
+}
+
+.vl-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  overflow: hidden;
+  background: transparent;
+  transition: transform .25s ease;
+  animation: fadeUp .4s ease both;
+}
+.vl-card:hover { transform: translateY(-4px); }
+
+.vl-thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--surface-2);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.vl-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .35s, opacity .25s;
+}
+.vl-card:hover .vl-thumb img { transform: scale(1.06); }
+.vl-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,.55) 100%);
+  opacity: 0;
+  transition: opacity .25s;
+  pointer-events: none;
+}
+.vl-card:hover .vl-thumb::after { opacity: 1; }
+
+.vl-thumb-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(0,0,0,.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 20px;
+  padding-left: 4px;
+  transform: translate(-50%, -50%) scale(.7);
+  opacity: 0;
+  transition: opacity .25s, transform .25s;
+  pointer-events: none;
+}
+.vl-card:hover .vl-thumb-play {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* ---------- Badge TOP 1/2/3 in modalità Esplora ---------- */
+/* Visualizzato sopra l'angolo superiore sinistro della miniatura
+   per i primi 3 risultati quando l'utente è in /search?sort=...
+   Numero grande + etichetta TOP, gradient dorato/argento/bronzo. */
+.vl-card-top {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, .35),
+    inset 0 -2px 6px rgba(0, 0, 0, .25),
+    inset 0  1px 1px rgba(255, 255, 255, .35);
+  border: 1.5px solid rgba(255, 255, 255, .55);
+  pointer-events: none;
+  transform: translateZ(0);
+  animation: vlTopIn .35s cubic-bezier(.2, .9, .3, 1.2) both;
+}
+.vl-card-top-num {
+  font-size: 16px;
+  letter-spacing: -.5px;
+  margin-bottom: 1px;
+}
+.vl-card-top-lbl {
+  font-size: 7.5px;
+  letter-spacing: 1.4px;
+  opacity: .9;
+}
+/* Oro per TOP 1 */
+.vl-card-top-1 {
+  background: linear-gradient(135deg, #fde047 0%, #f59e0b 60%, #d97706 100%);
+  text-shadow: 0 1px 2px rgba(120, 53, 15, .55);
+}
+/* Argento per TOP 2 */
+.vl-card-top-2 {
+  background: linear-gradient(135deg, #f3f4f6 0%, #cbd5e1 60%, #94a3b8 100%);
+  color: #334155;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, .55);
+}
+/* Bronzo per TOP 3 */
+.vl-card-top-3 {
+  background: linear-gradient(135deg, #fed7aa 0%, #f97316 60%, #b45309 100%);
+  text-shadow: 0 1px 2px rgba(124, 45, 18, .55);
+}
+/* Card sul podio: glow leggero attorno alla thumb */
+.vl-card-podium .vl-thumb {
+  box-shadow: 0 4px 18px rgba(245, 158, 11, .18);
+}
+.vl-card-podium:hover .vl-thumb {
+  box-shadow: 0 6px 24px rgba(245, 158, 11, .28);
+}
+
+@keyframes vlTopIn {
+  from { opacity: 0; transform: translateY(-6px) scale(.6); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+@media (max-width: 480px) {
+  .vl-card-top { width: 34px; height: 34px; top: 6px; left: 6px; border-width: 1px; }
+  .vl-card-top-num { font-size: 14px; }
+  .vl-card-top-lbl { font-size: 6.5px; letter-spacing: 1.2px; }
+}
+
+
+/* Bottone X (rimuovi preferito) sopra la thumb */
+.vl-thumb-rm {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .65);
+  border: 0;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s, transform .2s;
+}
+.vl-card.removable:hover .vl-thumb-rm { display: flex; }
+.vl-thumb-rm:hover {
+  background: var(--rose);
+  transform: scale(1.08);
+}
+
+.vl-body {
+  padding: 12px 4px 6px;
+}
+.vl-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.vl-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  font-size: 12px;
+  color: var(--text3);
+}
+.vl-cat {
+  color: var(--accent);
+  font-weight: 600;
+}
+.vl-meta .dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text4);
+  flex-shrink: 0;
+}
+
+
+/* ---------- Highlight match testo (search) ---------- */
+.vl-mark {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 700;
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+
+/* ---------- Sezione tag/categorie nei risultati search ---------- */
+.vl-chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.vl-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 16px;
+  border-radius: 14px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+}
+.vl-chip-ico {
+  font-size: 15px;
+  color: var(--accent);
+}
+.vl-chip:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.vl-chip:hover .vl-chip-ico { color: var(--accent); }
+
+
+/* ---------- Empty / skeleton ---------- */
+.vl-empty {
+  text-align: center;
+  padding: 80px 24px;
+  color: var(--text3);
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+}
+.vl-empty-ico {
+  font-size: 64px;
+  margin-bottom: 12px;
+  opacity: .65;
+}
+.vl-empty-t {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.vl-empty-d {
+  font-size: 14px;
+  margin-bottom: 18px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.vl-empty-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  padding: 11px 22px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .2s, background .2s;
+}
+.vl-empty-btn:hover {
+  background: var(--accent-strong);
+  transform: translateY(-1px);
+}
+
+.vl-card.loading {
+  pointer-events: none;
+  animation: none;
+}
+.vl-card.loading .vl-thumb {
+  background: var(--surface);
+  position: relative;
+  overflow: hidden;
+}
+.vl-card.loading .vl-thumb::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.04), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+.vl-card.loading .vl-title-sk,
+.vl-card.loading .vl-meta-sk {
+  height: 10px;
+  border-radius: 5px;
+  background: var(--surface);
+  margin: 8px 0;
+}
+.vl-card.loading .vl-title-sk { height: 14px; }
+.vl-card.loading .vl-meta-sk { width: 60%; }
+
+
+/* ---------- Filtri attivi (chip rimovibili) ---------- */
+.vl-fchips {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.vl-fchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 6px 6px 6px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+}
+.vl-fchip > span:nth-child(2) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 220px;
+}
+.vl-fchip-ico {
+  font-size: 13px;
+  font-weight: 800;
+  opacity: .9;
+}
+.vl-fchip-x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .12);
+  color: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+  font-family: inherit;
+}
+.vl-fchip-x:hover {
+  background: var(--accent);
+  color: #fff;
+  transform: scale(1.05);
+}
+[data-theme="light"] .vl-fchip-x { background: rgba(0, 0, 0, .08); }
+
+.vl-fclear {
+  background: transparent;
+  border: 1px dashed var(--border-2);
+  color: var(--text2);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .2s;
+}
+.vl-fclear:hover {
+  background: var(--surface);
+  color: var(--text);
+  border-style: solid;
+  border-color: var(--accent);
+}
+
+
+/* ---------- Hero link (es. "esplora tutti i tag") ---------- */
+.vl-hero-link {
+  color: var(--accent);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.vl-hero-link:hover {
+  color: var(--accent-strong);
+}
+
+
+/* ---------- Tag cloud (vista esplora tag) ---------- */
+.vl-tagcloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 4px 0 8px;
+}
+.vl-tagcloud-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s, transform .15s;
+  line-height: 1.2;
+}
+.vl-tagcloud-item:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+.vl-tagcloud-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.vl-tagcloud-hash {
+  color: var(--accent);
+  font-weight: 900;
+  opacity: .8;
+}
+.vl-tagcloud-name {
+  font-weight: 700;
+}
+.vl-tagcloud-count {
+  background: var(--surface-2);
+  color: var(--text3);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: 2px;
+}
+.vl-tagcloud-item:hover .vl-tagcloud-count {
+  background: rgba(255, 255, 255, .25);
+  color: var(--accent);
+}
+
+/* Scala dimensionale: più video = tag più grande */
+.vl-tagcloud-item.s1 { font-size: 12px;  padding: 6px 12px; }
+.vl-tagcloud-item.s2 { font-size: 13px;  padding: 7px 13px; }
+.vl-tagcloud-item.s3 { font-size: 14px;  padding: 8px 14px; }
+.vl-tagcloud-item.s4 { font-size: 16px;  padding: 9px 16px; }
+.vl-tagcloud-item.s5 { font-size: 18px;  padding: 10px 18px; }
+
+.vl-tagcloud-sk {
+  display: inline-block;
+  height: 32px;
+  border-radius: 999px;
+  background: var(--surface);
+  position: relative;
+  overflow: hidden;
+}
+.vl-tagcloud-sk::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.04), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+
+/* ---------- Section header (per pagine multi-sezione) ---------- */
+.vl-section {
+  margin-bottom: 36px;
+}
+.vl-section:last-child { margin-bottom: 0; }
+.vl-section-h {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.vl-section-h h2 {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.vl-section-h h2::before {
+  content: "";
+  width: 4px;
+  height: 16px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+.vl-section-h-count {
+  font-size: 13px;
+  color: var(--text3);
+  font-weight: 600;
+}
+
+
+/* ============================================================
+   Bottone "Cancella filtri" (vl-fclear) — più visibile e cliccabile
+   ============================================================ */
+.vl-fclear {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text2);
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s, transform .12s;
+  white-space: nowrap;
+}
+.vl-fclear:hover {
+  background: rgba(244, 63, 94, .08);
+  border-color: rgba(244, 63, 94, .35);
+  color: var(--rose, #f43f5e);
+}
+.vl-fclear:active { transform: translateY(1px); }
+.vl-fclear:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+
+/* ============================================================
+   Cartelle (collezioni) dei video salvati - stile TikTok
+   ============================================================ */
+.vl-collections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 48px;
+  margin: 4px 0 18px;
+}
+.vl-col-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text2);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.vl-col-chip:hover { background: var(--surface-2); color: var(--text); }
+.vl-col-chip.active {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+  color: #fff;
+}
+.vl-col-count {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text3);
+}
+.vl-col-chip.active .vl-col-count {
+  background: rgba(255, 255, 255, .22);
+  color: #fff;
+}
+.vl-col-new {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px dashed var(--border-2);
+  background: transparent;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.vl-col-new:hover { background: var(--accent-soft); border-color: var(--accent); }
+.vl-col-newinput {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: var(--bg-2);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  min-width: 220px;
+}
+
+/* Bottone "+ cartella" sulla card */
+.vl-thumb-fold {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(10, 10, 11, .78);
+  color: #fff;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .15s, background .15s;
+}
+.vl-card:hover .vl-thumb-fold,
+.vl-thumb-fold:focus-visible { opacity: 1; }
+.vl-thumb-fold:hover { background: var(--accent-strong); }
+
+/* Modale picker cartelle */
+.vl-fmodal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, .6);
+  z-index: 3000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.vl-fmodal-bg.open { display: flex; }
+.vl-fmodal {
+  width: 100%;
+  max-width: 380px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, .5);
+  overflow: hidden;
+}
+.vl-fmodal-h {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+.vl-fmodal-x {
+  border: 0;
+  background: transparent;
+  color: var(--text3);
+  font-size: 15px;
+  cursor: pointer;
+  padding: 4px 7px;
+  border-radius: 6px;
+}
+.vl-fmodal-x:hover { background: var(--surface); color: var(--text); }
+.vl-fmodal-list {
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 6px;
+}
+.vl-fmodal-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 0;
+  background: transparent;
+  border-radius: 9px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .14s;
+}
+.vl-fmodal-row:hover { background: var(--surface); }
+.vl-fmodal-empty {
+  padding: 18px 14px;
+  text-align: center;
+  color: var(--text3);
+  font-size: 13px;
+}
+.vl-fmodal-foot {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--border);
+}
+.vl-fmodal-foot input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 8px 12px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+.vl-fmodal-foot input:focus { border-color: var(--accent); }
+.vl-fmodal-create {
+  flex: 0 0 auto;
+  padding: 8px 14px;
+  border-radius: 9px;
+  border: 0;
+  background: var(--accent-strong);
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.vl-fmodal-create:hover { background: #0d7a4d; }
+
+@media (max-width: 768px) {
+  .vl-collections { padding: 0 16px; }
+}
+
+
+/* ============ Tabs categoria stile YouTube ============
+   Chips orizzontali scrollabili: la categoria attiva e' bianca
+   su sfondo scuro, le altre sono grigio chiaro su scuro. */
+.cat-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  padding: 6px 4px 14px;
+  margin-bottom: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  border-bottom: 1px solid var(--border);
+}
+.cat-tabs::-webkit-scrollbar { display: none; }
+.cat-chip {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  border-radius: 9px;
+  border: 0;
+  background: var(--surface);
+  color: var(--text2);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s, color .15s, transform .12s;
+}
+.cat-chip:hover { background: var(--surface-2); color: var(--text); }
+.cat-chip.active {
+  background: var(--text);
+  color: var(--bg);
+}
+[data-theme="light"] .cat-chip.active {
+  background: var(--text);
+  color: var(--bg-2);
+}
+.cat-chip-sep {
+  display: inline-block;
+  width: 1px;
+  background: var(--border);
+  margin: 4px 4px;
+}
+
+.cat-toolbar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 4px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.cat-clear-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(13,122,77,.35);
+  background: rgba(13,122,77,.12);
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, transform .12s;
+}
+.cat-clear-pill:hover {
+  background: rgba(13,122,77,.22);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 600px) {
+  .cat-tabs { gap: 6px; padding: 4px 0 10px; }
+  .cat-chip { padding: 6px 12px; font-size: 12px; }
+  .cat-toolbar-row { gap: 8px; }
+}
+
+/* ============================================================
+   Lista tag stile Netflix: 3 colonne alfabetiche pulite
+   ============================================================ */
+.vl-tagcols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin: 16px 0 40px;
+  max-width: 980px;
+  border-top: 1px solid var(--border);
+}
+.vl-tagcol-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: var(--text);
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 16px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease, padding-left .15s ease;
+}
+.vl-tagcol-item:hover {
+  background: var(--bg-2);
+  color: var(--accent);
+  padding-left: 22px;
+}
+.vl-tagcol-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .vl-tagcols { grid-template-columns: repeat(2, 1fr); }
+}
+/* Mobile */
+@media (max-width: 540px) {
+  .vl-tagcols { grid-template-columns: 1fr; }
+  .vl-tagcol-item { padding: 12px 14px; font-size: 14px; }
+}
+
+
+/* ============================================================
+   RESTYLE Netflix-style — categorie / tag / esplora
+   Override leggeri, niente cambi al markup HTML.
+   ============================================================ */
+
+/* Wrap pagina: respiro generoso */
+.vl-wrap {
+  padding: 0 !important;
+  max-width: 100% !important;
+}
+
+/* HERO uniforme Netflix-style (no blocco verde isolato) */
+.vl-hero {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 32px 0 16px;
+  background: transparent;
+  overflow: visible;
+  isolation: auto;
+}
+.vl-hero::before,
+.vl-hero::after { content: none; display: none; }
+[data-theme="light"] .vl-hero { background: transparent; }
+.vl-hero h1, .vl-hero .vl-hero-title {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: #fff;
+  margin: 0 0 8px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+[data-theme="light"] .vl-hero h1,
+[data-theme="light"] .vl-hero .vl-hero-title {
+  color: var(--text);
+  text-shadow: none;
+}
+.vl-hero p, .vl-hero .vl-hero-sub {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 600px;
+  margin: 4px 0 0;
+  line-height: 1.55;
+}
+[data-theme="light"] .vl-hero p,
+[data-theme="light"] .vl-hero .vl-hero-sub {
+  color: var(--text2);
+}
+
+/* TOOLBAR (filtri e sort) */
+.vl-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 22px 64px 18px;
+  background: var(--bg);
+}
+.vl-toolbar button,
+.vl-toolbar .vl-chip,
+.vl-toolbar select {
+  padding: 8px 18px !important;
+  border-radius: 999px !important;
+  border: 1px solid var(--border) !important;
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.12s;
+  font-family: inherit;
+}
+.vl-toolbar button:hover,
+.vl-toolbar .vl-chip:hover {
+  border-color: var(--accent, #0a6940) !important;
+  color: var(--accent, #0a6940) !important;
+  transform: translateY(-1px);
+}
+.vl-toolbar button.active,
+.vl-toolbar .vl-chip.active {
+  background: var(--accent, #0a6940) !important;
+  color: #fff !important;
+  border-color: var(--accent, #0a6940) !important;
+}
+
+/* GRID video card */
+.vl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  padding: 8px 64px 80px;
+  background: var(--bg);
+}
+.vl-grid .nm-card,
+.vl-grid .card,
+.vl-grid .nm-video-card {
+  transition: transform 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.1),
+              box-shadow 0.22s ease,
+              z-index 0s 0.22s;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.vl-grid .nm-card:hover,
+.vl-grid .card:hover,
+.vl-grid .nm-video-card:hover {
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+  z-index: 5;
+  transition-delay: 0s;
+}
+
+/* SEZIONI COLONNE per "Tutti i tag" / "Tutte le categorie" (Netflix style) */
+.vl-columns {
+  columns: 4 220px;
+  column-gap: 28px;
+  padding: 20px 64px 80px;
+}
+.vl-columns .vl-column-item {
+  display: block;
+  break-inside: avoid;
+  padding: 14px 18px;
+  margin: 0 0 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.12s;
+}
+.vl-columns .vl-column-item:hover {
+  background: var(--surface);
+  border-color: var(--accent, #0a6940);
+  transform: translateX(4px);
+}
+.vl-columns .vl-column-count {
+  margin-left: 8px;
+  font-size: 12px;
+  color: var(--text3);
+  font-weight: 500;
+}
+
+/* Responsive: ridurre padding su mobile */
+@media (max-width: 900px) {
+  .vl-hero { padding: 40px 22px 36px; min-height: 200px; }
+  .vl-toolbar { padding: 16px 22px 12px; }
+  .vl-grid { padding: 8px 22px 60px; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+  .vl-columns { padding: 16px 22px 60px; columns: 2 160px; column-gap: 16px; }
+  .vl-grid .nm-card:hover { transform: translateY(-3px) scale(1.02); }
+}
+@media (max-width: 540px) {
+  .vl-hero { padding: 30px 16px 28px; min-height: 160px; }
+  .vl-hero h1 { font-size: 26px; }
+  .vl-toolbar { padding: 12px 14px; }
+  .vl-grid { padding: 8px 14px 50px; gap: 12px; }
+  .vl-columns { padding: 14px 14px 50px; columns: 1; }
+}
+
+
+/* ============================================================
+   FIX CONTRASTO HERO RICERCA/CATEGORIA
+   Su sfondo verde scuro il testo grigio è poco leggibile.
+   Forzo bianco brillante + link bianco con underline.
+   ============================================================ */
+.vl-hero p,
+.vl-hero .vl-hero-sub,
+.vl-hero .vl-hero-desc,
+.vl-hero .ricerca-empty,
+.vl-hero .vl-hero-meta {
+  color: #ffffff !important;
+  opacity: 0.92;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+/* Badge / pillola sopra il titolo (es. "RICERCA", "CATEGORIA") */
+.vl-hero .vl-hero-badge,
+.vl-hero .vl-hero-eyebrow,
+.vl-hero [class*="hero-tag"] {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* Link DENTRO hero verde: bianco con underline visibile */
+.vl-hero a,
+.vl-hero .vl-link,
+.vl-hero button.vl-link {
+  color: #ffffff !important;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  font-weight: 700;
+  transition: opacity 0.15s;
+}
+.vl-hero a:hover,
+.vl-hero .vl-link:hover {
+  opacity: 0.85;
+  text-decoration-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Light theme: testi scuri ma comunque leggibili */
+[data-theme="light"] .vl-hero p,
+[data-theme="light"] .vl-hero .vl-hero-sub,
+[data-theme="light"] .vl-hero .vl-hero-desc,
+[data-theme="light"] .vl-hero .ricerca-empty {
+  color: var(--text) !important;
+  text-shadow: none;
+  opacity: 1;
+}
+[data-theme="light"] .vl-hero a,
+[data-theme="light"] .vl-hero .vl-link {
+  color: var(--accent-strong, #08562f) !important;
+}
+
+
+/* ============================================================
+   RESTYLE tab filtri pagina ricerca (Video / Categorie / Tag)
+   YouTube-style: niente più pillole verdi grandi.
+   Solo testo con underline sotto quando attivo + badge minimal.
+   ============================================================ */
+.vl-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+  padding: 0 !important;
+  margin-bottom: 12px;
+}
+.vl-tab {
+  position: relative;
+  background: transparent !important;
+  border: 0 !important;
+  color: var(--text2) !important;
+  padding: 12px 18px !important;
+  border-radius: 0 !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: color 0.15s !important;
+  font-family: inherit;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.vl-tab:hover {
+  color: var(--text) !important;
+  background: transparent !important;
+}
+.vl-tab.active {
+  color: var(--accent, #0a6940) !important;
+  background: transparent !important;
+}
+/* Underline animata sotto il tab attivo */
+.vl-tab.active::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: -1px;
+  height: 3px;
+  background: var(--accent, #0a6940);
+  border-radius: 3px 3px 0 0;
+}
+[data-theme="light"] .vl-tab.active {
+  color: var(--accent-strong, #08562f) !important;
+}
+[data-theme="light"] .vl-tab.active::after {
+  background: var(--accent-strong, #08562f);
+}
+
+/* Badge conteggio: minimal, sempre stesso stile (no inversione su active) */
+.vl-tab-count {
+  font-size: 12px !important;
+  background: transparent !important;
+  color: var(--text3) !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.2px;
+}
+.vl-tab-count::before { content: "·"; margin: 0 6px 0 2px; color: var(--text3); }
+.vl-tab.active .vl-tab-count {
+  color: var(--accent, #0a6940) !important;
+  background: transparent !important;
+}
+
+/* ============================================================
+   Pagina ricerca
+   Stile YouTube/Netflix con accent NETMED.
+   ============================================================ */
+
+/* === HERO IMMERSIVO === */
+.vl-hero {
+  position: relative;
+  padding: 40px 0 28px;
+  margin-bottom: 0;
+  overflow: visible;
+}
+.vl-hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 100%;
+}
+.vl-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(10, 105, 64, .22), rgba(13, 122, 77, .14));
+  border: 1px solid rgba(10, 105, 64, .35);
+  color: #4fd698;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+[data-theme="light"] .vl-hero-eyebrow {
+  background: linear-gradient(135deg, rgba(10, 105, 64, .12), rgba(13, 122, 77, .06));
+  border-color: rgba(10, 105, 64, .25);
+  color: #0a6940;
+}
+.vl-hero-title {
+  margin: 8px 0 2px;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -.5px;
+  color: var(--text);
+  /* niente gradient-text per evitare effetto sfumato/tagliato sui browser
+     che renderizzano male background-clip:text (lasciava le scritte come
+     se fossero "tagliate" alla base). Manteniamo solo un text-shadow soft
+     per dare profondità. */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+}
+[data-theme="light"] .vl-hero-title {
+  text-shadow: none;
+}
+.vl-hero-desc {
+  font-size: 15px;
+  color: var(--text2);
+  max-width: 720px;
+  line-height: 1.55;
+  margin-top: 4px;
+}
+.vl-hero-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .10);
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 600;
+}
+[data-theme="light"] .vl-hero-count {
+  background: rgba(15, 23, 42, .05);
+  border-color: rgba(15, 23, 42, .10);
+}
+.vl-hero-count strong {
+  color: #4fd698;
+  font-weight: 800;
+}
+[data-theme="light"] .vl-hero-count strong { color: #0a6940; }
+.vl-hero-link {
+  color: #4fd698;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  font-weight: 600;
+  transition: color .15s;
+}
+.vl-hero-link:hover { color: #6fe8aa; }
+[data-theme="light"] .vl-hero-link { color: #0a6940; }
+
+/* === CHIP FILTRI ATTIVI === */
+.vl-fchips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+.vl-fchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 6px 7px 14px;
+  border-radius: 999px;
+  background: rgba(10, 105, 64, .18);
+  border: 1px solid rgba(10, 105, 64, .35);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  transition: background .15s, transform .15s;
+}
+.vl-fchip:hover {
+  background: rgba(10, 105, 64, .25);
+  transform: translateY(-1px);
+}
+[data-theme="light"] .vl-fchip {
+  background: rgba(10, 105, 64, .10);
+  border-color: rgba(10, 105, 64, .25);
+}
+.vl-fchip-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(10, 105, 64, .35);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  margin-left: -6px;
+}
+.vl-fchip-x {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .08);
+  border: 0;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s;
+  padding: 0;
+  line-height: 1;
+}
+.vl-fchip-x:hover {
+  background: rgba(255, 100, 100, .35);
+  color: #fff;
+}
+[data-theme="light"] .vl-fchip-x {
+  background: rgba(15, 23, 42, .08);
+}
+[data-theme="light"] .vl-fchip-x:hover {
+  background: rgba(220, 38, 38, .25);
+  color: #dc2626;
+}
+
+/* Pulsante "Pulisci tutti i filtri" */
+.nm-clear-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, .14);
+  color: var(--text2);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+}
+.nm-clear-btn:hover {
+  border-color: rgba(255, 100, 100, .45);
+  color: #ff7575;
+  background: rgba(255, 100, 100, .08);
+}
+[data-theme="light"] .nm-clear-btn {
+  border-color: rgba(15, 23, 42, .14);
+}
+[data-theme="light"] .nm-clear-btn:hover {
+  border-color: rgba(220, 38, 38, .35);
+  color: #dc2626;
+  background: rgba(220, 38, 38, .06);
+}
+
+/* === TABS (YouTube-style con underline animato) === */
+.vl-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+  margin: 24px 0 20px;
+  padding: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.vl-tabs::-webkit-scrollbar { display: none; }
+[data-theme="light"] .vl-tabs {
+  border-bottom-color: rgba(15, 23, 42, .08);
+}
+.vl-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  background: transparent;
+  border: 0;
+  color: var(--text3);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color .2s;
+  border-radius: 0;
+}
+.vl-tab::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  right: 50%;
+  height: 3px;
+  background: #0a6940;
+  border-radius: 3px 3px 0 0;
+  transition: left .25s cubic-bezier(.2, .8, .3, 1),
+              right .25s cubic-bezier(.2, .8, .3, 1);
+}
+.vl-tab:hover { color: var(--text); }
+.vl-tab.active {
+  color: var(--text);
+}
+.vl-tab.active::after {
+  left: 12px;
+  right: 12px;
+}
+.vl-tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .06);
+  color: var(--text3);
+  font-size: 11px;
+  font-weight: 800;
+  transition: background .2s, color .2s;
+}
+.vl-tab.active .vl-tab-count {
+  background: rgba(10, 105, 64, .22);
+  color: #4fd698;
+}
+[data-theme="light"] .vl-tab-count {
+  background: rgba(15, 23, 42, .06);
+}
+[data-theme="light"] .vl-tab.active .vl-tab-count {
+  background: rgba(10, 105, 64, .12);
+  color: #0a6940;
+}
+
+/* === TOOLBAR (ordinamento + risultati) === */
+.vl-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 22px;
+  flex-wrap: wrap;
+}
+.vl-toolbar-spacer { flex: 1; }
+.vl-result-count {
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 600;
+}
+.vl-result-count strong {
+  color: var(--text);
+  font-weight: 800;
+}
+
+/* === TAG CLOUD (Esplora tutti i tag) === */
+.vl-tagcloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 30px;
+  padding: 4px 0;
+}
+.vl-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(255, 255, 255, .08);
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .18s cubic-bezier(.2, .8, .3, 1);
+  white-space: nowrap;
+}
+.vl-chip:hover {
+  background: rgba(10, 105, 64, .15);
+  border-color: rgba(10, 105, 64, .40);
+  color: var(--text);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(10, 105, 64, .12);
+}
+[data-theme="light"] .vl-chip {
+  background: rgba(15, 23, 42, .04);
+  border-color: rgba(15, 23, 42, .10);
+}
+[data-theme="light"] .vl-chip:hover {
+  background: rgba(10, 105, 64, .08);
+  border-color: rgba(10, 105, 64, .30);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, .08);
+}
+.vl-chip-ico {
+  font-size: 14px;
+  font-weight: 800;
+  color: #4fd698;
+}
+[data-theme="light"] .vl-chip-ico { color: #0a6940; }
+.vl-chip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  margin: 0 0 30px;
+}
+
+/* === CATEGORY CLOUD (colonne Netflix-style) === */
+.vl-tagcols {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+  margin: 0 0 40px;
+}
+.vl-tagcol-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .04);
+  border: 1px solid rgba(255, 255, 255, .07);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s cubic-bezier(.2, .8, .3, 1);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+.vl-tagcol-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(10, 105, 64, .15), transparent 60%);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.vl-tagcol-item:hover {
+  border-color: rgba(10, 105, 64, .50);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .3);
+}
+.vl-tagcol-item:hover::before { opacity: 1; }
+[data-theme="light"] .vl-tagcol-item {
+  background: rgba(255, 255, 255, .8);
+  border-color: rgba(15, 23, 42, .08);
+}
+[data-theme="light"] .vl-tagcol-item:hover {
+  border-color: rgba(10, 105, 64, .35);
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, .10);
+}
+
+/* === SKELETON loading === */
+.vl-tagcloud-sk .vl-chip,
+.vl-card.loading {
+  background: linear-gradient(90deg,
+    rgba(255,255,255,.04) 0%,
+    rgba(255,255,255,.10) 50%,
+    rgba(255,255,255,.04) 100%);
+  background-size: 200% 100%;
+  animation: vlSkel 1.4s ease-in-out infinite;
+  border-color: transparent;
+  pointer-events: none;
+  color: transparent;
+}
+@keyframes vlSkel {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* === BOTTONI TOP card (Esplora pura) === */
+.vl-card-top {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, .65);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .35);
+}
+.vl-card-top-1 { background: linear-gradient(135deg, #fbbf24, #d97706); color: #fff; }
+.vl-card-top-2 { background: linear-gradient(135deg, #94a3b8, #475569); color: #fff; }
+.vl-card-top-3 { background: linear-gradient(135deg, #b45309, #78350f); color: #fff; }
+.vl-card-top-num { font-size: 13px; font-weight: 800; }
+.vl-card-top-lbl { font-size: 10px; letter-spacing: 1px; opacity: .9; }
+
+/* === EMPTY/ERROR HERO === */
+.vl-hero-empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--text2);
+}
+.vl-hero-empty-ico {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: .6;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 720px) {
+  .vl-hero { padding: 28px 0 20px; }
+  .vl-hero-title { font-size: clamp(24px, 7vw, 34px); }
+  .vl-tab { padding: 10px 14px; font-size: 13px; }
+  .vl-fchip { font-size: 12px; padding: 6px 6px 6px 12px; }
+}
+
+/* ============================================================
+   Sfondo pagina uniforme
+   Hero + griglia su sfondo continuo, niente blocchi colorati.
+   Card con glow soft per integrarsi col body pattern.
+   ============================================================ */
+
+/* Override aggressivo per spazzare via tutti i background dell'hero
+   che potrebbero rimanere da regole precedenti */
+.vl-hero,
+.vl-hero.vl-hero,
+main .vl-hero {
+  background: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  min-height: 0 !important;
+  padding: 32px 0 16px !important;
+  overflow: visible !important;
+}
+.vl-hero::before,
+.vl-hero::after {
+  display: none !important;
+  content: none !important;
+  background: transparent !important;
+}
+
+/* Toolbar e griglia senza separatori netti */
+.vl-toolbar {
+  border-top: 1px solid rgba(255, 255, 255, .05);
+  padding-top: 14px;
+  margin-top: 8px;
+}
+[data-theme="light"] .vl-toolbar {
+  border-top-color: rgba(15, 23, 42, .08);
+}
+
+/* Griglia con padding-top zero per fluidità */
+.vl-grid {
+  padding-top: 8px;
+  background: transparent !important;
+}
+
+/* Card semi-trasparenti per integrarsi nel pattern body */
+.vl-card {
+  background: transparent !important;
+}
+.vl-card .vl-body,
+.vl-card .vl-meta {
+  background: transparent;
+}
+
+/* Le card devono distinguersi solo per la thumb e il titolo, niente blocchi colorati */
+.vl-thumb {
+  background: rgba(255, 255, 255, .04);
+  border: 1px solid rgba(255, 255, 255, .06);
+  transition: border-color .2s, box-shadow .25s;
+}
+[data-theme="light"] .vl-thumb {
+  background: rgba(15, 23, 42, .03);
+  border-color: rgba(15, 23, 42, .07);
+}
+.vl-card:hover .vl-thumb {
+  border-color: rgba(10, 105, 64, .45);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, .45),
+    0 0 0 1px rgba(10, 105, 64, .25);
+}
+[data-theme="light"] .vl-card:hover .vl-thumb {
+  border-color: rgba(10, 105, 64, .30);
+  box-shadow:
+    0 12px 32px rgba(15, 23, 42, .12),
+    0 0 0 1px rgba(10, 105, 64, .18);
+}
+
+/* Padding orizzontale del main per non incollare al bordo */
+main.vl-wrap {
+  padding: 0 24px 60px;
+}
+@media (max-width: 720px) {
+  main.vl-wrap { padding: 0 14px 40px; }
+}
+
+/* Forza titolo bianco pieno per evitare residui gradient text */
+.vl-hero-title,
+.vl-hero h1 {
+  color: #fff !important;
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: #fff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .35);
+  line-height: 1.2 !important;
+  padding-bottom: 4px;
+}
+[data-theme="light"] .vl-hero-title,
+[data-theme="light"] .vl-hero h1 {
+  color: var(--text) !important;
+  -webkit-text-fill-color: var(--text) !important;
+  text-shadow: none;
+}
+
+/* Description del hero più morbida */
+.vl-hero-desc {
+  color: rgba(255, 255, 255, .72);
+}
+[data-theme="light"] .vl-hero-desc {
+  color: var(--text2);
+}
+
+/* ============================================================
+   Filtri layout: bg trasparente + chip/bottone allineati
+   ============================================================ */
+
+/* Niente sfondo nero/colorato dietro la toolbar/filter chips */
+.vl-toolbar,
+.vl-toolbar.vl-toolbar {
+  background: transparent !important;
+  background-color: transparent !important;
+  padding: 14px 0 18px !important;
+  margin-top: 4px !important;
+  border-top: 1px solid rgba(255, 255, 255, .05) !important;
+}
+[data-theme="light"] .vl-toolbar,
+[data-theme="light"] .vl-toolbar.vl-toolbar {
+  border-top-color: rgba(15, 23, 42, .08) !important;
+}
+
+/* Chip filtri e bottone "Cancella filtro" stessa altezza + allineamento */
+.vl-fchip,
+.nm-clear-btn {
+  height: 36px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+  vertical-align: middle !important;
+  line-height: 1 !important;
+}
+
+.vl-fchip {
+  padding: 0 6px 0 14px !important;
+  font-size: 13px !important;
+  gap: 8px !important;
+}
+.vl-fchip-ico {
+  width: 22px !important;
+  height: 22px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  margin-left: -8px !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}
+.vl-fchip-x {
+  width: 24px !important;
+  height: 24px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+}
+
+.nm-clear-btn {
+  padding: 0 18px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  gap: 8px !important;
+}
+.nm-clear-btn .nm-clear-ico,
+.nm-clear-btn svg {
+  width: 18px !important;
+  height: 18px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+}
+
+/* Container chip + bottone Cancella: tutto su stessa baseline */
+.vl-fchips {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  margin-top: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+/* Counter "0 risultati" allineato verticalmente */
+.vl-result-count {
+  display: inline-flex !important;
+  align-items: center !important;
+  height: 36px !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+}
+
+/* ============================================================
+   Preferiti — modale aggiungi video
+   ============================================================ */
+
+/* Bottone "+ Aggiungi video salvati" */
+.nm-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: rgba(10, 105, 64, .14);
+  border: 1px solid rgba(10, 105, 64, .35);
+  color: #4fd698;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .15s;
+  line-height: 1;
+}
+.nm-add-btn:hover {
+  background: rgba(10, 105, 64, .25);
+  transform: translateY(-1px);
+}
+.nm-add-btn > span:first-child {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1;
+}
+[data-theme="light"] .nm-add-btn {
+  background: rgba(10, 105, 64, .08);
+  border-color: rgba(10, 105, 64, .30);
+  color: #0a6940;
+}
+[data-theme="light"] .nm-add-btn:hover {
+  background: rgba(10, 105, 64, .15);
+}
+
+/* Modal "Aggiungi video" — versione larga */
+.vl-fmodal-large {
+  width: min(560px, 92vw);
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+.vl-fmodal-large .vl-fmodal-list {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Riga checkbox + thumb + titolo */
+.vl-fmodal-vrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.vl-fmodal-vrow:hover {
+  background: rgba(255, 255, 255, .05);
+}
+[data-theme="light"] .vl-fmodal-vrow:hover {
+  background: rgba(15, 23, 42, .05);
+}
+.vl-fmodal-check {
+  width: 18px;
+  height: 18px;
+  accent-color: #0a6940;
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+.vl-fmodal-thumb {
+  width: 64px;
+  height: 36px;
+  border-radius: 6px;
+  object-fit: cover;
+  background: rgba(255, 255, 255, .05);
+  flex: 0 0 auto;
+}
+.vl-fmodal-vtitle {
+  flex: 1 1 auto;
+  font-size: 13.5px;
+  color: var(--text);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.3;
+}
+.vl-fmodal-meta {
+  flex: 1 1 auto;
+  color: var(--text3);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+/* ============================================================
+   Filter chips
+   Grigio neutro, niente verde dominante.
+   ============================================================ */
+
+/* Chip categoria/sort (toolbar pagine categoria) */
+.cat-chip,
+.cat-chip[type="button"] {
+  background: rgba(255, 255, 255, .08) !important;
+  border: 1px solid rgba(255, 255, 255, .12) !important;
+  color: var(--text) !important;
+  padding: 8px 16px !important;
+  border-radius: 999px !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: background .15s, border-color .15s, transform .15s !important;
+  white-space: nowrap !important;
+}
+.cat-chip:hover {
+  background: rgba(255, 255, 255, .16) !important;
+  border-color: rgba(255, 255, 255, .20) !important;
+  transform: none !important;
+}
+.cat-chip.active {
+  background: #f1f1f1 !important;
+  color: #0f0f0f !important;
+  border-color: #f1f1f1 !important;
+  font-weight: 700 !important;
+}
+[data-theme="light"] .cat-chip,
+[data-theme="light"] .cat-chip[type="button"] {
+  background: rgba(15, 23, 42, .07) !important;
+  border-color: rgba(15, 23, 42, .10) !important;
+  color: var(--text) !important;
+}
+[data-theme="light"] .cat-chip:hover {
+  background: rgba(15, 23, 42, .14) !important;
+  border-color: rgba(15, 23, 42, .18) !important;
+}
+[data-theme="light"] .cat-chip.active {
+  background: #0f0f0f !important;
+  color: #fff !important;
+  border-color: #0f0f0f !important;
+}
+
+/* Chip ricerca tag cloud + filter active chip ricerca */
+.vl-chip {
+  background: rgba(255, 255, 255, .08) !important;
+  border: 1px solid rgba(255, 255, 255, .12) !important;
+  color: var(--text) !important;
+}
+.vl-chip:hover {
+  background: rgba(255, 255, 255, .16) !important;
+  border-color: rgba(255, 255, 255, .20) !important;
+  color: var(--text) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+.vl-chip-ico {
+  color: var(--text2) !important;
+}
+[data-theme="light"] .vl-chip {
+  background: rgba(15, 23, 42, .07) !important;
+  border-color: rgba(15, 23, 42, .10) !important;
+}
+[data-theme="light"] .vl-chip:hover {
+  background: rgba(15, 23, 42, .14) !important;
+  border-color: rgba(15, 23, 42, .18) !important;
+}
+[data-theme="light"] .vl-chip-ico {
+  color: var(--text2) !important;
+}
+
+/* Chip filtri attivi (ricerca: # ginocchio ✕) */
+.vl-fchip {
+  background: rgba(255, 255, 255, .10) !important;
+  border-color: rgba(255, 255, 255, .14) !important;
+  color: var(--text) !important;
+}
+.vl-fchip:hover {
+  background: rgba(255, 255, 255, .18) !important;
+  border-color: rgba(255, 255, 255, .22) !important;
+  transform: none !important;
+}
+.vl-fchip-ico {
+  background: rgba(255, 255, 255, .14) !important;
+  color: var(--text) !important;
+}
+.vl-fchip-x {
+  background: rgba(255, 255, 255, .12) !important;
+  color: var(--text) !important;
+}
+.vl-fchip-x:hover {
+  background: rgba(239, 68, 68, .35) !important;
+  color: #fff !important;
+}
+[data-theme="light"] .vl-fchip {
+  background: rgba(15, 23, 42, .08) !important;
+  border-color: rgba(15, 23, 42, .14) !important;
+}
+[data-theme="light"] .vl-fchip:hover {
+  background: rgba(15, 23, 42, .14) !important;
+  border-color: rgba(15, 23, 42, .20) !important;
+}
+[data-theme="light"] .vl-fchip-ico {
+  background: rgba(15, 23, 42, .12) !important;
+  color: var(--text) !important;
+}
+[data-theme="light"] .vl-fchip-x {
+  background: rgba(15, 23, 42, .10) !important;
+  color: var(--text) !important;
+}
+[data-theme="light"] .vl-fchip-x:hover {
+  background: rgba(220, 38, 38, .25) !important;
+  color: #dc2626 !important;
+}
+
+/* Tab Video/Categorie/Tag ricerca: stile YouTube */
+.vl-tab.active {
+  background: #f1f1f1 !important;
+  color: #0f0f0f !important;
+  border-color: #f1f1f1 !important;
+}
+.vl-tab.active::after { display: none !important; }
+.vl-tab.active .vl-tab-count {
+  background: rgba(0, 0, 0, .12) !important;
+  color: #0f0f0f !important;
+}
+[data-theme="light"] .vl-tab.active {
+  background: #0f0f0f !important;
+  color: #fff !important;
+  border-color: #0f0f0f !important;
+}
+[data-theme="light"] .vl-tab.active .vl-tab-count {
+  background: rgba(255, 255, 255, .25) !important;
+  color: #fff !important;
+}

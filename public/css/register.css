@@ -1,0 +1,420 @@
+:root {
+  --primary: #0d7a4d;
+  --primary-strong: #0a6940;
+  --bg-dark: #080808;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #080808;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero {
+  position: relative;
+  background: linear-gradient(rgba(7,10,9,.78), rgba(7,10,9,.94)),
+    url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1920');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 48px 20px;
+  flex: 1;
+}
+
+.logo-netmed {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  margin-bottom: 34px;
+  text-align: center;
+}
+
+.logo-netmed a {
+  text-decoration: none;
+  color: #fff;
+  display: inline-block;
+}
+
+.logo-netmed a span {
+  color: var(--primary);
+}
+
+.hero h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -.5px;
+  margin: 0 0 12px;
+}
+
+.hero h1 span {
+  color: var(--primary);
+}
+
+.hero p {
+  color: #c2c8cf;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  text-align: center;
+  margin: 0 0 32px;
+  max-width: 500px;
+}
+
+.cta-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 380px;
+  width: 100%;
+}
+
+.cta-pill input {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: .98rem;
+  color: #fff;
+  outline: none;
+  font-family: inherit;
+  transition: border-color .18s, background .18s, box-shadow .18s;
+}
+
+.cta-pill input::placeholder { color: rgba(255,255,255,.4); }
+
+.cta-pill input:focus {
+  border-color: var(--primary);
+  background: rgba(255,255,255,.09);
+  box-shadow: 0 0 0 3px rgba(13,122,77,.22);
+}
+
+.btn-pill {
+  background: var(--primary-strong);
+  color: #fff;
+  border: none;
+  padding: 14px 0;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background .16s, transform .12s;
+}
+.btn-pill:hover { background: #0d7a4d; }
+.btn-pill:active { transform: translateY(1px); }
+
+.auth-buttons {
+  margin-top: 22px;
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-register,
+.btn-access {
+  padding: 11px 24px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: .92rem;
+  transition: background .16s, border-color .16s;
+}
+.btn-register { background: var(--primary-strong); color: #fff; }
+.btn-register:hover { background: #0d7a4d; }
+.btn-access { background: transparent; border-color: rgba(255,255,255,.28); color: #fff; }
+.btn-access:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.45); }
+
+#formMessage {
+  color: #ff6b6b;
+  font-weight: 600;
+  font-size: .9rem;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .logo-netmed { font-size: 2.4rem; margin-bottom: 26px; }
+  .hero h1 { font-size: 1.6rem; }
+  .hero p { font-size: .95rem; margin-bottom: 26px; }
+  .cta-pill input { padding: 12px 16px; font-size: .95rem; }
+  .btn-pill { padding: 12px 0; font-size: .95rem; }
+}
+
+
+/* ---------- Sezione "Sono un professionista" ---------- */
+.reg-creator {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 2px;
+}
+.reg-creator-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-size: .94rem;
+  cursor: pointer;
+  user-select: none;
+  padding: 4px 2px;
+}
+.reg-creator-toggle input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary, #0d7a4d);
+  cursor: pointer;
+}
+.reg-creator-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 13px 14px;
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 12px;
+  animation: regCreatorFadeIn .22s ease;
+}
+/* L'attributo HTML `hidden` deve avere la precedenza sul display:flex.
+   Cosi' i campi creator sono nascosti finche' la card "Sono un medico"
+   non viene selezionata. */
+.reg-creator-fields[hidden] {
+  display: none !important;
+}
+@keyframes regCreatorFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reg-creator-fields input {
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: .92rem;
+  color: #fff;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .18s, background .18s, box-shadow .18s;
+}
+.reg-creator-fields input::placeholder { color: rgba(255, 255, 255, .42); }
+.reg-creator-fields input:focus {
+  border-color: var(--primary, #0d7a4d);
+  background: rgba(255, 255, 255, .09);
+  box-shadow: 0 0 0 3px rgba(13, 122, 77, .20);
+}
+.reg-creator-note {
+  font-size: 12px;
+  color: rgba(255, 255, 255, .6);
+  line-height: 1.5;
+}
+
+
+/* ---------- Selettore tipo account: due card ---------- */
+.reg-roles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  margin-top: 2px;
+}
+.reg-role-card {
+  position: relative;
+  display: block;
+  padding: 13px 14px 12px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(255, 255, 255, .14);
+  background: rgba(255, 255, 255, .04);
+  cursor: pointer;
+  transition: border-color .16s, background .16s, transform .12s;
+}
+.reg-role-card:hover {
+  background: rgba(255, 255, 255, .08);
+  border-color: rgba(255, 255, 255, .25);
+}
+.reg-role-card.selected {
+  border-color: var(--primary, #0d7a4d);
+  background: rgba(13, 122, 77, .12);
+  box-shadow: 0 0 0 3px rgba(13, 122, 77, .14);
+}
+.reg-role-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.reg-role-h {
+  font-size: .94rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+  margin: 0 0 5px;
+  padding-right: 22px;
+}
+.reg-role-d {
+  font-size: .82rem;
+  color: rgba(255, 255, 255, .62);
+  line-height: 1.4;
+}
+/* Pallino "selezionato" in alto a destra */
+.reg-role-card::after {
+  content: "";
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, .35);
+  background: transparent;
+  transition: background .16s, border-color .16s;
+}
+.reg-role-card.selected::after {
+  border-color: var(--primary, #0d7a4d);
+  background: var(--primary, #0d7a4d);
+  box-shadow: inset 0 0 0 3px #fff;
+}
+
+@media (max-width: 480px) {
+  .reg-roles { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   Password helper — checklist requisiti + match conferma
+   Mostrati in tempo reale durante la digitazione
+   ============================================================ */
+
+/* ============================================================
+   Password helper v2 — discreto, stile "commento"
+   - niente sfondo / niente bordo
+   - testo piccolo grigio sotto al campo
+   - i requisiti soddisfatti vengono "sbarrati" e diventano verdi
+   - pointer-events: none → non blocca i click sulle card sotto
+   ============================================================ */
+.reg-pw-helper {
+  margin: -6px 2px 6px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, .55);
+  pointer-events: none;     /* CHIAVE: non intercetta i click sulle card sotto */
+}
+.reg-pw-meter {
+  width: 100%;
+  height: 2px;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, .10);
+  overflow: hidden;
+  margin: 4px 0 6px;
+}
+.reg-pw-meter-bar {
+  height: 100%;
+  width: 0%;
+  background: rgba(255, 255, 255, .25);
+  transition: width .18s ease, background .18s ease;
+}
+.reg-pw-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  color: rgba(255, 255, 255, .50);
+}
+.reg-pw-list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  transition: color .15s ease;
+}
+.reg-pw-list li b {
+  color: rgba(255, 255, 255, .65);
+  font-weight: 600;
+}
+.reg-pw-mark {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+  opacity: .65;
+}
+/* Quando un requisito e' soddisfatto */
+.reg-pw-list li.ok {
+  color: #6ad28a;
+  text-decoration: line-through;
+  text-decoration-color: rgba(106, 210, 138, .5);
+  text-decoration-thickness: 1px;
+}
+.reg-pw-list li.ok b { color: #8fdfa5; }
+
+/* Indicatore match conferma — anch'esso piccolo e discreto */
+.reg-pw-match {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: -4px 2px 4px;
+  min-height: 14px;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: -.1px;
+  pointer-events: none;
+  color: transparent;
+}
+.reg-pw-match svg { flex-shrink: 0; }
+.reg-pw-match.ok  { color: #6ad28a; }
+.reg-pw-match.err { color: #ff9a9a; }
+
+/* Mobile: 2 colonne sui requisiti per non strapparli */
+@media (max-width: 480px) {
+  .reg-pw-list { gap: 4px 8px; }
+}
+
+/* ============================================================
+   ANTI-OVERLAY radio cards — fix click che non arrivava
+   - Forzo le card SOPRA tutti gli helper password
+   - Forzo pointer-events auto a tutta la zona radio
+   - Pseudoelementi non bloccano i click
+   ============================================================ */
+.reg-roles {
+  position: relative;
+  z-index: 5;             /* sopra l'helper password */
+  pointer-events: auto !important;
+}
+.reg-role-card,
+.reg-role-card * {
+  pointer-events: auto !important;
+}
+.reg-role-card { cursor: pointer !important; }
+
+/* Pseudo non blocca click */
+.reg-role-card::after { pointer-events: none; }
+
+/* Helper password STANNO sotto e non assorbono click */
+.reg-pw-helper,
+.reg-pw-match,
+.reg-pw-meter,
+.reg-pw-list,
+.reg-pw-list * {
+  pointer-events: none !important;
+  z-index: 0;
+}
+
+/* Tutta la form torna interattiva (default) tranne gli helper sopra */
+#registerForm {
+  position: relative;
+  z-index: 1;
+}

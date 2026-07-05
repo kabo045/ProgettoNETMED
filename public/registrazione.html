@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08562f">
+  <title>NETMED</title>
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/auth-common.css?v=20260615yl">
+  <link rel="stylesheet" href="css/register.css?v=20260615yl">
+  <link rel="stylesheet" href="css/footer.css?v=20260615yl">
+  <link rel="stylesheet" href="css/i18n.css">
+</head>
+<body>
+
+<div class="hero">
+  <div class="logo-netmed">
+    <a href="index.html"><span class="logo-mark-inline">N</span></a>
+  </div>
+
+  <h1 data-i18n-html="reg.h1_full">Registrazione al <span>servizio</span></h1>
+  <p data-i18n="reg.p">Inserisci le tue credenziali per accedere al tuo account.</p>
+
+  <form id="registerForm" class="cta-pill" novalidate>
+    <!-- Contenitore per messaggi di errore/successo del form (riempito da registrazione.js) -->
+    <div id="formMessage"></div>
+
+    <!-- Campi base: username + email -->
+    <input type="text" id="username" data-i18n-placeholder="reg.username_ph"
+           placeholder="Username (min. 3 caratteri)"
+           required minlength="3" maxlength="30" autocomplete="username">
+    <input type="email" id="email" data-i18n-placeholder="common.email"
+           placeholder="Email" required autocomplete="email">
+
+    <!-- Password + toggle mostra/nascondi -->
+    <div class="pw-wrap">
+      <input type="password" id="password" data-i18n-placeholder="reg.password_ph"
+             placeholder="Password" required minlength="8"
+             autocomplete="new-password" oninput="regCheckPassword()">
+      <button type="button" class="pw-toggle" onclick="togglePw('password',this)"
+              aria-label="Mostra/nascondi password">•</button>
+    </div>
+
+    <!--
+      Helper password: barra + lista requisiti.
+      La lista viene aggiornata da regCheckPassword() in registrazione.js.
+      aria-live=polite: gli screen reader annunciano i cambiamenti.
+    -->
+    <div class="reg-pw-helper" id="regPwHelper" aria-live="polite">
+      <div class="reg-pw-meter"><div class="reg-pw-meter-bar" id="regPwMeterBar"></div></div>
+      <ul class="reg-pw-list" id="regPwList">
+        <li data-rule="len"><span class="reg-pw-mark"></span>Almeno 8 caratteri</li>
+        <li data-rule="up"><span class="reg-pw-mark"></span>Una lettera <b>MAIUSCOLA</b></li>
+        <li data-rule="low"><span class="reg-pw-mark"></span>Una lettera <b>minuscola</b></li>
+        <li data-rule="num"><span class="reg-pw-mark"></span>Una <b>cifra</b> (0-9)</li>
+        <li data-rule="sym"><span class="reg-pw-mark"></span>Un <b>simbolo</b> (es. !@#$%)</li>
+      </ul>
+    </div>
+
+    <!-- Conferma password -->
+    <div class="pw-wrap">
+      <input type="password" id="passwordConfirm" data-i18n-placeholder="reg.password_conf_ph"
+             placeholder="Conferma password" required
+             autocomplete="new-password" oninput="regCheckPasswordMatch()">
+      <button type="button" class="pw-toggle" onclick="togglePw('passwordConfirm',this)"
+              aria-label="Mostra/nascondi password">•</button>
+    </div>
+    <div class="reg-pw-match" id="regPwMatch" aria-live="polite"></div>
+
+    <!--
+      Scelta ruolo: utente semplice vs creator.
+      Le card sono anche cliccabili via mouse + tastiera (Enter/Space)
+    -->
+    <div class="reg-roles" role="radiogroup" aria-label="Tipo di account">
+      <div class="reg-role-card selected" data-role="user"
+           onclick="regPickRole('user')" tabindex="0" role="radio" aria-checked="true">
+        <input type="radio" name="userRole" value="user" checked onchange="toggleCreatorFields()"/>
+        <div class="reg-role-h">Utente classico</div>
+        <div class="reg-role-d">Guarda contenuti medico-scientifici.</div>
+      </div>
+      <div class="reg-role-card" data-role="creator"
+           onclick="regPickRole('creator')" tabindex="0" role="radio" aria-checked="false">
+        <input type="radio" name="userRole" value="creator" onchange="toggleCreatorFields()"/>
+        <div class="reg-role-h">Sono un medico o professionista sanitario</div>
+        <div class="reg-role-d">Voglio anche caricare contenuti. Verrà inviata una richiesta all'admin.</div>
+      </div>
+    </div>
+
+    <!--
+      Campi creator: mostrati solo se ha scelto "creator" (toggleCreatorFields).  L'attributo hidden nasconde di default.
+    -->
+    <div class="reg-creator-fields" id="creatorFields" hidden>
+      <input type="text" id="creatorTitle"     maxlength="60"  autocomplete="off" list="dlTitolo"    placeholder="Titolo (es. Dr., Prof.)"/>
+      <input type="text" id="creatorQualifica" maxlength="120" autocomplete="off" list="dlQualifica" placeholder="Qualifica / specializzazione (es. Cardiologo)"/>
+      <input type="text" id="creatorOrg"       maxlength="160" autocomplete="off" list="dlOrgTipo"   placeholder="Organizzazione (ospedale, universita, studio)"/>
+      <div class="reg-creator-note">La tua richiesta sara' valutata dai nostri amministratori. Riceverai una notifica quando il tuo profilo creator sara' attivato.</div>
+    </div>
+
+    <button type="submit" class="btn-pill" id="submitBtn">
+      <span id="btnText" data-i18n="reg.btn">Registrati</span>
+    </button>
+  </form>
+
+  <div class="auth-buttons">
+    <a href="login.html" class="btn-access" data-i18n="reg.have_account">Hai già un account? Accedi</a>
+  </div>
+</div>
+
+
+<!--
+  I datalist possono stare ovunque nel documento li tengo fuori dal form
+  cosi il markup del form resta piu pulito. Il browser li collega via attributo list="idDatalist".
+-->
+<datalist id="dlTitolo">
+  <option value="Dr."></option>
+  <option value="Dr.ssa"></option>
+  <option value="Dott."></option>
+  <option value="Dott.ssa"></option>
+  <option value="Prof."></option>
+  <option value="Prof.ssa"></option>
+</datalist>
+
+<datalist id="dlQualifica">
+  <option value="Medico di medicina generale"></option>
+  <option value="Cardiologo"></option><option value="Cardiologa"></option>
+  <option value="Neurologo"></option><option value="Neurologa"></option>
+  <option value="Ortopedico"></option><option value="Ortopedica"></option>
+  <option value="Fisioterapista"></option>
+  <option value="Pediatra"></option>
+  <option value="Ginecologo"></option><option value="Ginecologa"></option>
+  <option value="Dermatologo"></option><option value="Dermatologa"></option>
+  <option value="Oculista"></option>
+  <option value="Otorinolaringoiatra"></option>
+  <option value="Psicologo"></option><option value="Psicologa"></option>
+  <option value="Psichiatra"></option>
+  <option value="Radiologo"></option><option value="Radiologa"></option>
+  <option value="Anestesista"></option>
+  <option value="Chirurgo"></option><option value="Chirurga"></option>
+  <option value="Internista"></option>
+  <option value="Endocrinologo"></option><option value="Endocrinologa"></option>
+  <option value="Reumatologo"></option><option value="Reumatologa"></option>
+  <option value="Urologo"></option><option value="Urologa"></option>
+  <option value="Nefrologo"></option><option value="Nefrologa"></option>
+  <option value="Geriatra"></option>
+  <option value="Gastroenterologo"></option><option value="Gastroenterologa"></option>
+  <option value="Pneumologo"></option><option value="Pneumologa"></option>
+  <option value="Allergologo"></option><option value="Allergologa"></option>
+  <option value="Oncologo"></option><option value="Oncologa"></option>
+  <option value="Ematologo"></option><option value="Ematologa"></option>
+  <option value="Infermiere"></option><option value="Infermiera"></option>
+  <option value="Tecnico di laboratorio"></option>
+  <option value="Specializzando"></option><option value="Specializzanda"></option>
+  <option value="Studente di medicina"></option>
+  <option value="Ricercatore"></option><option value="Ricercatrice"></option>
+  <option value="Docente universitario"></option>
+</datalist>
+
+<datalist id="dlOrgTipo">
+  <option value="Ospedale"></option>
+  <option value="Policlinico universitario"></option>
+  <option value="ASL"></option>
+  <option value="Clinica privata"></option>
+  <option value="Studio medico"></option>
+  <option value="Universita"></option>
+  <option value="Centro di ricerca"></option>
+  <option value="Libero professionista"></option>
+</datalist>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-logo"><span class="logo-mark-inline">N</span></div>
+      <div class="footer-divider"></div>
+      <div class="footer-links">
+        <a href="privacy.html" data-i18n="footer.privacy">Privacy</a>
+        <a href="termini.html" data-i18n="footer.terms">Termini</a>
+        <a href="contatti.html" data-i18n="footer.contacts">Contatti</a>
+        <a href="#" data-i18n="footer.faq">FAQ</a>
+      </div>
+    </div>
+    <div class="footer-right">
+      <div class="footer-social">
+        <a href="#" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.91 1.65-1.85 3.4-1.85 3.64 0 4.31 2.4 4.31 5.52v6.22zM5.34 7.43a2.07 2.07 0 110-4.13 2.07 2.07 0 010 4.13zm1.78 13.02H3.56V9h3.56v11.45z"/></svg></a>
+        <a href="#" aria-label="Twitter" title="Twitter"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="#" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.22.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.22-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.22-.41a3.72 3.72 0 01-1.38-.9 3.72 3.72 0 01-.9-1.38c-.16-.42-.36-1.05-.41-2.22-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.22.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.05-.36 2.22-.41C8.42 2.17 8.8 2.16 12 2.16zm0 5.84a4.16 4.16 0 100 8.32 4.16 4.16 0 000-8.32zm0 6.86a2.7 2.7 0 110-5.4 2.7 2.7 0 010 5.4zm5.3-7.04a.97.97 0 11-1.94 0 .97.97 0 011.94 0z"/></svg></a>
+      </div>
+      <span class="footer-copy" data-i18n="footer.copy">© NETMED</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Contenitore per i toast (feedback breve dopo submit del form) -->
+<div id="toastContainer"></div>
+
+<script>
+  //evitare problema CSS (cta-pill input override, pointer-events, ecc.)
+  function regPickRole(value) {
+    const radios = document.querySelectorAll('input[name="userRole"]');
+    radios.forEach(r => { r.checked = (r.value === value); });
+    document.querySelectorAll('.reg-role-card').forEach(c => {
+      const sel = c.getAttribute('data-role') === value;
+      c.classList.toggle('selected', sel);
+      c.setAttribute('aria-checked', sel ? 'true' : 'false');
+    });
+    if (typeof toggleCreatorFields === 'function') toggleCreatorFields();
+  }
+  window.regPickRole = regPickRole;
+
+  // Keyboard support: Enter o Spazio selezionano la card
+  document.querySelectorAll('.reg-role-card').forEach(card => {
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        regPickRole(card.getAttribute('data-role'));
+      }
+    });
+  });
+</script>
+
+<script src="js/i18n.js?v=20260615yl"></script>
+<script src="js/registrazione.js?v=20260615yl"></script>
+<script src="js/cookie-banner.js?v=20260615yl"></script>
+</body>
+</html>

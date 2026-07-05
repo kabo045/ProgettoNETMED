@@ -1,0 +1,9 @@
+node_modules
+package-lock.json
+.git
+public/css
+public/img
+public/*.html
+public/locales
+test/coverage
+**/*.min.js

@@ -1,0 +1,141 @@
+/* ============================================================
+   NETMED — User catalog
+   Modulo FEEDBACK: toast notifications + modale di conferma.
+   ============================================================ */
+
+
+/* ---------- Toast box ---------- */
+.user-toast-box {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.user-toast {
+  padding: 13px 18px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .28);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: slideInR .35s ease forwards;
+  pointer-events: auto;
+  min-width: 220px;
+  max-width: 360px;
+}
+
+.user-toast-ok   { background: #16a34a; }
+.user-toast-err  { background: #dc2626; }
+.user-toast-info { background: var(--accent-strong); }
+
+
+/* ============================================================
+   nmConfirm — modale di conferma: sobria, compatta, silenziosa.
+   Niente icona gigante, niente bagliori colorati: solo testo
+   e azioni, come un dialog di sistema.
+   ============================================================ */
+.nm-confirm-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, .55);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  transition: opacity .16s ease;
+}
+[data-theme="light"] .nm-confirm-bg { background: rgba(15, 23, 42, .32); }
+.nm-confirm-bg.open    { opacity: 1; }
+.nm-confirm-bg.closing { opacity: 0; }
+
+.nm-confirm-card {
+  width: 100%;
+  max-width: 360px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 22px 18px;
+  text-align: left;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, .38);
+  transform: translateY(6px);
+  opacity: 0;
+  transition: transform .18s ease, opacity .16s ease;
+}
+.nm-confirm-bg.open .nm-confirm-card {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Icona disattivata: la modale resta pulita (solo testo + azioni). */
+.nm-confirm-ico { display: none; }
+
+.nm-confirm-title {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 6px;
+}
+.nm-confirm-msg {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text2);
+  margin: 0 0 18px;
+}
+
+.nm-confirm-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.nm-confirm-btn {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: background .14s, border-color .14s;
+}
+.nm-confirm-btn:hover { background: var(--surface-2); }
+.nm-confirm-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.nm-confirm-ok {
+  background: var(--accent-strong);
+  color: #fff;
+  border-color: transparent;
+}
+.nm-confirm-ok:hover { background: #0d7a4d; }
+.nm-confirm-ok.danger       { background: var(--rose); }
+.nm-confirm-ok.danger:hover { background: #e11d48; }
+
+@media (max-width: 480px) {
+  .nm-confirm-card { max-width: 100%; padding: 18px; }
+  .nm-confirm-actions { flex-wrap: wrap-reverse; }
+  .nm-confirm-btn { flex: 1 1 110px; }
+}
+
+/* ============================================================
+   Modal aperto: nascondi elementi fluttuanti (FAB carica video,
+   bottoni floating, bulk-bar) per evitare sovrapposizioni con
+   il dialog di conferma.
+   ============================================================ */
+body.nm-modal-open .nm-upload-fab,
+body.nm-modal-open .mc-bulkbar,
+body.nm-modal-open .uh-notif-bulkbar {
+  display: none !important;
+}

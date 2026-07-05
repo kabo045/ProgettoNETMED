@@ -1,0 +1,123 @@
+/* ============================================================
+   NETMED — Admin dashboard
+   Modulo ANALYTICS: griglia chart, mini-bar chart, barre per
+   categorie, legenda.
+   ============================================================ */
+
+
+/* ---------- Griglia analytics ---------- */
+.analytics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+
+/* ---------- Card grafico ---------- */
+.chart-card {
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 24px;
+  opacity: 0;
+  animation: fu .45s ease forwards;
+}
+
+.chart-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+
+/* ---------- Mini bar chart ---------- */
+.mini-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 100px;
+}
+
+.mini-bar {
+  background: linear-gradient(to top, var(--t6), var(--t4));
+  border-radius: 4px 4px 0 0;
+  min-width: 8px;
+  transition: all .3s;
+  opacity: .7;
+  cursor: pointer;
+}
+
+.mini-bar:hover {
+  opacity: 1;
+  transform: scaleY(1.05);
+}
+
+
+/* ---------- Legenda ---------- */
+.chart-legend {
+  display: flex;
+  gap: 20px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.chart-legend span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chart-legend span::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+
+/* ---------- Barre per categoria ---------- */
+.cat-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cat-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cat-bar-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text2);
+  width: 100px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.cat-bar-fill {
+  height: 28px;
+  border-radius: 8px;
+  transition: width .5s ease;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  min-width: 30px;
+}
+
+.cat-bar-val {
+  font-size: 12px;
+  color: var(--text3);
+  margin-left: 8px;
+  flex-shrink: 0;
+}

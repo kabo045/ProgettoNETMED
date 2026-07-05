@@ -1,0 +1,334 @@
+/* ============================================================
+   NETMED — Video detail
+   Modulo VD-MODAL: modale per segnalazione e per condivisione,
+   stile coerente con admin ma adattato al tema utente.
+   ============================================================ */
+
+
+/* ---------- Backdrop (glass) ---------- */
+.vd-modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, .55);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: fadeIn .22s ease;
+}
+[data-theme="light"] .vd-modal-bg {
+  background: rgba(255, 255, 255, .45);
+}
+.vd-modal-bg.open {
+  display: flex;
+}
+
+
+/* ---------- Modal frame (glass-morphism) ---------- */
+.vd-modal {
+  background: linear-gradient(
+    135deg,
+    rgba(26, 32, 48, .92) 0%,
+    rgba(20, 26, 38, .92) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 22px;
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .08),
+    0 4px 12px rgba(13, 122, 77, .15),
+    0 32px 80px rgba(0, 0, 0, .55);
+  overflow: hidden;
+  animation: vdModalIn .28s cubic-bezier(.2,.9,.3,1.2);
+}
+.vd-modal::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 24px;
+  right: 24px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, .35) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+@keyframes vdModalIn {
+  from { opacity: 0; transform: translateY(10px) scale(.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+[data-theme="light"] .vd-modal {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .94) 0%,
+    rgba(248, 250, 252, .92) 100%
+  );
+  border: 1px solid rgba(15, 23, 42, .08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 4px 12px rgba(13, 122, 77, .12),
+    0 32px 80px rgba(15, 23, 42, .18);
+}
+[data-theme="light"] .vd-modal::before {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 1) 50%,
+    transparent 100%
+  );
+}
+
+.vd-modal-h {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.vd-modal-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.vd-modal-close {
+  background: transparent;
+  border: 0;
+  color: var(--text3);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all .15s;
+}
+.vd-modal-close:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.vd-modal-body {
+  padding: 20px 22px;
+}
+
+.vd-modal-foot {
+  padding: 14px 22px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.vd-modal-btn {
+  background: var(--surface);
+  color: var(--text2);
+  border: 1px solid var(--border);
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: inherit;
+}
+.vd-modal-btn:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.vd-modal-btn.primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: transparent;
+}
+.vd-modal-btn.primary:hover {
+  background: var(--accent-strong);
+}
+.vd-modal-btn.danger {
+  background: var(--rose);
+  color: #fff;
+  border-color: transparent;
+}
+.vd-modal-btn.danger:hover {
+  background: #e11d48;
+}
+
+
+/* ---------- Form interno modale ---------- */
+.vd-form-group {
+  margin-bottom: 14px;
+}
+.vd-form-group:last-child {
+  margin-bottom: 0;
+}
+.vd-form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text2);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.vd-form-select,
+.vd-form-textarea {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .2s;
+}
+.vd-form-select:focus,
+.vd-form-textarea:focus {
+  border-color: var(--accent);
+}
+.vd-form-textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+
+/* ---------- Condividi: campo URL + copia ---------- */
+.vd-share-url {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+  margin-top: 4px;
+}
+.vd-share-input {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 13px;
+  outline: none;
+}
+.vd-share-input:focus {
+  border-color: var(--accent);
+}
+.vd-share-copy {
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  padding: 0 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s;
+  white-space: nowrap;
+}
+.vd-share-copy:hover {
+  background: var(--accent-strong);
+}
+.vd-share-hint {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 8px;
+}
+
+
+/* ---------- Conferma elimina commento ---------- */
+.vd-confirm-text {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.55;
+}
+.vd-confirm-text strong {
+  color: var(--text);
+}
+
+/* ============================================================
+   UX migliorata della modale Segnala
+   ============================================================ */
+.vd-modal .vd-form-help {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text2);
+  margin: 0 0 18px;
+}
+.vd-modal .vd-form-help strong { color: var(--text); }
+
+.vd-modal .vd-form-hint {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text3);
+  line-height: 1.5;
+}
+
+.vd-modal .vd-form-opt {
+  color: var(--text4);
+  font-weight: 400;
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+/* Schermata di conferma post-invio */
+.vd-modal .vd-report-ok {
+  text-align: center;
+  padding: 12px 6px 4px;
+}
+.vd-modal .vd-report-ok-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: rgba(13, 122, 77, .14);
+  color: #0a6b3a;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: .5px;
+  margin-bottom: 14px;
+}
+.vd-modal .vd-report-ok h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+  color: var(--text);
+}
+.vd-modal .vd-report-ok p {
+  margin: 6px 0;
+  color: var(--text2);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.vd-modal .vd-report-ok-meta {
+  color: var(--text3);
+  font-size: 12.5px;
+  margin-top: 14px;
+}
+
+/* Pulsante primary (verde) per "Chiudi" dopo invio */
+.vd-modal-btn.primary {
+  background: var(--accent);
+  color: #fff;
+  border: 1px solid var(--accent);
+}
+.vd-modal-btn.primary:hover {
+  background: var(--accent-2, #0a6b3a);
+}

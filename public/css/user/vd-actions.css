@@ -1,0 +1,299 @@
+/* ============================================================
+   NETMED — Video detail
+   Modulo VD-ACTIONS: barra con like/dislike, salva, condividi,
+   segnala. Stile YouTube-like ma con accenti NETMED.
+   ============================================================ */
+
+
+/* ---------- Barra azioni ---------- */
+.vd-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.vd-actions .va-spacer {
+  flex: 1;
+  min-width: 0;
+}
+
+.va-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.va-btn:hover {
+  background: var(--surface-2);
+  color: var(--text);
+  border-color: var(--border-2);
+}
+.va-btn:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+.va-btn .va-ico {
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* Pillola unica per like + dislike (segmento) */
+.va-vote {
+  display: inline-flex;
+  align-items: stretch;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.va-vote .va-vote-btn {
+  background: transparent;
+  border: 0;
+  color: var(--text2);
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.va-vote .va-vote-btn:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.va-vote .va-vote-divider {
+  width: 1px;
+  background: var(--border);
+}
+.va-vote .va-vote-btn.active {
+  color: var(--accent);
+}
+.va-vote .va-vote-btn.active .va-ico {
+  color: var(--accent);
+  filter: drop-shadow(0 0 6px rgba(13, 122, 77, .35));
+}
+.va-vote .va-vote-btn[data-vote="-1"].active {
+  color: var(--rose);
+}
+.va-vote .va-vote-btn[data-vote="-1"].active .va-ico {
+  color: var(--rose);
+  filter: drop-shadow(0 0 6px rgba(244, 63, 94, .35));
+}
+
+/* "Utile / Non utile" — dato che il contesto è medico, la versione
+   attiva del voto positivo usa il verde (var(--green)) come confenza
+   "informazione attendibile", mentre il voto negativo usa l'ambra
+   per richiamare un avviso, non un rifiuto sociale. */
+.va-vote .va-vote-btn.vote-up.active {
+  color: var(--green);
+  background: rgba(34, 197, 94, .12);
+}
+.va-vote .va-vote-btn.vote-up.active .va-ico {
+  filter: drop-shadow(0 0 6px rgba(34, 197, 94, .45));
+}
+.va-vote .va-vote-btn.vote-down.active {
+  color: var(--amber);
+  background: rgba(245, 158, 11, .12);
+}
+.va-vote .va-vote-btn.vote-down.active .va-ico {
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, .45));
+}
+/* La label "Utile / Non utile" sparisce sotto i 480px per lasciar
+   spazio al numero di voti (icona + cifra) */
+.va-vote .va-vote-btn .va-cnt {
+  font-variant-numeric: tabular-nums;
+  opacity: .85;
+}
+@media (max-width: 480px) {
+  .va-vote .va-vote-btn .va-lbl { display: none; }
+}
+
+.va-btn.fav.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.va-btn.report:hover {
+  border-color: var(--rose);
+  color: var(--rose);
+}
+
+
+/* ---------- Descrizione box ---------- */
+.vd-desc {
+  margin-top: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  position: relative;
+  transition: background .2s;
+}
+.vd-desc-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.vd-desc-meta .dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--text4);
+}
+.vd-desc-meta-soft {
+  font-weight: 500;
+  color: var(--text3);
+}
+.vd-desc-text {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--text);
+  font-weight: 400;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 110px;
+  position: relative;
+  transition: max-height .3s ease;
+}
+.vd-desc.expanded .vd-desc-text {
+  max-height: 4000px;
+}
+.vd-desc-text::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 36px;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, var(--surface) 100%);
+  transition: opacity .2s;
+}
+.vd-desc.expanded .vd-desc-text::after {
+  opacity: 0;
+}
+.vd-desc-toggle {
+  margin-top: 10px;
+  background: transparent;
+  border: 0;
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+}
+.vd-desc-toggle:hover {
+  color: var(--accent);
+}
+
+
+/* ---------- Tag chips ---------- */
+.vd-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+.vd-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--surface-2);
+  color: var(--text2);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  border: 1px solid transparent;
+}
+.vd-tag:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+
+/* ---------- CTA login per non loggati ---------- */
+.vd-login-cta {
+  margin-top: 16px;
+  background: var(--surface);
+  border: 1px dashed var(--border-2);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.vd-login-cta-text {
+  font-size: 14px;
+  color: var(--text2);
+}
+.vd-login-cta-text strong {
+  color: var(--text);
+}
+.vd-login-cta-btn {
+  background: var(--accent-strong);
+  color: #fff;
+  border: 0;
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+}
+.vd-login-cta-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+/* Fix leggibilità descrizione video — testo sempre ben contrastato */
+.vd-desc {
+  background: var(--surface, #1f1f22) !important;
+  border-color: var(--border, #303033) !important;
+}
+.vd-desc-text {
+  color: var(--text, #ebebed) !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+/* Tolgo il gradient fade quando il testo è breve (non serve mascherare) */
+.vd-desc-text::after {
+  background: linear-gradient(180deg, transparent 0%, var(--surface, #1f1f22) 90%) !important;
+  height: 28px !important;
+}
+[data-theme="light"] .vd-desc {
+  background: #ffffff !important;
+}
+[data-theme="light"] .vd-desc-text {
+  color: var(--text) !important;
+}
+[data-theme="light"] .vd-desc-text::after {
+  background: linear-gradient(180deg, transparent 0%, #ffffff 90%) !important;
+}

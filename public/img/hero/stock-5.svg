@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="50%" stop-color="#0c4a6e"/>
+      <stop offset="100%" stop-color="#0d9488"/>
+    </linearGradient>
+    <radialGradient id="glow5" cx="80%" cy="20%" r="60%">
+      <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#2dd4bf" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#g5)"/>
+  <rect width="1920" height="1080" fill="url(#glow5)"/>
+  <!-- Medical cross + concentric rings -->
+  <g opacity="0.32" stroke="#5eead4" stroke-width="2" fill="none">
+    <circle cx="320" cy="540" r="180"/>
+    <circle cx="320" cy="540" r="120" stroke-dasharray="4 6"/>
+    <circle cx="320" cy="540" r="60"/>
+  </g>
+  <g opacity="0.5">
+    <rect x="295" y="470" width="50" height="140" rx="6" fill="#14b8a6"/>
+    <rect x="250" y="515" width="140" height="50" rx="6" fill="#14b8a6"/>
+  </g>
+  <!-- Pulse waves -->
+  <g stroke="#2dd4bf" stroke-width="2.5" fill="none" opacity="0.45">
+    <path d="M600 540 Q700 440 800 540 Q900 640 1000 540 Q1100 440 1200 540 Q1300 640 1400 540 Q1500 440 1600 540 Q1700 640 1800 540"/>
+    <path d="M600 600 Q700 520 800 600 Q900 680 1000 600 Q1100 520 1200 600 Q1300 680 1400 600 Q1500 520 1600 600 Q1700 680 1800 600" opacity="0.5"/>
+  </g>
+</svg>

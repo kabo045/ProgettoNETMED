@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="description" content="NETMED — piattaforma di video divulgativi medico-scientifici"/>
+  <meta name="theme-color" content="#08562f"/>
+  <meta property="og:title" content="NETMED"/>
+  <meta property="og:description" content="Video divulgativi medico-scientifici."/>
+  <meta property="og:type" content="website"/>
+
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg"/>
+  <title>NETMED</title>
+
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
+  <link rel="stylesheet" href="css/user/base.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/header.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/footer.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/hero.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/row.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/card.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/feedback.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/feedback-ui.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/user/preview-modal.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/responsive.css?v=20260615yl"/>
+  <link rel="stylesheet" href="css/i18n.css?v=20260615yl"/>
+</head>
+<body>
+<a class="skip-link" href="#mainContent" data-i18n="home.skip">Salta al contenuto principale</a>
+
+<header class="user-hdr" role="banner">
+  <div class="uh-l">
+    <div class="uh-logo" onclick="goTo('home.html')" role="button" tabindex="0" aria-label="NETMED — vai alla home"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goTo('home.html')}">
+      <div class="uh-logo-mark" aria-hidden="true">N</div>
+      <span class="uh-logo-name">NETMED</span>
+    </div>
+    <nav class="uh-nav" id="uhNav" aria-label="Navigazione categorie">
+      <button class="uh-nav-link active" onclick="goTo('home.html')" data-i18n="home.nav_home">Home</button>
+    </nav>
+  </div>
+
+  <div class="uh-r">
+    <!-- Barra di ricerca con dropdown risultati-->
+    <div class="uh-search" role="search">
+      <span class="uh-search-ico" aria-hidden="true">
+        <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" style="vertical-align:-3px">
+          <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M13 13l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <input id="uhSearchInput" type="text"
+             data-i18n-placeholder="home.search_ph" data-i18n-aria-label="home.search_aria"
+             placeholder="Cerca video, categorie, tag…" autocomplete="off"
+             maxlength="100" aria-label="Cerca video, categorie o tag"/>
+      <div class="uh-search-results" id="uhSearchResults" role="listbox" aria-label="Risultati ricerca"></div>
+    </div>
+
+    <!-- Switch lingua IT/EN (gestito da i18n.js) -->
+    <button type="button" class="nm-lang-switch nm-lang-switch-inline" aria-label="Switch language">EN</button>
+
+    <!-- Non loggato: bottone Accedi -->
+    <button class="uh-login-btn" id="uhGuest" onclick="goLogin()" data-i18n="common.login">Accedi</button>
+
+    <!-- Loggato: dropdown utente con menu -->
+    <div class="uh-user" id="uhUser" style="display:none" onclick="toggleUserDD(event)"
+         role="button" tabindex="0" aria-haspopup="menu" aria-expanded="false"
+         data-i18n-aria-label="home.menu_user" aria-label="Menu utente"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleUserDD(event)}">
+      <div class="uh-avatar" id="uhAvatar" aria-hidden="true">U</div>
+      <span class="uh-uname" id="uhUname">Utente</span>
+      <span class="uh-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </span>
+
+      <div class="uh-dd" id="uhDd" onclick="event.stopPropagation()" role="menu">
+        <div class="uh-dd-head">
+          <div class="uh-avatar" id="uhDdAvatar" aria-hidden="true">U</div>
+          <div>
+            <div class="uh-dd-name" id="uhDdName">Utente</div>
+            <div class="uh-dd-email" id="uhDdEmail">—</div>
+          </div>
+        </div>
+        <div class="uh-dd-item" onclick="goProfile()" role="menuitem" tabindex="0"
+             onkeydown="if(event.key==='Enter'){goProfile()}">
+          <span data-i18n="home.dd_profile">Il mio profilo</span>
+        </div>
+        <div class="uh-dd-item" onclick="goFavorites()" role="menuitem" tabindex="0"
+             onkeydown="if(event.key==='Enter'){goFavorites()}">
+          <span data-i18n="home.dd_saved">Salvati</span>
+        </div>
+        <div class="uh-dd-item" onclick="goTo('miei-commenti.html')" role="menuitem" tabindex="0"
+             onkeydown="if(event.key==='Enter'){goTo('miei-commenti.html')}">
+          <span data-i18n="home.dd_comments">I miei commenti</span>
+        </div>
+        <div class="uh-dd-item" onclick="goTo('cronologia.html')" role="menuitem" tabindex="0"
+             onkeydown="if(event.key==='Enter'){goTo('cronologia.html')}">
+          <span data-i18n="home.dd_history">Cronologia</span>
+        </div>
+        <!-- Voci mostrate solo se creator / admin-->
+        <div class="uh-dd-item" id="uhDdCreator" style="display:none" onclick="goCreator()" role="menuitem" tabindex="0"
+             onkeydown="if(event.key==='Enter'){goCreator()}">
+          <span data-i18n="home.dd_creator">I miei video</span>
+        </div>
+        <div class="uh-dd-item" id="uhDdAdmin" style="display:none" onclick="goAdmin()" role="menuitem" tabindex="0"
+             onkeydown="if(event.key==='Enter'){goAdmin()}">
+          <span data-i18n="home.dd_admin">Dashboard admin</span>
+        </div>
+        <div class="uh-dd-sep" aria-hidden="true"></div>
+        <div class="uh-dd-item danger" onclick="doLogout()" role="menuitem" tabindex="0"
+             onkeydown="if(event.key==='Enter'){doLogout()}">
+          <span data-i18n="home.dd_logout">Esci</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!--
+  Contenitori vuoti riempiti da home.js:
+  - hero: video "hero" in primo piano con thumbnail full-width
+  - homeRows: strisce orizzontali (In tendenza, Continua a guardare, ecc.)
+-->
+<main id="mainContent" role="main">
+  <section class="hero loading" id="hero"></section>
+  <div id="homeRows"></div>
+</main>
+
+<footer class="user-footer" role="contentinfo">
+  <div class="uf-grid">
+    <div class="uf-brand">
+      <div class="uf-brand-logo">
+        <span class="uf-mark">N</span>
+        NETMED
+      </div>
+      <p class="uf-brand-desc" data-i18n="footer.brand_desc">
+        Piattaforma video a tema medico-scientifico.
+      </p>
+    </div>
+    <div>
+      <div class="uf-col-title" data-i18n="footer.col_catalog">Catalogo</div>
+      <a class="uf-col-link" onclick="goTo('home.html')" data-i18n="home.nav_home">Home</a>
+      <a class="uf-col-link" onclick="goCategory(1)">Fisioterapia</a>
+      <a class="uf-col-link" onclick="goCategory(2)">Neurologia</a>
+      <a class="uf-col-link" onclick="goCategory(3)">Ortopedia</a>
+    </div>
+    <div>
+      <div class="uf-col-title" data-i18n="footer.col_account">Account</div>
+      <a class="uf-col-link" onclick="goLogin()" data-i18n="footer.account_login">Accedi</a>
+      <a class="uf-col-link" onclick="goTo('registrazione.html')" data-i18n="footer.account_register">Registrati</a>
+      <a class="uf-col-link" onclick="goFavorites()" data-i18n="footer.account_saved">I miei salvati</a>
+    </div>
+    <div>
+      <div class="uf-col-title" data-i18n="footer.col_info">Info</div>
+      <a class="uf-col-link" onclick="goTo('index.html')" data-i18n="footer.info_about">Chi siamo</a>
+      <a class="uf-col-link" data-i18n="footer.privacy" onclick="goTo('privacy.html')">Privacy</a>
+      <a class="uf-col-link" data-i18n="footer.terms" onclick="goTo('termini.html')">Termini</a>
+    </div>
+  </div>
+
+  <div class="uf-bottom">
+    <span data-i18n="footer.bottom_copy">2026 NETMED</span>
+    <div class="uf-bottom-links">
+      <a data-i18n="footer.cookie" onclick="goTo('cookie.html')">Cookie</a>
+      <a data-i18n="footer.access" onclick="goTo('accessibilita.html')">Accessibilità</a>
+      <a data-i18n="footer.contacts" onclick="goTo('contatti.html')">Contatti</a>
+    </div>
+  </div>
+</footer>
+
+
+<!-- Contenitore toast (feedback breve, es. "Aggiunto ai preferiti") -->
+<div class="user-toast-box" id="userToastBox"></div>
+<script src="js/user/core.js?v=20260615yl"></script>
+<script src="js/i18n.js?v=20260615yl"></script>
+<script src="js/user/nm-icons.js?v=20260615yl"></script>
+<script src="js/user/preview-modal.js?v=20260615yl"></script>
+<script src="js/user/hover-preview.js?v=20260615yl"></script>
+<script src="js/user/feedback-ui.js?v=20260615yl"></script>
+<script src="js/user/search-v2.js?v=20260615yl"></script>
+<script src="js/user/home.js?v=20260615yl"></script>
+<script src="js/user/init.js?v=20260615yl"></script>
+<script src="js/cookie-banner.js?v=20260615yl"></script>
+</body>
+</html>
