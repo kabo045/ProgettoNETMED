@@ -1,0 +1,95 @@
+
+> backend@1.0.0 test
+> cross-env NODE_ENV=test mocha --config test/.mocharc.json
+
+[SECURITY] JWT_SECRET non impostato - uso fallback DI SVILUPPO.
+           NON usare questa configurazione in produzione.
+
+
+  API Admin (DB Docker)
+[DB] connesso.
+    Dashboard e versione
+      √ GET /api/admin/__version (pubblico)
+      √ GET /api/admin/stats → 200 con metriche aggregate (83ms)
+      √ GET /api/admin/analytics → 200
+      √ GET /api/admin/search?q=test
+    Gestione utenti
+      √ GET /api/admin/users → 200 lista utenti
+      √ GET /api/admin/users/:id → dettaglio utente target
+      √ GET /api/admin/users/recent → ultimi utenti registrati
+      √ GET /api/admin/users/:id/history → cronologia di un utente
+    CRUD categorie
+      √ GET /api/admin/categories → 200 array
+      √ POST /api/admin/categories → crea categoria (225ms)
+      √ PUT /api/admin/categories/:id → rinomina
+      √ DELETE /api/admin/categories/:id → elimina (idempotente)
+    CRUD tag
+      √ GET /api/admin/tags → 200
+      √ POST /api/admin/tags → crea
+      √ DELETE /api/admin/tags/:id → elimina
+    Gestione video
+      √ GET /api/admin/videos → 200
+      √ GET /api/admin/videos/recent → 200
+      √ GET /api/admin/videos/tags/all → 200
+    Notifiche admin e audit log
+      √ GET /api/admin/notifications → 200
+      √ PUT /api/admin/notifications/read-all → 200
+    Sicurezza: solo admin
+      √ GET /api/admin/users da utente normale → 401/403
+      √ POST /api/admin/categories da utente normale → 401/403
+
+  API Creator (DB Docker)
+    Account creator
+      √ GET /api/user/me → vede is_verified=true
+      √ GET /api/creator/my/stats → stats personali (45ms)
+    CRUD video (creator)
+      √ POST /api/creator/videos → crea un video (richiede categoria esistente)
+      √ GET /api/creator/my/videos → lista include il video creato
+      √ GET /api/creator/videos/:id → dettaglio del proprio video
+    Moderazione commenti su proprio video
+      √ GET /api/creator/videos/:id/comments → vede commenti del proprio video
+      √ DELETE /api/creator/videos/:id/comments/:cid → soft-delete (modera)
+      √ PUT /api/creator/videos/:id/comments/:cid/restore → ripristina
+    Cleanup
+      √ DELETE /api/creator/videos/:id → elimina il video di test
+    Sicurezza: utente non verificato non accede a /api/creator
+      √ GET /api/creator/my/videos da viewer (is_verified=false) → 403
+
+  API Utente (DB Docker)
+    Catalogo pubblico (no auth)
+      √ GET /api/user/home → rows
+      √ GET /api/user/categories → array
+      √ GET /api/user/tags?limit=10 → { tags }
+      √ GET /api/user/explore
+      √ GET /api/user/search?q=cuore
+      √ GET /api/user/categories/:id/videos (se esiste categoria)
+    Dettaglio video
+      √ GET /api/user/videos/:id (se esiste video) (63ms)
+      √ GET /api/user/videos/:id/related
+      √ GET /api/user/videos/:id/comments
+      √ POST /api/user/videos/:id/view (loggato)
+    Commenti (write + read + delete)
+      √ POST commento → 200/201 con shape giusto
+      √ PUT commento → modifica il contenuto
+      √ DELETE commento (soft) → 200
+      √ DELETE commento purge (hard delete del proprio) → 200
+    Profilo personale
+      √ GET /api/user/me → utente loggato
+      √ GET /api/user/me/history
+      √ GET /api/user/me/comments → { items, videos }
+      √ PUT /api/user/me/profile → aggiorna username
+    Preferiti e collezioni
+      √ GET /api/user/favorites → array
+      √ GET /api/user/collections → array
+    Notifiche
+      √ GET /api/user/me/notifications → array
+      √ GET /api/user/me/notifications/unread-count
+      √ PUT /api/user/me/notifications/read-all
+    Sicurezza: endpoint protetti rifiutano richieste senza token
+      √ GET /api/user/me senza token → 401
+      √ GET /api/admin/stats da utente normale → 401 o 403
+      √ GET /api/creator/my/videos da utente non-verificato → 403
+
+
+  58 passing (2s)
+

@@ -38,6 +38,7 @@ services:
       DB_NAME: netmed
       DB_SSL: "false"
       JWT_SECRET: ${JWT_SECRET:-change_me_in_production_super_secret_xxxxxxx}
+      
     env_file:
       - .env
 

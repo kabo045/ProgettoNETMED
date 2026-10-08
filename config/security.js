@@ -1,22 +1,11 @@
-/*
 
- Configurazione centralizzata per JWT.
- - In produzione: JWT_SECRET DEVE essere presente e lunga >= 16 char.
-   Se manca, il server esce con exit(1) invece di partire con un
-   fallback prevedibile (evita di forgiare token in scenari reali).
- - In sviluppo/test: warning + fallback su una chiave nota. Zero
-   attrito per chi clona il repo e vuole solo far girare il progetto.
- - JWT_EXPIRES_IN configurabile via env (default 24h).
-*/
 
-// Chiave di sviluppo. Usata SOLO se NODE_ENV != production e non e' stata settata JWT_SECRET nel .env. In produzione non entr  mai in gioco: il resolver blocca prima l'avvio.
 const DEV_FALLBACK = "super_secret_key";
 
 function resolveJwtSecret() {
   const env = (process.env.NODE_ENV || "development").toLowerCase();
   const secret = process.env.JWT_SECRET;
 
-  // 16 caratteri minimi: chiavi troppo corte sono forzabili con dizionari. 
   if (!secret || secret.length < 16) {
     if (env === "production") {
       console.error("");
@@ -32,7 +21,6 @@ function resolveJwtSecret() {
       console.error("  Poi impostalo nel tuo provider (Render, Railway,");
       console.error("  Heroku, ecc.) come variabile JWT_SECRET.");
       console.error("======================================================");
-      // exit(1) 
       process.exit(1);
     }
     console.warn("[SECURITY] JWT_SECRET non impostato - uso fallback DI SVILUPPO.");
@@ -44,5 +32,9 @@ function resolveJwtSecret() {
 }
 
 const JWT_SECRET = resolveJwtSecret();
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "24h";
 
-// Scadenza dei token firmati. 24h e' un temopo abbastanzalungo per non forzare il re-login
+module.exports = {
+  JWT_SECRET,
+  JWT_EXPIRES_IN,
+};

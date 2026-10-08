@@ -96,6 +96,14 @@ CREATE TABLE videos (
 );
 CREATE INDEX idx_videos_category ON videos(category_id);
 
+-- Indice per il feed pubblico (GET /api/user/explore), che ordina per data
+-- di pubblicazione. Parziale: indicizza solo le righe visibili nel feed, cosi'
+-- il piano non deve scartare i video privati o bloccati. Aggiunto in seguito
+-- alla misura riportata nel Capitolo 5 della tesi (22,98 ms -> 0,24 ms su un
+-- catalogo di 50.000 video).
+CREATE INDEX idx_videos_created_at ON videos (created_at DESC)
+    WHERE is_private = FALSE AND is_flagged = FALSE;
+
 
 -- reports: segnalazioni SUI VIDEO. UNIQUE(video_id, user_id) =
 -- un utente non puo' segnalare lo stesso video due volte.
